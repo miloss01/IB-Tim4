@@ -1,22 +1,22 @@
 package com.IBTim4.CertificatesApp.appUser;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.IBTim4.CertificatesApp.appUser.dto.RegistrationRequestDTO;
+import com.IBTim4.CertificatesApp.appUser.dto.UserExpandedDTO;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.InheritanceType.JOINED;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @Entity
 @TableGenerator(name="appUser_id_generator", table="primary_keys", pkColumnName="key_pk", pkColumnValue="appUser", valueColumnName="value_pk")
 @Inheritance(strategy=JOINED)
-public abstract class AppUser {
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,14 @@ public abstract class AppUser {
     private String password;
 
     private Role role;
+
+    public AppUser(RegistrationRequestDTO userDTO) {
+        this.setName(userDTO.getName());
+        this.setLastName(userDTO.getLastName());
+        this.setPhone(userDTO.getPhone());
+        this.setEmail(userDTO.getEmail());
+        this.setPassword(this.getPassword());
+        this.setRole(Role.AUTHENTICATED_USER);
+    }
 
 }

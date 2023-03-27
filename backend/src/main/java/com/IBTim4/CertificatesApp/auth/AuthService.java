@@ -20,7 +20,6 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AppUser> ret = userRepository.findByEmail(username);
-        System.out.println(ret);
         if (ret.isPresent()) {
             return org.springframework.security.core.userdetails.User
                     .withUsername(username)
