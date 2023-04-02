@@ -2,9 +2,8 @@ package com.IBTim4.CertificatesApp.certificate;
 
 import com.IBTim4.CertificatesApp.appUser.AppUser;
 import lombok.*;
-
 import javax.persistence.*;
-
+import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
 
 
@@ -26,8 +25,6 @@ public class Certificate {
 
     private LocalDateTime endTime;
 
-    private LocalDateTime issuedTime;
-
     // TODO - kako tacno povezujemo subject/koje inf od njega
     @ManyToOne
     @JoinColumn(name = "subject_id")
@@ -35,7 +32,7 @@ public class Certificate {
 
     @ManyToOne
     @JoinColumn(name = "issuer_id")
-    private AppUser issuer;
+    private Certificate issuer;
 
     private CertificateType type;
 
