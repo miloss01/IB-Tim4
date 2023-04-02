@@ -16,6 +16,7 @@ import static javax.persistence.InheritanceType.JOINED;
 @Entity
 @TableGenerator(name="appUser_id_generator", table="primary_keys", pkColumnName="key_pk", pkColumnValue="appUser", valueColumnName="value_pk")
 @Inheritance(strategy=JOINED)
+@Table(name = "app_user")
 public class AppUser {
 
     @Id
