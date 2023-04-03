@@ -9,8 +9,6 @@ public class CertificatesAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CertificatesAppApplication.class, args);
-		KeyStoreWriter keyStoreWriter = new KeyStoreWriter();
-		System.out.println("aaaaaaaaa");
 	}
 
 }
