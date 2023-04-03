@@ -37,7 +37,7 @@ public class AppCertificate {
     private boolean retracted;
 
     public boolean isValid() {
-        return retracted && endTime.isBefore(LocalDateTime.now());
+        return !retracted && endTime.isAfter(LocalDateTime.now());
     }
 
 }

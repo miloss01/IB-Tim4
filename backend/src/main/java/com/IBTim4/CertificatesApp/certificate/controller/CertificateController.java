@@ -20,4 +20,10 @@ public class CertificateController {
         return new ResponseEntity<>(valid, HttpStatus.OK);
     }
 
+//    @GetMapping(value="/createInDB")
+//    public ResponseEntity<Boolean> create() {
+//        certificateService.createInDatabase();
+//        return null;
+//    }
+
 }

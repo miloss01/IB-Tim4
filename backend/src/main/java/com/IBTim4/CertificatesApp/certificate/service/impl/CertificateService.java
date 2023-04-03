@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -23,6 +24,8 @@ public class CertificateService implements ICertificateService {
     public ArrayList<AppCertificate> getAllCertificates() {
         return null;
     }
+
+
 
     @Override
     public boolean isCertificateValid(String serialNumber) {
@@ -44,4 +47,10 @@ public class CertificateService implements ICertificateService {
         return parentCert.isValid();
 
     }
+
+//    @Override
+//    public void createInDatabase() {
+//        certificateRepository.save(new AppCertificate(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(12), null, null, CertificateType.ROOT, false));
+//        certificateRepository.save(new AppCertificate(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(6), null, null, CertificateType.INTERMEDIATE, false));
+//    }
 }

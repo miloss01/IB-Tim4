@@ -10,4 +10,7 @@ public interface ICertificateService {
     public ArrayList<AppCertificate> getAllCertificates();
 
     public boolean isCertificateValid(String serialNumber);
+
+//    public void createInDatabase();
+
 }
