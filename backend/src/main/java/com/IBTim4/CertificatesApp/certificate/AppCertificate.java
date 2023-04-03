@@ -24,7 +24,6 @@ public class AppCertificate {
 
     private LocalDateTime endTime;
 
-    // TODO - kako tacno povezujemo subject/koje inf od njega
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private AppUser subject;
@@ -34,5 +33,11 @@ public class AppCertificate {
     private AppCertificate issuer;
 
     private CertificateType type;
+
+    private boolean retracted;
+
+    public boolean isValid() {
+        return retracted && endTime.isBefore(LocalDateTime.now());
+    }
 
 }
