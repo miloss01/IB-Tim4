@@ -17,11 +17,8 @@ public class CertificateDTO {
 
 
     private Long id;
-
     private String startTime;
-
     private String endTime;
-
     private UserExpandedDTO subject;
 
     private IssuerDTO issuer;
@@ -33,7 +30,8 @@ public class CertificateDTO {
         this.startTime = cert.getStartTime().format(dateTimeFormatter);
         this.endTime = cert.getEndTime().format(dateTimeFormatter);
         if (cert.getSubject() != null) this.subject = new UserExpandedDTO(cert.getSubject());
-        if (cert.getIssuer() != null) this.issuer = new IssuerDTO(cert.getIssuer().getId(), cert.getIssuer().getType().toString());
+        if (cert.getIssuer() != null)
+            this.issuer = new IssuerDTO(cert.getIssuer().getId(), cert.getIssuer().getType().toString());
         this.type = cert.getType().toString();
     }
 }

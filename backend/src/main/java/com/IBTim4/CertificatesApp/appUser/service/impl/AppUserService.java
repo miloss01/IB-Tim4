@@ -20,6 +20,11 @@ public class AppUserService implements IAppUserService {
     }
 
     @Override
+    public Optional<AppUser> findById(Long id) {
+        return appUserRepository.findById(id);
+    }
+
+    @Override
     public AppUser saveAppUser(AppUser appUser) {
         return appUserRepository.save(appUser);
     }

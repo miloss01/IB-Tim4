@@ -19,15 +19,13 @@ public class AppCertificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
+    private String serialNumber;
     private LocalDateTime startTime;
-
     private LocalDateTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private AppUser subject;
-
     @ManyToOne
     @JoinColumn(name = "issuer_id")
     private AppCertificate issuer;

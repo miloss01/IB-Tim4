@@ -29,8 +29,10 @@ public class WebSecurityConfiguration {
                 .antMatchers("/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/cert/valid").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/cert/all").permitAll()
+                .antMatchers("/api/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/certificate/request").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/certificate/request/accept").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

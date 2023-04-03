@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface IAppUserService {
 
     Optional<AppUser> findByEmail(String email);
+    Optional<AppUser> findById(Long id);
     AppUser saveAppUser(AppUser appUser);
 
 }
