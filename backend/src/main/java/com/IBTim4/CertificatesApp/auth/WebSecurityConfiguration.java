@@ -1,5 +1,6 @@
 package com.IBTim4.CertificatesApp.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration {
+    @Autowired
+    JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,14 +31,12 @@ public class WebSecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/certificate/request").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/certificate/request/accept").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .antMatchers("/api/user/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
         http.cors();
 
@@ -55,6 +56,7 @@ public class WebSecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
+//        System.out.println("milica" + encoder.encode("milica"));
         return encoder;
     }
 
