@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @CrossOrigin
@@ -34,7 +33,9 @@ public class AppUserController {
             throw new CustomExceptionWithMessage("User with that email already exists!", HttpStatus.BAD_REQUEST);
         }
 
-        AppUser saved = appUserService.saveAppUser(new AppUser(userDTO));
+        AppUser user = new AppUser(userDTO);
+        user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        AppUser saved = appUserService.saveAppUser(user);
 
         return new ResponseEntity<>(new UserExpandedDTO(saved), HttpStatus.OK);
     }
