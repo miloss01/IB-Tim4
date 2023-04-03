@@ -1,12 +1,11 @@
 package com.IBTim4.CertificatesApp.certificate;
 
+
 import com.IBTim4.CertificatesApp.appUser.AppUser;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,29 +13,26 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
-@Table(name = "certificate")
-public class Certificate {
+public class CertificateRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private LocalDateTime startTime;
+    private RequestStatus status;
 
-    private LocalDateTime endTime;
+    private LocalDateTime creationTime;
 
-    private LocalDateTime issuedTime;
+    private String description;
 
-    // TODO - kako tacno povezujemo subject/koje inf od njega
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private AppUser subject;
+    private CertificateType certificateType;
 
     @ManyToOne
     @JoinColumn(name = "issuer_id")
-    private AppUser issuer;
+    private AppCertificate issuer;
 
-    private CertificateType type;
-
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
+    private AppUser requester;
 }
