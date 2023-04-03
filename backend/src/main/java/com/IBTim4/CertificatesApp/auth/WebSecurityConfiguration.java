@@ -29,8 +29,8 @@ public class WebSecurityConfiguration {
                 .antMatchers("/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/cert/valid").permitAll()                .antMatchers(HttpMethod.GET,"/api/cert/valid").permitAll()
-//                .antMatchers(HttpMethod.GET,"/api/cert/createInDB").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/cert/valid").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/cert/all").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

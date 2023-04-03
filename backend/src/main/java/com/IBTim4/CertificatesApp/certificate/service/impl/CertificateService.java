@@ -22,10 +22,8 @@ public class CertificateService implements ICertificateService {
 
     @Override
     public ArrayList<AppCertificate> getAllCertificates() {
-        return null;
+        return (ArrayList<AppCertificate>) certificateRepository.findAll();
     }
-
-
 
     @Override
     public boolean isCertificateValid(String serialNumber) {
@@ -48,9 +46,4 @@ public class CertificateService implements ICertificateService {
 
     }
 
-//    @Override
-//    public void createInDatabase() {
-//        certificateRepository.save(new AppCertificate(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(12), null, null, CertificateType.ROOT, false));
-//        certificateRepository.save(new AppCertificate(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(6), null, null, CertificateType.INTERMEDIATE, false));
-//    }
 }
