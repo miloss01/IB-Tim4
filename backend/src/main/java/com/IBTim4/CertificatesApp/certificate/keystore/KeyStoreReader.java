@@ -25,8 +25,10 @@ public class KeyStoreReader {
     // - Privatni kljucevi
     // - Tajni kljucevi, koji se koriste u simetricnima siframa
     private KeyStore keyStore;
+    private String keyStoreFile;
 
-    public KeyStoreReader() {
+    public KeyStoreReader(String keyStoreFile) {
+        this.keyStoreFile = keyStoreFile;
         try {
             keyStore = KeyStore.getInstance("JKS", "SUN");
         } catch (KeyStoreException | NoSuchProviderException e) {
@@ -68,19 +70,19 @@ public class KeyStoreReader {
     /**
      * Ucitava sertifikat is KS fajla
      */
-    public Certificate readCertificate(String keyStoreFile, String keyStorePass, String alias) {
+    public Certificate readCertificate(String keyStorePass, String alias) {
         try {
             // kreiramo instancu KeyStore
-            KeyStore ks = KeyStore.getInstance("JKS", "SUN");
+//            KeyStore ks = KeyStore.getInstance("JKS", "SUN");
             // ucitavamo podatke
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
-            ks.load(in, keyStorePass.toCharArray());
+            keyStore.load(in, keyStorePass.toCharArray());
 
-            if (ks.isKeyEntry(alias)) {
-                Certificate cert = ks.getCertificate(alias);
+            if (keyStore.isKeyEntry(alias)) {
+                Certificate cert = keyStore.getCertificate(alias);
                 return cert;
             }
-        } catch (KeyStoreException | NoSuchProviderException | NoSuchAlgorithmException
+        } catch (KeyStoreException | NoSuchAlgorithmException
                  | CertificateException | IOException e) {
             e.printStackTrace();
         }
@@ -90,20 +92,19 @@ public class KeyStoreReader {
     /**
      * Ucitava privatni kljuc is KS fajla
      */
-    public PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass) {
+    public PrivateKey readPrivateKey(String keyStorePass, String alias, String pass) {
         try {
             // kreiramo instancu KeyStore
-            KeyStore ks = KeyStore.getInstance("JKS", "SUN");
+//            KeyStore ks = KeyStore.getInstance("JKS", "SUN");
             // ucitavamo podatke
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
-            ks.load(in, keyStorePass.toCharArray());
+            keyStore.load(in, keyStorePass.toCharArray());
 
-            if (ks.isKeyEntry(alias)) {
-                PrivateKey pk = (PrivateKey) ks.getKey(alias, pass.toCharArray());
+            if (keyStore.isKeyEntry(alias)) {
+                PrivateKey pk = (PrivateKey) keyStore.getKey(alias, pass.toCharArray());
                 return pk;
             }
-        } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException
-                 | IOException | UnrecoverableKeyException e) {
+        } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableKeyException e) {
             e.printStackTrace();
         }
         return null;
