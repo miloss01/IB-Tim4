@@ -6,4 +6,6 @@ import java.util.ArrayList;
 
 public interface ICertificateService {
     public ArrayList<AppCertificate> getAllCertificates();
+    public AppCertificate saveCertificate(AppCertificate certificate);
+    public void createCertificate(AppCertificate appCertificate);
 }

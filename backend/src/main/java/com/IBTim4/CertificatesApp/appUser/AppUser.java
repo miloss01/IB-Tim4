@@ -40,7 +40,7 @@ public class AppUser {
         this.setLastName(userDTO.getLastName());
         this.setPhone(userDTO.getPhone());
         this.setEmail(userDTO.getEmail());
-        this.setPassword(this.getPassword());
+        this.setPassword(userDTO.getPassword());
         this.setRole(Role.AUTHENTICATED_USER);
     }
 
