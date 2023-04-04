@@ -1,5 +1,6 @@
 package com.IBTim4.CertificatesApp.certificate.controller;
 
+import com.IBTim4.CertificatesApp.Constants;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
 import com.IBTim4.CertificatesApp.certificate.dto.CertificateDTO;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateService;
@@ -71,6 +72,15 @@ public class CertificateController {
 
             if (issuerCertificate.get().getType().equals(CertificateType.END))
                 throw new CustomExceptionWithMessage("End certificate cannot be used as issuer!", HttpStatus.BAD_REQUEST);
+
+            Integer duration = 0;
+            if (certificateRequestDTO.getCertificateType().equals(CertificateType.INTERMEDIATE.name()))
+                duration = Constants.INTERMEDIATE_DURATION;
+            else
+                duration = Constants.END_DURATION;
+
+            if (issuerCertificate.get().getEndTime().isBefore(LocalDateTime.now().plusMonths(duration)))
+                throw new CustomExceptionWithMessage("Issuer will expire before the new certificate expires!", HttpStatus.BAD_REQUEST);
 
             issuer = issuerCertificate.get();
 
