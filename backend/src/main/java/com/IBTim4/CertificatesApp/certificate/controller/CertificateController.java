@@ -151,7 +151,7 @@ public class CertificateController {
 
     }
 
-    @GetMapping(value = "/{subjectId}")
+    @GetMapping(value = "/subject/{subjectId}")
     public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {
 
         Optional<AppUser> subject = appUserService.findById(subjectId);

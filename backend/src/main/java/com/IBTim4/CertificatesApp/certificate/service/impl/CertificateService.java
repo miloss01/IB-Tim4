@@ -159,7 +159,7 @@ public class CertificateService implements ICertificateService {
 
     @Override
     public boolean isCertificateValid(String serialNumber) {
-        Optional<AppCertificate> certOptional = certificateRepository.findById(Long.valueOf(serialNumber));
+        Optional<AppCertificate> certOptional = certificateRepository.findBySerialNumber(serialNumber);
 
         if (!certOptional.isPresent())
             throw new CustomExceptionWithMessage("Certificate with given serial number does not exist.",

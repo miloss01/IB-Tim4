@@ -31,7 +31,7 @@ public class WebSecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .antMatchers("/api/**").permitAll()
+//                .antMatchers("/api/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/certificate/request").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/certificate/request/accept").permitAll()
