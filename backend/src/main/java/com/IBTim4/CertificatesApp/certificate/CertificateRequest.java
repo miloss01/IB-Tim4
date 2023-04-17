@@ -29,4 +29,5 @@ public class CertificateRequest {
     @ManyToOne
     @JoinColumn(name = "requester_id")
     private AppUser requester;
+    private LocalDateTime expirationTime;
 }

@@ -22,6 +22,7 @@ public class CertificateRequestDTO {
     private String description;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String creationTime;
+    private String expirationTime;
 
     public CertificateRequestDTO(CertificateRequest request) {
         this.certificateType = request.getCertificateType().toString();
@@ -33,5 +34,6 @@ public class CertificateRequestDTO {
         this.description = request.getDescription();
         this.creationTime = request.getCreationTime().toString();
         this.requesterEmail = request.getRequester().getEmail();
+        this.expirationTime = request.getExpirationTime().toString();
     }
 }

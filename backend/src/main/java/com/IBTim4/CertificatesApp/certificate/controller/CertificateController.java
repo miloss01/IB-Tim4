@@ -7,6 +7,9 @@ import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateSer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.IBTim4.CertificatesApp.appUser.AppUser;
 import com.IBTim4.CertificatesApp.appUser.Role;
@@ -63,6 +66,8 @@ public class CertificateController {
         if (certificateRequestDTO.getCertificateType().equals(CertificateType.ROOT.name()) && !requester.get().getRole().equals(Role.ADMIN))
             throw new CustomExceptionWithMessage("Only admin can create root certificate!", HttpStatus.BAD_REQUEST);
 
+        LocalDateTime expirationTime = LocalDateTime.parse(certificateRequestDTO.getExpirationTime());
+
         if (!certificateRequestDTO.getCertificateType().equals(CertificateType.ROOT.name())) {
 
             Optional<AppCertificate> issuerCertificate = certificateService.findBySerialNumber(certificateRequestDTO.getIssuerSN());
@@ -73,17 +78,18 @@ public class CertificateController {
             if (issuerCertificate.get().getType().equals(CertificateType.END))
                 throw new CustomExceptionWithMessage("End certificate cannot be used as issuer!", HttpStatus.BAD_REQUEST);
 
-            Integer duration = 0;
-            if (certificateRequestDTO.getCertificateType().equals(CertificateType.INTERMEDIATE.name()))
-                duration = Constants.INTERMEDIATE_DURATION;
-            else
-                duration = Constants.END_DURATION;
+            if (issuerCertificate.get().isRetracted())
+                throw new CustomExceptionWithMessage("Issuer cannot be retracted certificate!", HttpStatus.BAD_REQUEST);
 
-            if (issuerCertificate.get().getEndTime().isBefore(LocalDateTime.now().plusMonths(duration)))
+            certificateService.checkCertificateExpirationTime(expirationTime, CertificateType.valueOf(certificateRequestDTO.getCertificateType()));
+
+            if (issuerCertificate.get().getEndTime().isBefore(expirationTime))
                 throw new CustomExceptionWithMessage("Issuer will expire before the new certificate expires!", HttpStatus.BAD_REQUEST);
 
             issuer = issuerCertificate.get();
 
+        } else {
+            certificateService.checkCertificateExpirationTime(expirationTime, CertificateType.valueOf(certificateRequestDTO.getCertificateType()));
         }
 
         CertificateRequest certificateRequest = new CertificateRequest();
@@ -93,6 +99,7 @@ public class CertificateController {
         certificateRequest.setStatus(RequestStatus.PENDING);
         certificateRequest.setCreationTime(LocalDateTime.now());
         certificateRequest.setDescription(null);
+        certificateRequest.setExpirationTime(LocalDateTime.parse(certificateRequestDTO.getExpirationTime()));
 
         certificateRequestService.save(certificateRequest);
 
@@ -113,6 +120,13 @@ public class CertificateController {
         if (!req.getStatus().equals(RequestStatus.PENDING))
             throw new CustomExceptionWithMessage("Cannot accept request that is not in pending state!", HttpStatus.BAD_REQUEST);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        if (loggedIn.get().getId() != req.getRequester().getId())
+            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
         AppCertificate cert = certificateService.createCertificate(req);
 
         req.setStatus(RequestStatus.APPROVED);
@@ -132,6 +146,13 @@ public class CertificateController {
 
         CertificateRequest req = certificateRequest.get();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        if (loggedIn.get().getId() != req.getRequester().getId())
+            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
         if (!req.getStatus().equals(RequestStatus.PENDING))
             throw new CustomExceptionWithMessage("Cannot deny request that is not in pending state!", HttpStatus.BAD_REQUEST);
 
@@ -144,6 +165,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/request/{requesterId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #requesterId)")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForRequester(@PathVariable Long requesterId) {
 
         Optional<AppUser> requester = appUserService.findById(requesterId);
@@ -162,6 +184,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/subject/{subjectId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #subjectId)")
     public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {
 
         Optional<AppUser> subject = appUserService.findById(subjectId);
@@ -176,6 +199,18 @@ public class CertificateController {
             ret.add(new CertificateDTO(certificate));
 
         return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/retracted/{serialNumber}")
+    public ResponseEntity<Boolean> checkIfCertificateIsRetracted(@PathVariable String serialNumber) {
+
+        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
+
+        if (!certificate.isPresent())
+            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(certificate.get().isRetracted(), HttpStatus.OK);
 
     }
 

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import com.IBTim4.CertificatesApp.certificate.CertificateRequest;
@@ -67,7 +68,8 @@ public class CertificateService implements ICertificateService {
         builder.setProvider("BC");
 
         Random rnd = new Random();
-        String newSerialNumber = String.valueOf(rnd.nextInt() % 100000);
+        String newSerialNumber = String.valueOf(rnd.nextInt() % 10000000);
+//        String newSerialNumber = UUID.randomUUID().toString();
 
         KeyPair keyPairSubject = generateKeyPair();
         PrivateKey privateKey;
@@ -86,14 +88,15 @@ public class CertificateService implements ICertificateService {
         try {
             Date startDate = new Date();
 
-            Calendar cal = Calendar.getInstance();
-            if (req.getCertificateType().equals(CertificateType.ROOT))
-                cal.add(Calendar.MONTH, Constants.ROOT_DURATION);
-            else if (req.getCertificateType().equals(CertificateType.INTERMEDIATE))
-                cal.add(Calendar.MONTH, Constants.INTERMEDIATE_DURATION);
-            else
-                cal.add(Calendar.MONTH, Constants.END_DURATION);
-            Date endDate = cal.getTime();
+//            Calendar cal = Calendar.getInstance();
+//            if (req.getCertificateType().equals(CertificateType.ROOT))
+//                cal.add(Calendar.MONTH, Constants.ROOT_DURATION);
+//            else if (req.getCertificateType().equals(CertificateType.INTERMEDIATE))
+//                cal.add(Calendar.MONTH, Constants.INTERMEDIATE_DURATION);
+//            else
+//                cal.add(Calendar.MONTH, Constants.END_DURATION);
+//            Date endDate = cal.getTime();
+            Date endDate = java.sql.Timestamp.valueOf(req.getExpirationTime());
 
             ContentSigner contentSigner = builder.build(privateKey);
 
@@ -143,6 +146,23 @@ public class CertificateService implements ICertificateService {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public Boolean checkCertificateExpirationTime(LocalDateTime expirationTime, CertificateType type) {
+        LocalDateTime now = LocalDateTime.now();
+        if (type == CertificateType.ROOT) {
+            if (expirationTime.isAfter(now.plusMonths(Constants.ROOT_DURATION)))
+                throw new CustomExceptionWithMessage("Root certificate can last at most 12 months!", HttpStatus.BAD_REQUEST);
+        } else if (type == CertificateType.INTERMEDIATE) {
+            if (expirationTime.isAfter(now.plusMonths(Constants.INTERMEDIATE_DURATION)))
+                throw new CustomExceptionWithMessage("Intermediate certificate can last at most 6 months!", HttpStatus.BAD_REQUEST);
+        } else {
+            if (expirationTime.isAfter(now.plusMonths(Constants.END_DURATION)))
+                throw new CustomExceptionWithMessage("End certificate can last at most 3 months!", HttpStatus.BAD_REQUEST);
+        }
+
+        return true;
     }
 
     private KeyPair generateKeyPair() {
