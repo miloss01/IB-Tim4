@@ -24,10 +24,11 @@ import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateReq
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.security.*;
+import java.security.cert.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,30 +52,6 @@ public class CertificateController {
     public ResponseEntity<Boolean> checkValidity(@RequestParam String serialNumber) {
         boolean valid = certificateService.isCertificateValid(serialNumber);
         return new ResponseEntity<>(valid, HttpStatus.OK);
-//        Certificate certificate = certificateService.downloadCertificate(serialNumber);
-//        Optional<AppCertificate> appCertificate = certificateService.findBySerialNumber(serialNumber);
-//        AppCertificate issuer = appCertificate.get().getIssuer();
-//        System.out.println("Issuer" + issuer.getId());
-//
-//        Certificate issuerCertificate = certificateService.downloadCertificate(issuer.getSerialNumber());
-//        PublicKey issuerPublicKey = issuerCertificate.getPublicKey();
-//
-//        Boolean valid = true;
-//        try {
-//            certificate.verify(issuerPublicKey);
-//            return new ResponseEntity<>(valid, HttpStatus.OK);
-//        } catch (CertificateException e) {
-//            throw new RuntimeException(e);
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new RuntimeException(e);
-//        } catch (InvalidKeyException e) {
-//            throw new RuntimeException(e);
-//        } catch (NoSuchProviderException e) {
-//            throw new RuntimeException(e);
-//        } catch (SignatureException e) {
-//            throw new RuntimeException(e);
-//        }
-
     }
 
     @GetMapping(value="/all", produces = "application/json")
@@ -315,6 +292,33 @@ public class CertificateController {
                     HttpStatus.OK);
         } catch (CertificateEncodingException e) {
             throw new RuntimeException(e);
+        }
+
+    }
+
+    @PostMapping(value = "/valid/upload")
+    public ResponseEntity<Boolean> checkValidityFromUploadedCertificate(@RequestBody String certificateEncoded) {
+
+        byte[] certificateBytes = Base64.getDecoder().decode(certificateEncoded);
+
+        try {
+            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            InputStream in = new ByteArrayInputStream(certificateBytes);
+            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(in);
+            String serialNumber = cert.getSerialNumber().toString();
+            System.out.println(serialNumber);
+
+            Optional<AppCertificate> appCertificate = certificateService.findBySerialNumber(serialNumber);
+
+            if (!appCertificate.isPresent())
+                throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+            Boolean valid = certificateService.isCertificateValid(serialNumber);
+
+            return new ResponseEntity<>(valid, HttpStatus.OK);
+
+        } catch (CertificateException e) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
 
     }
