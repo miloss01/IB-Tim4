@@ -228,16 +228,44 @@ public class CertificateService implements ICertificateService {
                     HttpStatus.NOT_FOUND);
         AppCertificate cert = certOptional.get();
 
-        if (!cert.isValid()) return false;
+        if (!cert.isValid() || !checkPublicKeyValidity(serialNumber)) return false;
         else if (cert.getType().equals(CertificateType.ROOT)) return true;
 
         AppCertificate parentCert = cert.getIssuer();
         while (!parentCert.getType().equals(CertificateType.ROOT)) {
-            if (parentCert.isValid()) parentCert = parentCert.getIssuer();
+            if (parentCert.isValid() && checkPublicKeyValidity(parentCert.getSerialNumber()))
+                parentCert = parentCert.getIssuer();
             else return false;
         }
-        return parentCert.isValid();
 
+        return parentCert.isValid() && checkPublicKeyValidity(parentCert.getSerialNumber());
+
+    }
+
+    private Boolean checkPublicKeyValidity(String serialNumber) {
+        Certificate certificate = downloadCertificate(serialNumber);
+        Optional<AppCertificate> appCertificate = findBySerialNumber(serialNumber);
+
+        AppCertificate issuer = appCertificate.get().getIssuer();
+        PublicKey issuerPublicKey = null;
+
+        if (issuer == null)
+            issuerPublicKey = certificate.getPublicKey();
+        else {
+            Certificate issuerCertificate = downloadCertificate(issuer.getSerialNumber());
+            issuerPublicKey = issuerCertificate.getPublicKey();
+        }
+
+        try {
+            certificate.verify(issuerPublicKey);
+            return true;
+        } catch (CertificateException |
+                 NoSuchAlgorithmException |
+                 InvalidKeyException |
+                 NoSuchProviderException |
+                 SignatureException e) {
+            return false;
+        }
     }
 
 }
