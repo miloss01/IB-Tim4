@@ -11,5 +11,6 @@ public interface CertificateRepository extends JpaRepository<AppCertificate, Lon
 
     Optional<AppCertificate> findBySerialNumber(String serialNumber);
     ArrayList<AppCertificate> findAllBySubject(AppUser subject);
+    ArrayList<AppCertificate> findAllByIssuer(AppCertificate issuer);
 
 }

@@ -181,6 +181,21 @@ public class CertificateService implements ICertificateService {
         return true;
     }
 
+    @Override
+    public Boolean retractCertificate(AppCertificate certificate, String reason) {
+
+        certificate.setRetracted(true);
+        certificate.setReasonForRetracting(reason);
+        certificateRepository.save(certificate);
+
+        ArrayList<AppCertificate> issued = certificateRepository.findAllByIssuer(certificate);
+
+        for (AppCertificate cert : issued)
+            retractCertificate(cert, reason);
+
+        return true;
+    }
+
     private KeyPair generateKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
