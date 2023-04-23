@@ -6,6 +6,8 @@ import com.IBTim4.CertificatesApp.certificate.CertificateType;
 import org.springframework.stereotype.Service;
 import com.IBTim4.CertificatesApp.certificate.CertificateRequest;
 
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -21,4 +23,6 @@ public interface ICertificateService {
     public AppCertificate createCertificate(CertificateRequest certificateRequest);
     public Boolean checkCertificateExpirationTime(LocalDateTime expirationTime, CertificateType type);
     public Boolean retractCertificate(AppCertificate certificate, String reason);
+    public Certificate downloadCertificate(String serialNumber);
+    public PrivateKey downloadPrivateKey(String serialNumber);
 }

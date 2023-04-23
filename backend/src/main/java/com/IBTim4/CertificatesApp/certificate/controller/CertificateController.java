@@ -3,10 +3,12 @@ package com.IBTim4.CertificatesApp.certificate.controller;
 import com.IBTim4.CertificatesApp.Constants;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
 import com.IBTim4.CertificatesApp.certificate.dto.CertificateDTO;
+import com.IBTim4.CertificatesApp.certificate.dto.DownloadCertificateAndPrivateKeyDTO;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +24,14 @@ import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateReq
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import java.security.*;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Optional;
 
 @CrossOrigin
@@ -43,6 +51,30 @@ public class CertificateController {
     public ResponseEntity<Boolean> checkValidity(@RequestParam String serialNumber) {
         boolean valid = certificateService.isCertificateValid(serialNumber);
         return new ResponseEntity<>(valid, HttpStatus.OK);
+//        Certificate certificate = certificateService.downloadCertificate(serialNumber);
+//        Optional<AppCertificate> appCertificate = certificateService.findBySerialNumber(serialNumber);
+//        AppCertificate issuer = appCertificate.get().getIssuer();
+//        System.out.println("Issuer" + issuer.getId());
+//
+//        Certificate issuerCertificate = certificateService.downloadCertificate(issuer.getSerialNumber());
+//        PublicKey issuerPublicKey = issuerCertificate.getPublicKey();
+//
+//        Boolean valid = true;
+//        try {
+//            certificate.verify(issuerPublicKey);
+//            return new ResponseEntity<>(valid, HttpStatus.OK);
+//        } catch (CertificateException e) {
+//            throw new RuntimeException(e);
+//        } catch (NoSuchAlgorithmException e) {
+//            throw new RuntimeException(e);
+//        } catch (InvalidKeyException e) {
+//            throw new RuntimeException(e);
+//        } catch (NoSuchProviderException e) {
+//            throw new RuntimeException(e);
+//        } catch (SignatureException e) {
+//            throw new RuntimeException(e);
+//        }
+
     }
 
     @GetMapping(value="/all", produces = "application/json")
@@ -248,6 +280,42 @@ public class CertificateController {
             ret.add(new CertificateRequestDTO(cr));
 
         return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/download/{serialNumber}")
+    public ResponseEntity<DownloadCertificateAndPrivateKeyDTO> getAllCertificateRequests(@PathVariable String serialNumber) {
+
+        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
+
+        if (!certificate.isPresent())
+            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        if (certificate.get().getSubject().getId() != loggedIn.get().getId() && loggedIn.get().getRole() != Role.ADMIN)
+            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
+        Certificate cert = certificateService.downloadCertificate(serialNumber);
+        PrivateKey privateKey = certificateService.downloadPrivateKey(serialNumber);
+
+        try {
+//            ByteArrayResource resource = new ByteArrayResource(cert.getEncoded());
+            String certEncoded = Arrays.toString(Base64.getEncoder().encode(cert.getEncoded()));
+            String privateKeyEncoded = Arrays.toString(Base64.getEncoder().encode(privateKey.getEncoded()));
+
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//            headers.set("Content-Disposition", "attachment; filename=certificate.cert");
+
+            return new ResponseEntity<>(
+                    new DownloadCertificateAndPrivateKeyDTO(certEncoded, privateKeyEncoded),
+                    HttpStatus.OK);
+        } catch (CertificateEncodingException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

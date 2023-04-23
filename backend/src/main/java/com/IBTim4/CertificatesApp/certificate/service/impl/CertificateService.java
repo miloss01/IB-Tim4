@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.security.cert.Certificate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -194,6 +195,16 @@ public class CertificateService implements ICertificateService {
             retractCertificate(cert, reason);
 
         return true;
+    }
+
+    @Override
+    public Certificate downloadCertificate(String serialNumber) {
+        return keyStoreReader.readCertificate(Constants.keyStorePass, serialNumber);
+    }
+
+    @Override
+    public PrivateKey downloadPrivateKey(String serialNumber) {
+        return keyStoreReader.readPrivateKey(Constants.keyStorePass, serialNumber, Constants.aliasPass);
     }
 
     private KeyPair generateKeyPair() {
