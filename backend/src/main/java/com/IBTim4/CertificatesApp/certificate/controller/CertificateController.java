@@ -238,4 +238,17 @@ public class CertificateController {
 
     }
 
+    @GetMapping(value = "/request")
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequests() {
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+
+        for (CertificateRequest cr : certificateRequestService.findAll())
+            ret.add(new CertificateRequestDTO(cr));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
 }

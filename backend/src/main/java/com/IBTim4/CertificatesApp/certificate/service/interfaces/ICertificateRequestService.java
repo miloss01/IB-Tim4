@@ -14,5 +14,6 @@ public interface ICertificateRequestService {
     ArrayList<CertificateRequest> findByIssuer(AppCertificate issuer);
     ArrayList<CertificateRequest> findByRequester(AppUser requester);
     CertificateRequest save(CertificateRequest certificateRequest);
+    ArrayList<CertificateRequest> findAll();
 
 }
