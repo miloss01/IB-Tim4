@@ -280,8 +280,8 @@ public class CertificateController {
 
         try {
 //            ByteArrayResource resource = new ByteArrayResource(cert.getEncoded());
-            String certEncoded = Arrays.toString(Base64.getEncoder().encode(cert.getEncoded()));
-            String privateKeyEncoded = Arrays.toString(Base64.getEncoder().encode(privateKey.getEncoded()));
+            String certEncoded = new String(Base64.getEncoder().encode(cert.getEncoded()));
+            String privateKeyEncoded = new String(Base64.getEncoder().encode(privateKey.getEncoded()));
 
 //            HttpHeaders headers = new HttpHeaders();
 //            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
