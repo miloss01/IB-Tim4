@@ -1,0 +1,28 @@
+<div id="page">
+<h2>Certificates overview</h2>
+<mat-divider></mat-divider>
+<div class="grid">
+    <div *ngFor="let cert of certs">
+        <mat-card>
+            <mat-card-header class="locations" >
+                <div class="">
+                    <mat-card-title>{{cert.type}}</mat-card-title>
+                    <p><b>Serial number: </b> {{cert.id}}</p>
+                    <p *ngIf="cert.subject != null"><b>Subject: </b> {{cert.subject.email}}</p>
+                    <button mat-button id="">Download</button>
+                </div>
+                </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <p><b>Details</b></p>
+                <p  *ngIf="cert.issuer != null">Issuer ID: {{cert.issuer.serialNumber}}</p>
+                <p>Valid from: {{cert.startTime}}</p>
+                <p>Valid to: {{cert.endTime}}</p>
+
+            </mat-card-content>
+            <mat-card-actions align="end">
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+</div> 
