@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatBadgeModule } from "@angular/material/badge";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -49,7 +50,8 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatSelectModule,
     MatRippleModule,
     MatGridListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatButtonModule,
@@ -75,7 +77,8 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatSortModule,
     MatRippleModule,
     MatGridListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatAutocompleteModule
   ],
 })
 export class MaterialModule {}

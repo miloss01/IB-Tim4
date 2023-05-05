@@ -9,6 +9,7 @@ import { CertifModule } from './modules/certif/certif.module';
 import { LayoutModule } from './modules/layout/layout.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginAuthModule } from './modules/auth/auth.module';
+import { RequestsModule } from './modules/requests/requests.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LoginAuthModule } from './modules/auth/auth.module';
     CertifModule,
     HttpClientModule,
     LayoutModule,
-    LoginAuthModule
+    LoginAuthModule,
+    RequestsModule
   ],
   bootstrap: [AppComponent]
 })

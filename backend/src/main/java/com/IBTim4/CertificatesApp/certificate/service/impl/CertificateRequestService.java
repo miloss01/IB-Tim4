@@ -1,8 +1,9 @@
 package com.IBTim4.CertificatesApp.certificate.service.impl;
 
 import com.IBTim4.CertificatesApp.appUser.AppUser;
-import com.IBTim4.CertificatesApp.certificate.AppCertificate;
-import com.IBTim4.CertificatesApp.certificate.CertificateRequest;
+import com.IBTim4.CertificatesApp.appUser.Role;
+import com.IBTim4.CertificatesApp.certificate.*;
+import com.IBTim4.CertificatesApp.certificate.repository.CertificateRepository;
 import com.IBTim4.CertificatesApp.certificate.repository.CertificateRequestRepository;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import com.IBTim4.CertificatesApp.appUser.service.interfaces.IAppUserService;
-import com.IBTim4.CertificatesApp.certificate.CertificateType;
-import com.IBTim4.CertificatesApp.certificate.Rejection;
 import com.IBTim4.CertificatesApp.certificate.repository.RejectionRepository;
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import org.springframework.http.HttpStatus;
@@ -29,6 +28,9 @@ public class CertificateRequestService implements ICertificateRequestService {
     @Autowired
     private CertificateRequestRepository certificateRequestRepository;
 
+    @Autowired
+    private CertificateService certificateService;
+
     @Override
     public Optional<CertificateRequest> findById(Long id) {
         return certificateRequestRepository.findById(id);
@@ -45,8 +47,12 @@ public class CertificateRequestService implements ICertificateRequestService {
     }
 
     @Override
-    public CertificateRequest save(CertificateRequest certificateRequest) {
-        return certificateRequestRepository.save(certificateRequest);
+    public CertificateRequest save(CertificateRequest req) {
+        if (req.getRequester().getEmail().equals(req.getIssuer().getSubject().getEmail()) || req.getRequester().getRole().equals(Role.ADMIN)) {
+            req.setStatus(RequestStatus.APPROVED);
+            certificateService.createCertificate(req);
+        }
+        return certificateRequestRepository.save(req);
     }
 
     @Override

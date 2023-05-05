@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/certificate")
 @Validated
@@ -53,6 +53,15 @@ public class CertificateController {
             certificateDTOS.add(new CertificateDTO(cert));
         }
         return new ResponseEntity<>(certificateDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/allSN", produces = "application/json")
+    public ResponseEntity<ArrayList<String>> getAllSerialNumbers() {
+        ArrayList<String> serialNumbers = new ArrayList<>();
+        for (AppCertificate cert : certificateService.getAllCertificates()) {
+            serialNumbers.add(cert.getSerialNumber().toString());
+        }
+        return new ResponseEntity<>(serialNumbers, HttpStatus.OK);
     }
 
     @PostMapping(value = "/request", consumes = "application/json")
@@ -100,7 +109,7 @@ public class CertificateController {
         certificateRequest.setIssuer(issuer);
         certificateRequest.setStatus(RequestStatus.PENDING);
         certificateRequest.setCreationTime(LocalDateTime.now());
-        certificateRequest.setDescription(null);
+        certificateRequest.setDescription("");
         certificateRequest.setExpirationTime(LocalDateTime.parse(certificateRequestDTO.getExpirationTime()));
 
         certificateRequestService.save(certificateRequest);
