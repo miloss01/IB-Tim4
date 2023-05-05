@@ -61,14 +61,29 @@ public class CertificateService implements ICertificateService {
         return certificateRepository.save(appCertificate);
     }
 
+    private String generateSerialNumber() {
+        Boolean isPresent = true;
+        Random rnd = new Random();
+        Integer sn = -1;
+
+        while (isPresent) {
+            sn = rnd.nextInt() % 10000000;
+            if (sn < 0)
+                sn *= -1;
+            Optional<AppCertificate> cert = findBySerialNumber(String.valueOf(sn));
+            isPresent = cert.isPresent();
+        }
+
+        return String.valueOf(sn);
+    }
+
     @Override
     public AppCertificate createCertificate(CertificateRequest req) {
 
         JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
         builder.setProvider("BC");
 
-        Random rnd = new Random();
-        String newSerialNumber = String.valueOf(rnd.nextInt() % 10000000);
+        String newSerialNumber = generateSerialNumber();
 //        String newSerialNumber = UUID.randomUUID().toString();
 
         KeyPair keyPairSubject = generateKeyPair();
@@ -137,6 +152,7 @@ public class CertificateService implements ICertificateService {
                                             .atZone(ZoneId.systemDefault())
                                             .toLocalDateTime());
             appCertificate.setSerialNumber(newSerialNumber);
+            appCertificate.setReasonForRetracting(null);
 
             AppCertificate saved = certificateRepository.save(appCertificate);
 
@@ -161,6 +177,21 @@ public class CertificateService implements ICertificateService {
             if (expirationTime.isAfter(now.plusMonths(Constants.END_DURATION)))
                 throw new CustomExceptionWithMessage("End certificate can last at most 3 months!", HttpStatus.BAD_REQUEST);
         }
+
+        return true;
+    }
+
+    @Override
+    public Boolean retractCertificate(AppCertificate certificate, String reason) {
+
+        certificate.setRetracted(true);
+        certificate.setReasonForRetracting(reason);
+        certificateRepository.save(certificate);
+
+        ArrayList<AppCertificate> issued = certificateRepository.findAllByIssuer(certificate);
+
+        for (AppCertificate cert : issued)
+            retractCertificate(cert, reason);
 
         return true;
     }

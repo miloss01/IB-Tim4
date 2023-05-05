@@ -20,4 +20,5 @@ public interface ICertificateService {
     public AppCertificate save(AppCertificate appCertificate);
     public AppCertificate createCertificate(CertificateRequest certificateRequest);
     public Boolean checkCertificateExpirationTime(LocalDateTime expirationTime, CertificateType type);
+    public Boolean retractCertificate(AppCertificate certificate, String reason);
 }

@@ -37,4 +37,9 @@ public class CertificateRequestService implements ICertificateRequestService {
     public CertificateRequest save(CertificateRequest certificateRequest) {
         return certificateRequestRepository.save(certificateRequest);
     }
+
+    @Override
+    public ArrayList<CertificateRequest> findAll() {
+        return new ArrayList<>(certificateRequestRepository.findAll());
+    }
 }

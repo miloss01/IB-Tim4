@@ -214,4 +214,41 @@ public class CertificateController {
 
     }
 
+    @PostMapping(value = "/retract/{serialNumber}")
+    public ResponseEntity<Void> retractCertificate(@PathVariable String serialNumber, @RequestBody String reason) {
+
+        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
+
+        if (!certificate.isPresent())
+            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+        if (certificate.get().isRetracted())
+            throw new CustomExceptionWithMessage("You cannot retract certificate that is already retracted!", HttpStatus.BAD_REQUEST);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        if (certificate.get().getSubject().getId() != loggedIn.get().getId() && loggedIn.get().getRole() != Role.ADMIN)
+            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
+        certificateService.retractCertificate(certificate.get(), reason);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/request")
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequests() {
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+
+        for (CertificateRequest cr : certificateRequestService.findAll())
+            ret.add(new CertificateRequestDTO(cr));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
 }
