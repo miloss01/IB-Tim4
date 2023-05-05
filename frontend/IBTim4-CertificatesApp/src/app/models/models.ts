@@ -17,3 +17,10 @@ export interface IssuerDTO {
     serialNumber: number,
     type: string
 }
+
+export interface CertifRequestDTO {
+    type: string
+    issuerSN: string,
+    requesterEmail: string,
+    expirationTime: string,
+}

@@ -23,7 +23,8 @@ import { MatSortModule } from '@angular/material/sort';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -51,7 +52,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatRippleModule,
     MatGridListModule,
     MatBadgeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     MatButtonModule,
@@ -78,7 +81,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatRippleModule,
     MatGridListModule,
     MatBadgeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
 })
 export class MaterialModule {}

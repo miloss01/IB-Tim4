@@ -6,6 +6,9 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { CertService } from 'src/app/services/cert-service.service';
+import { CertifRequestDTO } from 'src/app/models/models';
+import { LoginAuthService } from '../../auth/service/auth.service';
 
 @Component({
   selector: 'app-create-request',
@@ -20,8 +23,16 @@ export class CreateRequestComponent implements OnInit {
   SNCtrl = new FormControl('');
   selectedSN: string = '';
 
+  adminLoggedIn: boolean = false
+  selectedTypeToggleVal: string = '';
+  selectedShortTermToggleVal: string = 'END';
+  selectedDateVal: any;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private certService: CertService,
+    private http: HttpClient,
+    private authService: LoginAuthService
+    ) {
     this.getAllSNs()
     this.filteredSNs = this.SNCtrl.valueChanges.pipe(
       startWith(null),
@@ -51,6 +62,26 @@ export class CreateRequestComponent implements OnInit {
         startWith(null),
         map((s: string | null) => (s ? this._filterCurr(s) : this.certifSNs.slice())),
       );
+    })
+  }
+
+  public onTypeToggleValChange(val: string) {
+    this.selectedTypeToggleVal = val;
+  }
+
+  public onShortTermToggleValChange(val: string) {
+    this.selectedTypeToggleVal = val;
+  }
+
+  public onRequestClick() {
+    const req = {
+      type: this.selectedTypeToggleVal,
+      issuerSN: this.selectedSN,
+      requesterEmail: this.authService.getEmail(),
+      expirationTime: this.selectedDateVal
+    }
+    this.certService.sendRequest(req).subscribe(res => {
+      alert(res)
     })
   }
 

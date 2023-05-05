@@ -11,10 +11,7 @@ mat-card {
     align-items: stretch;
 }
 
-#page {
-    margin: 10vh;
-    padding-bottom: 10vh;
-}
+
 
 mat-card-header{
     padding: 2vh !important;
@@ -69,11 +66,6 @@ button {
     width: 100%;
 }
 
-h2 {
-    margin-top: 10vh;
-    font-size: 1.7em;
-    line-height: 1.3em;
-} 
 
 * {
     font-family: Arial, Helvetica, sans-serif;

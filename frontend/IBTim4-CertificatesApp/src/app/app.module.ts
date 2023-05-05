@@ -4,11 +4,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule } from './infrastructure/material/material.module';
-import { CertifModule } from './modules/certif/certif.module';
-import { LayoutModule } from './modules/layout/layout.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CertifModule } from './modules/certif/certif.module';
+import { MaterialModule } from './infrastructure/material/material.module';
 import { LoginAuthModule } from './modules/auth/auth.module';
+import { LayoutModule } from './modules/layout/layout.module';
 import { RequestsModule } from './modules/requests/requests.module';
 
 @NgModule({

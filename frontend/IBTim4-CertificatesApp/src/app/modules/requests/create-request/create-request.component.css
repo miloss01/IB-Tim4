@@ -1,0 +1,9 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
+
+.mat-button-toggle-group {
+    margin-bottom: 2vh;
+}
