@@ -109,7 +109,7 @@ public class CertificateController {
         certificateRequest.setIssuer(issuer);
         certificateRequest.setStatus(RequestStatus.PENDING);
         certificateRequest.setCreationTime(LocalDateTime.now());
-        certificateRequest.setDescription("");
+        certificateRequest.setDescription(null);
         certificateRequest.setExpirationTime(LocalDateTime.parse(certificateRequestDTO.getExpirationTime()));
 
         certificateRequestService.save(certificateRequest);

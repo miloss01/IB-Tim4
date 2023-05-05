@@ -24,3 +24,13 @@ export interface CertifRequestDTO {
     requesterEmail: string,
     expirationTime: string,
 }
+
+export interface CertificateRequestDTO {
+    certificateType: string
+    issuerSN: string,
+    requesterEmail: string,
+    status: string,
+    description: string,
+    creationTime: string,
+    expirationTime: string,
+}
