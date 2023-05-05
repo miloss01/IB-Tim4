@@ -3,6 +3,7 @@ package com.IBTim4.CertificatesApp.certificate.controller;
 import com.IBTim4.CertificatesApp.Constants;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
 import com.IBTim4.CertificatesApp.certificate.dto.CertificateDTO;
+import com.IBTim4.CertificatesApp.certificate.dto.RejectionDTO;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,13 +40,13 @@ public class CertificateController {
     @Autowired
     private ICertificateRequestService certificateRequestService;
 
-    @GetMapping(value="/valid", produces = "application/json")
+    @GetMapping(value = "/valid", produces = "application/json")
     public ResponseEntity<Boolean> checkValidity(@RequestParam String serialNumber) {
         boolean valid = certificateService.isCertificateValid(serialNumber);
         return new ResponseEntity<>(valid, HttpStatus.OK);
     }
 
-    @GetMapping(value="/all", produces = "application/json")
+    @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<ArrayList<CertificateDTO>> getAll() {
         ArrayList<CertificateDTO> certificateDTOS = new ArrayList<>();
         for (AppCertificate cert : certificateService.getAllCertificates()) {
@@ -53,6 +54,7 @@ public class CertificateController {
         }
         return new ResponseEntity<>(certificateDTOS, HttpStatus.OK);
     }
+
     @PostMapping(value = "/request", consumes = "application/json")
     public ResponseEntity<Void> createCertificateRequest(@Valid @RequestBody CertificateRequestDTO certificateRequestDTO) {
 
@@ -250,5 +252,32 @@ public class CertificateController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
 
     }
+
+    @PostMapping(value = "/approveRequest/{requestId}")
+    public ResponseEntity<CertificateDTO> approveCertificate(@PathVariable Integer requestId) {
+        CertificateRequest certificateRequest = certificateRequestService.getCertificateById(Long.valueOf(requestId));
+//        certificateRequestService.authentify(certificateRequest.getIssuer().getSubject());
+        certificateRequest.setStatus(RequestStatus.APPROVED);
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = certificateRequestService.getEndTime(start, certificateRequest.getCertificateType());
+
+        AppCertificate certificate = new AppCertificate(0L, start, end, certificateRequest.getRequester(),
+                certificateRequest.getIssuer(), certificateRequest.getCertificateType());
+        certificateService.saveCertificate(certificate);
+        return new ResponseEntity<>(new CertificateDTO(certificate), HttpStatus.OK);
+    }
+
+    //
+    @PostMapping(value = "/declineRequest/{requestId}")
+    public ResponseEntity<RejectionDTO> declineCertificate(@PathVariable Integer requestId, @RequestBody RejectionDTO rejectionDTO) {
+        CertificateRequest certificateRequest = certificateRequestService.getCertificateById(Long.valueOf(requestId));
+        certificateRequest.setStatus(RequestStatus.DENIED);
+        certificateRequest.setDescription(rejectionDTO.getReason());
+//        Rejection rejection = new Rejection(0L, certificateRequest, rejectionDTO.getReason(), LocalDateTime.now());
+//        certificateRequestService.save(rejection);
+        certificateRequestService.save(certificateRequest);
+        return new ResponseEntity<>(new RejectionDTO(), HttpStatus.OK);
+    }
+
 
 }

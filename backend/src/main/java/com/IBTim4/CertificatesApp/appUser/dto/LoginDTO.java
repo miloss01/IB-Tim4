@@ -20,4 +20,3 @@ public class LoginDTO {
     @NotBlank(message = "Field (password) is required!")
     private String password;
 }
-

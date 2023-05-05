@@ -229,4 +229,12 @@ public class CertificateService implements ICertificateService {
 
     }
 
+    public AppCertificate saveCertificate(AppCertificate certificate) {
+        return certificateRepository.save(certificate);
+    }
+
+    @Override
+    public void createCertificate(AppCertificate appCertificate) {
+
+    }
 }
