@@ -14,6 +14,10 @@ public class CertificatesAppApplication {
 		SpringApplication.run(CertificatesAppApplication.class, args);
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
+		Constants.keyStorePass = System.getenv("KEYSTORE_PASS");
+		Constants.aliasPass = System.getenv("KEYSTORE_PASS");
+		System.out.println(Constants.keyStorePass);
+
 		File f = new File(Constants.keyStoreFile);
 		if(!f.exists()) {
 			KeyStoreWriter keyStoreWriter = new KeyStoreWriter();
