@@ -1,6 +1,5 @@
 package com.IBTim4.CertificatesApp.certificate.controller;
 
-import com.IBTim4.CertificatesApp.Constants;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
 import com.IBTim4.CertificatesApp.certificate.dto.CertificateDTO;
 import com.IBTim4.CertificatesApp.certificate.dto.RejectionDTO;
@@ -112,7 +111,7 @@ public class CertificateController {
         certificateRequest.setDescription(null);
         certificateRequest.setExpirationTime(LocalDateTime.parse(certificateRequestDTO.getExpirationTime()));
 
-        certificateRequestService.save(certificateRequest);
+        certificateRequestService.saveForCreation(certificateRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -193,25 +192,6 @@ public class CertificateController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
 
     }
-
-    @GetMapping(value = "/request-1")
-    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForRequesterTesting() {
-
-        Optional<AppUser> requester = appUserService.findById(1L);
-
-        if (!requester.isPresent())
-            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
-
-        ArrayList<CertificateRequest> requests = certificateRequestService.findByRequester(requester.get());
-
-        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
-        for (CertificateRequest request : requests)
-            ret.add(new CertificateRequestDTO(request));
-
-        return new ResponseEntity<>(ret, HttpStatus.OK);
-
-    }
-
     @GetMapping(value = "/subject/{subjectId}")
     @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #subjectId)")
     public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {
@@ -305,6 +285,104 @@ public class CertificateController {
         certificateRequestService.save(certificateRequest);
         return new ResponseEntity<>(new RejectionDTO(), HttpStatus.OK);
     }
+
+
+    // ---------------------------- TESTING - ZBOG 401
+    @GetMapping(value = "/request-1")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForRequesterTesting() {
+
+        Optional<AppUser> requester = appUserService.findById(1L);
+
+        if (!requester.isPresent())
+            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        ArrayList<CertificateRequest> requests = certificateRequestService.findByRequester(requester.get());
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+        for (CertificateRequest request : requests)
+            ret.add(new CertificateRequestDTO(request));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/request/manage-1")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForIssuerTesting() {
+
+        Optional<AppCertificate> certificate = certificateService.findBySerialNumber("1");
+
+        if (!certificate.isPresent())
+            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+        AppUser subject = certificate.get().getSubject();
+
+        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject);
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+        for (CertificateRequest request : requests)
+            ret.add(new CertificateRequestDTO(request));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
+    @PostMapping(value = "/request/accept-{requestId}")
+    public ResponseEntity<Void> acceptCertificateRequestTesting(@PathVariable Long requestId) {
+
+        Optional<CertificateRequest> certificateRequest = certificateRequestService.findById(requestId);
+
+        if (!certificateRequest.isPresent())
+            throw new CustomExceptionWithMessage("Certificate request with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        CertificateRequest req = certificateRequest.get();
+
+        if (!req.getStatus().equals(RequestStatus.PENDING))
+            throw new CustomExceptionWithMessage("Cannot accept request that is not in pending state!", HttpStatus.BAD_REQUEST);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+//        if (loggedIn.get().getId() != req.getRequester().getId())
+//            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
+        AppCertificate cert = certificateService.createCertificate(req);
+
+        req.setStatus(RequestStatus.APPROVED);
+        certificateRequestService.save(req);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @PostMapping(value = "/request/deny-{requestId}")
+    public ResponseEntity<Void> denyCertificateRequestTesting(@PathVariable Long requestId, @RequestBody String reason) {
+
+        Optional<CertificateRequest> certificateRequest = certificateRequestService.findById(requestId);
+
+        if (!certificateRequest.isPresent())
+            throw new CustomExceptionWithMessage("Certificate request with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        CertificateRequest req = certificateRequest.get();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+//        if (loggedIn.get().getId() != req.getRequester().getId())
+//            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
+        if (!req.getStatus().equals(RequestStatus.PENDING))
+            throw new CustomExceptionWithMessage("Cannot deny request that is not in pending state!", HttpStatus.BAD_REQUEST);
+
+        req.setDescription(reason);
+        req.setStatus(RequestStatus.DENIED);
+        certificateRequestService.save(req);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
 
 
 }

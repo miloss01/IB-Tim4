@@ -48,7 +48,13 @@ public class CertificateRequestService implements ICertificateRequestService {
 
     @Override
     public CertificateRequest save(CertificateRequest req) {
-        if (req.getRequester().getEmail().equals(req.getIssuer().getSubject().getEmail()) || req.getRequester().getRole().equals(Role.ADMIN)) {
+        return certificateRequestRepository.save(req);
+    }
+
+    @Override
+    public CertificateRequest saveForCreation(CertificateRequest req) {
+        if (req.getRequester().getRole().equals(Role.ADMIN) ||
+                (req.getIssuer().getSubject() != null && req.getRequester().getEmail().equals(req.getIssuer().getSubject().getEmail()))) {
             req.setStatus(RequestStatus.APPROVED);
             certificateService.createCertificate(req);
         }
@@ -82,5 +88,17 @@ public class CertificateRequestService implements ICertificateRequestService {
     public void userAuthenticity(AppUser subject) {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        AppUser loggedUser = appUserService.findByEmail(authentication.getName());
+    }
+
+    @Override
+    public ArrayList<CertificateRequest> findBySubjectPending(AppUser subject) {
+        ArrayList<AppCertificate> subjectsCertificates = certificateService.findByAllBySubject(subject);
+        ArrayList<CertificateRequest> requestsForSubjectsCertificates = new ArrayList<>();
+
+        for (AppCertificate c : subjectsCertificates) {
+            requestsForSubjectsCertificates.addAll(certificateRequestRepository.findAllByIssuerAndStatus(c, RequestStatus.PENDING));
+        }
+
+        return requestsForSubjectsCertificates;
     }
 }

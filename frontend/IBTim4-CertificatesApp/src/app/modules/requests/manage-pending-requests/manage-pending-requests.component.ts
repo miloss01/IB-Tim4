@@ -15,6 +15,8 @@ export class ManagePendingRequestsComponent {
 
   panelOpenCondition: boolean = false
   selectedChoiceToggleVal: string = ''
+  selectedDecline: boolean = false
+  selectedReqId: string = ''
 
   constructor( 
     private certService: CertService
@@ -29,28 +31,45 @@ export class ManagePendingRequestsComponent {
     })
   }
 
-  onAcceptClick(reqId: string) {
-    this.certService.acceptCertificateRequest(reqId).subscribe(res => {
+  onConfirmClick(req: CertificateRequestDTO) {
+    if (this.selectedChoiceToggleVal === 'ACCEPT') this.accept(req)
+    if (this.selectedChoiceToggleVal === 'DECLINE') this.decline(req)
+  }
 
+  private accept(req: CertificateRequestDTO) {
+    this.certService.acceptCertificateRequest(this.selectedReqId).subscribe(res => {
+      this.removeReqFromList(req)
+      alert('Successfully accepted.')
     }, (err: any) => {
       console.log(err)
       alert(err.error.message)
     })
   }
 
-  onDeclineClick(reqId: string) {
-    this.certService.declineCertificateRequest(reqId, this.declineReason).subscribe(res => {
-
+  private decline(req: CertificateRequestDTO) {
+    this.certService.declineCertificateRequest(this.selectedReqId, this.declineReason).subscribe(res => {
+      this.declineReason = ''
+      this.removeReqFromList(req)
+      alert('Successfully declined.')
     }, (err: any) => {
       console.log(err)
       alert(err.error.message)
     })
   }
 
-  public onChoiceToggleValChange(val: string) {
+  private removeReqFromList(req: CertificateRequestDTO) {
+    const index = this.requests.indexOf(req, 0);
+    if (index > -1) {
+      this.requests.splice(index, 1);
+}
+  }
+
+  public onChoiceToggleValChange(val: string, id: string) {
+    this.selectedReqId = id;
     this.selectedChoiceToggleVal = val;
-    if (this.selectedChoiceToggleVal == 'DECLINE') this.panelOpenCondition = true
-    else this.panelOpenCondition = false
+    this.panelOpenCondition = true
+    if (this.selectedChoiceToggleVal === 'DECLINE') this.selectedDecline = true
+    else this.selectedDecline = false
   }
 
 }

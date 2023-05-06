@@ -26,6 +26,7 @@ export interface CertifRequestDTO {
 }
 
 export interface CertificateRequestDTO {
+    id: string,
     certificateType: string
     issuerSN: string,
     requesterEmail: string,

@@ -15,6 +15,9 @@ import static com.IBTim4.CertificatesApp.helper.StringFormatting.dateTimeFormatt
 @Setter
 @ToString
 public class CertificateRequestDTO {
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String id;
     private String certificateType;
     private String issuerSN;
     private String requesterEmail;
@@ -27,6 +30,7 @@ public class CertificateRequestDTO {
     private String expirationTime;
 
     public CertificateRequestDTO(CertificateRequest request) {
+        this.id = request.getId().toString();
         this.certificateType = request.getCertificateType().toString();
         if (request.getIssuer() != null)
             this.issuerSN = request.getIssuer().getSerialNumber();

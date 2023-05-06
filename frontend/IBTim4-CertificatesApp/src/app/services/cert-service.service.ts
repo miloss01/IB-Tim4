@@ -29,15 +29,15 @@ export class CertService {
 
   getRequestsForManaging() : Observable<CertificateRequestDTO[]> {
     if (this.authService.getRole() === 'ADMIN') return this.http.get<CertificateRequestDTO[]>(environment.apiHost + 'certificate/request/manage')
-    return this.http.get<CertificateRequestDTO[]>(environment.apiHost + `certificate/request/manage/${this.authService.getId()}`)
+    return this.http.get<CertificateRequestDTO[]>(environment.apiHost + `certificate/request/manage-${this.authService.getId()}`)
   }
 
   acceptCertificateRequest(reqId: string) : Observable<any> {
-    return this.http.post<any>(environment.apiHost + `certificate/request/accept/${reqId}`, {})
+    return this.http.post<any>(environment.apiHost + `certificate/request/accept-${reqId}`, {})
   }
 
   declineCertificateRequest(reqId: string, reason: string) : Observable<any> {
-    return this.http.post<any>(environment.apiHost + `certificate/request/deny/${reqId}`, reason)
+    return this.http.post<any>(environment.apiHost + `certificate/request/deny-${reqId}`, reason)
   }
 
 

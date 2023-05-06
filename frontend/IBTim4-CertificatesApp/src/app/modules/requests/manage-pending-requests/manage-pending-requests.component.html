@@ -17,22 +17,23 @@
                     <p><b>Details</b></p>
                     <p >Created at: {{req.creationTime}}</p>
                     <p>Certificate to expire at: {{req.expirationTime}}</p>
-                    <p>Description: {{req.description}}</p>
-                    <button mat-button id="btn-approve">Approve</button>
-                    <button mat-button id="btn-decline">Decline</button>
-
-                    <mat-expansion-panel (opened)="panelOpenCondition" >
+                    <p *ngIf="req.description != null">Description: {{req.description}}</p>
+                    
+                    <mat-expansion-panel [expanded]="panelOpenCondition && req.id == selectedReqId" [hideToggle]="true" [disabled]="true" >
                         <mat-expansion-panel-header>
-                            <mat-button-toggle-group #group="matButtonToggleGroup" name="choice" aria-label="TimeFrame" value="ACCEPT" (change)="onChoiceToggleValChange(group.value)">
+                            <mat-button-toggle-group #group="matButtonToggleGroup" name="choice" aria-label="TimeFrame" (change)="onChoiceToggleValChange(group.value, req.id)">
                                 <mat-button-toggle value="ACCEPT">Accept</mat-button-toggle>
                                 <mat-button-toggle value="DECLINE">Decline</mat-button-toggle>
                             </mat-button-toggle-group>
+                            
                         </mat-expansion-panel-header>
-                        <input matInput type="text" name="decline" formControlName="declineReason" />
+                        <p *ngIf="selectedDecline">Enter reason for declining: </p>
+                        <input *ngIf="selectedDecline" matInput type="text" name="decline" placeholder="Reason" aria-label="Reason" [(ngModel)]="declineReason"/>
+                        <button mat-button (click)="onConfirmClick(req)">Confirm</button>
                     </mat-expansion-panel>
 
                 </mat-card-content>
-                <mat-card-actions align="end">
+                <mat-card-actions>
                 </mat-card-actions>
             </mat-card>
         </div>
