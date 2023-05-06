@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { TwilioDTO, UserExpandedDTO } from 'src/app/models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,46 @@ export class LoginAuthService {
     this.user$.next({
       "email": this.getEmail(),
       "role": this.getRole(),
-      "id": this.getId()
+      "id": this.getId(),
+      "phone": this.getPhone()
     });
   }
+  
 
   login(auth: any): Observable<any> {
     return this.http.post<string>(environment.apiHost + "user/login", auth);
   }
 
+  register(person: UserExpandedDTO): Observable<any> {
+    return this.http.post<string>(environment.apiHost + "user", person);
+  }
+
+  sendPhoneCode(phone:string): Observable<any> {
+    //http://localhost:8081/api/user/generateOTP/+381603531317
+    return this.http.get<string>(environment.apiHost + "user/generateOTP/" + phone);
+  }
+
+  sendEmailCode(email:string): Observable<any> {
+    //http://localhost:8081/api/user/generateOTP/+381603531317
+    return this.http.get<string>(environment.apiHost + "user/generateEmailOTP/" + email);
+  }
+
+  verifyCode(twilo: TwilioDTO): Observable<any> {
+    const options: any = {
+      responseType: 'text',
+    };
+    return this.http.post<string>(environment.apiHost + "user/verifyOTP/", twilo, options );
+  }
+  getPhone() {
+    if (this.isLoggedIn()) {
+      console.log("logovan")
+      const accessToken: any = localStorage.getItem('user');
+      const helper = new JwtHelperService();
+      const role = helper.decodeToken(accessToken).phone;
+      return role;
+    }
+    return null;
+  }
   getRole(): any {
     if (this.isLoggedIn()) {
       console.log("logovan")
@@ -46,6 +79,7 @@ export class LoginAuthService {
     return null;
   }
 
+
   getId(): any {
     if (this.isLoggedIn()) {
       console.log("logovan")
@@ -67,7 +101,8 @@ export class LoginAuthService {
   setUser(): void {
     this.user$.next({
       "email": this.getEmail(),
-      "id": this.getId()
+      "id": this.getId(),
+      "phone": this.getPhone()
     });
   }
 

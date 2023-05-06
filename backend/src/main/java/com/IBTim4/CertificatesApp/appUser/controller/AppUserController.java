@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Optional;
 
 @CrossOrigin
@@ -39,6 +40,7 @@ public class AppUserController {
     AuthenticationManager authenticationManager;
     @Autowired
     IAppUserService appUserService;
+
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<UserExpandedDTO> registerUser(@Valid @RequestBody RegistrationRequestDTO userDTO) {
@@ -79,7 +81,8 @@ public class AppUserController {
         String token = jwtTokenUtil.generateToken(
                 loginDTO.getEmail(),
                 user.getRole(),
-                user.getId());
+                user.getId(),
+                user.getPhone());
 
         return new ResponseEntity<>(
                 new TokenResponseDTO(token, ""),
@@ -105,7 +108,7 @@ public class AppUserController {
         return new ResponseEntity<>("Your OTP has been sent to your verified phone number", HttpStatus.OK);
     }
 
-    @GetMapping("/verifyOTP/")
+    @PostMapping("/verifyOTP/")
     public ResponseEntity<?> verifyUserOTP(@RequestBody TwilloDTO twilloDTO) {
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
 
@@ -118,6 +121,48 @@ public class AppUserController {
                     .create();
 
             System.out.println(verificationCheck.getStatus());
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("This user's verification has been completed successfully", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/generateEmailOTP/{email}")
+    public ResponseEntity<String> generateEmailOTP(@PathVariable String email){
+
+        Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+        Verification verification = Verification.creator(
+                        TwilloConstants.serviceSid,
+                        email,
+                        "email")
+                .setChannelConfiguration(
+                        new HashMap<String, Object>()
+                        {{
+                            put("template_id", "d-f1e644294d944c5d82c6577692b25d58");
+                            put("from", "milutin.sv39.2020@uns.ac.rs");
+                            put("from_name", "IB2023");
+                        }})
+                .create();
+
+        log.info("OTP has been successfully generated, and awaits your verification {}", LocalDateTime.now());
+
+        return new ResponseEntity<>("Your OTP has been sent to your verified email", HttpStatus.OK);
+    }
+
+    @GetMapping("/verifyEmailOTP/{email}/{code}")
+    public ResponseEntity<?> verifyUserEmailOTP(@PathVariable String email, @PathVariable String code) {
+        Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+
+        try {
+
+            VerificationCheck verificationCheck = VerificationCheck.creator(
+                            TwilloConstants.serviceSid)
+                    .setTo(email)
+                    .setCode(code)
+                    .create();
+
+            System.out.println(verificationCheck.getSid());
 
         } catch (Exception e) {
             return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);

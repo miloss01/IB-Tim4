@@ -11,9 +11,21 @@ export interface UserExpandedDTO {
     name: string,
     lastName: string,
     email: string
+    phone?: string
+    password?: string
 }
 
 export interface IssuerDTO {
     serialNumber: number,
     type: string
+}
+
+export interface TwilioDTO {
+    phone:string
+    code:string
+}
+
+export interface PasswordReset {
+    sender:string
+    type:string
 }

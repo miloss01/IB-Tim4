@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@angular/core": "^16.0.0",
+    "@angular/material": "^16.0.0",
+    "@angular/router": "^16.0.0",
     "@auth0/angular-jwt": "^5.1.2"
   }
 }

@@ -75,7 +75,7 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatSortModule,
     MatRippleModule,
     MatGridListModule,
-    MatBadgeModule
+    MatBadgeModule,
   ],
 })
 export class MaterialModule {}
