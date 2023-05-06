@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import static com.IBTim4.CertificatesApp.helper.StringFormatting.dateTimeFormatter;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -32,8 +34,8 @@ public class CertificateRequestDTO {
             this.issuerSN = "";
         this.status = request.getStatus().toString();
         this.description = request.getDescription();
-        this.creationTime = request.getCreationTime().toString();
+        this.creationTime = request.getCreationTime().format(dateTimeFormatter);
         this.requesterEmail = request.getRequester().getEmail();
-        this.expirationTime = request.getExpirationTime().toString();
+        this.expirationTime = request.getExpirationTime().format(dateTimeFormatter) ;
     }
 }

@@ -29,7 +29,7 @@ public class WebSecurityConfiguration {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/*").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
 //                .antMatchers("/api/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/user").permitAll()

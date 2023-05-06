@@ -194,6 +194,24 @@ public class CertificateController {
 
     }
 
+    @GetMapping(value = "/request-1")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForRequesterTesting() {
+
+        Optional<AppUser> requester = appUserService.findById(1L);
+
+        if (!requester.isPresent())
+            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        ArrayList<CertificateRequest> requests = certificateRequestService.findByRequester(requester.get());
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+        for (CertificateRequest request : requests)
+            ret.add(new CertificateRequestDTO(request));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
     @GetMapping(value = "/subject/{subjectId}")
     @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #subjectId)")
     public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {

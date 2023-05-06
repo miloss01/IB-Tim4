@@ -1,5 +1,5 @@
 <div class="page">
-    <h2>Certificate requests overview</h2>
+    <h2>Your Certificate requests overview</h2>
     <mat-divider></mat-divider>
     <div class="grid">
         <div *ngFor="let req of requests">
@@ -9,7 +9,7 @@
                         <p><b>{{req.status}}</b> Request</p>
                         <mat-card-title>For {{req.certificateType}} certificate</mat-card-title>
                         <p>To be signed by certificate with <b>Serial number: </b> {{req.issuerSN}}</p>
-                        <p><b>From requester: </b> {{req.requesterEmail}}</p>
+                        <p *ngIf="adminLoggedIn"><b>From requester: </b> {{req.requesterEmail}}</p>
                     </div>
                     </mat-card-header>
                 <mat-divider></mat-divider>

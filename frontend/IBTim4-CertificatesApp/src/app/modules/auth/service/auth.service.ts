@@ -54,7 +54,7 @@ export class LoginAuthService {
       const id = helper.decodeToken(accessToken).id;
       return id;
     }
-    return null;
+    return 1;
   }
 
   isLoggedIn(): boolean {

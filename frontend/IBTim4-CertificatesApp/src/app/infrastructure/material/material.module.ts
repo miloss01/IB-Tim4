@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -25,7 +24,9 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -40,7 +41,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatCardModule,
     MatRippleModule,
     MatFormFieldModule,
-    MatMenuModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
@@ -54,7 +54,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatBadgeModule,
     MatAutocompleteModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatTabsModule
   ],
   exports: [
     MatButtonModule,
@@ -68,7 +71,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatCardModule,
     MatRippleModule,
     MatFormFieldModule,
-    MatMenuModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
@@ -83,7 +85,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatBadgeModule,
     MatAutocompleteModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatTabsModule
   ],
 })
 export class MaterialModule {}
