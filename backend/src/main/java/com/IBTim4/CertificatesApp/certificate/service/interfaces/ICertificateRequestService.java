@@ -24,4 +24,7 @@ public interface ICertificateRequestService {
     public void userAuthenticity(AppUser subject);
 
     ArrayList<CertificateRequest> findBySubjectPending(AppUser subject);
+    ArrayList<CertificateRequest> findRequestsFromRootAndPending(AppUser subject);
+
+
 }

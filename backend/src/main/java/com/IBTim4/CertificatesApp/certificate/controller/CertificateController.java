@@ -63,6 +63,61 @@ public class CertificateController {
         return new ResponseEntity<>(serialNumbers, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/subject/{subjectId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #subjectId)")
+    public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {
+
+        Optional<AppUser> subject = appUserService.findById(subjectId);
+
+        if (!subject.isPresent())
+            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        ArrayList<AppCertificate> certificates = certificateService.findByAllBySubject(subject.get());
+
+        ArrayList<CertificateDTO> ret = new ArrayList<>();
+        for (AppCertificate certificate : certificates)
+            ret.add(new CertificateDTO(certificate));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/retracted/{serialNumber}")
+    public ResponseEntity<Boolean> checkIfCertificateIsRetracted(@PathVariable String serialNumber) {
+
+        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
+
+        if (!certificate.isPresent())
+            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(certificate.get().isRetracted(), HttpStatus.OK);
+
+    }
+
+    @PostMapping(value = "/retract/{serialNumber}")
+    public ResponseEntity<Void> retractCertificate(@PathVariable String serialNumber, @RequestBody String reason) {
+
+        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
+
+        if (!certificate.isPresent())
+            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+
+        if (certificate.get().isRetracted())
+            throw new CustomExceptionWithMessage("You cannot retract certificate that is already retracted!", HttpStatus.BAD_REQUEST);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        if (certificate.get().getSubject().getId() != loggedIn.get().getId() && loggedIn.get().getRole() != Role.ADMIN)
+            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+
+        certificateService.retractCertificate(certificate.get(), reason);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
     @PostMapping(value = "/request", consumes = "application/json")
     public ResponseEntity<Void> createCertificateRequest(@Valid @RequestBody CertificateRequestDTO certificateRequestDTO) {
 
@@ -192,60 +247,6 @@ public class CertificateController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
 
     }
-    @GetMapping(value = "/subject/{subjectId}")
-    @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #subjectId)")
-    public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {
-
-        Optional<AppUser> subject = appUserService.findById(subjectId);
-
-        if (!subject.isPresent())
-            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
-
-        ArrayList<AppCertificate> certificates = certificateService.findByAllBySubject(subject.get());
-
-        ArrayList<CertificateDTO> ret = new ArrayList<>();
-        for (AppCertificate certificate : certificates)
-            ret.add(new CertificateDTO(certificate));
-
-        return new ResponseEntity<>(ret, HttpStatus.OK);
-
-    }
-
-    @GetMapping(value = "/retracted/{serialNumber}")
-    public ResponseEntity<Boolean> checkIfCertificateIsRetracted(@PathVariable String serialNumber) {
-
-        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
-
-        if (!certificate.isPresent())
-            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity<>(certificate.get().isRetracted(), HttpStatus.OK);
-
-    }
-
-    @PostMapping(value = "/retract/{serialNumber}")
-    public ResponseEntity<Void> retractCertificate(@PathVariable String serialNumber, @RequestBody String reason) {
-
-        Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
-
-        if (!certificate.isPresent())
-            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
-
-        if (certificate.get().isRetracted())
-            throw new CustomExceptionWithMessage("You cannot retract certificate that is already retracted!", HttpStatus.BAD_REQUEST);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
-
-        if (certificate.get().getSubject().getId() != loggedIn.get().getId() && loggedIn.get().getRole() != Role.ADMIN)
-            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
-
-        certificateService.retractCertificate(certificate.get(), reason);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
 
     @GetMapping(value = "/request")
     @PreAuthorize(value = "hasRole('ADMIN')")
@@ -286,6 +287,43 @@ public class CertificateController {
         return new ResponseEntity<>(new RejectionDTO(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/request/manage/{userId}")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsIssuer(@PathVariable Integer userId) {
+
+        Optional<AppUser> subject = appUserService.findById(Long.valueOf(userId));
+
+        if (!subject.isPresent())
+            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject.get());
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+        for (CertificateRequest request : requests)
+            ret.add(new CertificateRequestDTO(request));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/request/manage-admin")
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsFromRootCertificates(@PathVariable Integer userId) {
+
+        Optional<AppUser> subject = appUserService.findById(Long.valueOf(userId));
+
+        if (!subject.isPresent())
+            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
+
+        ArrayList<CertificateRequest> requests = certificateRequestService.findRequestsFromRootAndPending(subject.get());
+
+        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
+        for (CertificateRequest request : requests)
+            ret.add(new CertificateRequestDTO(request));
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+
+    }
+
 
     // ---------------------------- TESTING - ZBOG 401
     @GetMapping(value = "/request-1")
@@ -309,14 +347,12 @@ public class CertificateController {
     @GetMapping(value = "/request/manage-1")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForIssuerTesting() {
 
-        Optional<AppCertificate> certificate = certificateService.findBySerialNumber("1");
+        Optional<AppUser> subject = appUserService.findById(1L);
 
-        if (!certificate.isPresent())
-            throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
+        if (!subject.isPresent())
+            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
 
-        AppUser subject = certificate.get().getSubject();
-
-        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject);
+        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject.get());
 
         ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
         for (CertificateRequest request : requests)

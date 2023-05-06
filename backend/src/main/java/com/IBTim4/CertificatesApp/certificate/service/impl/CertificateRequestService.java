@@ -101,4 +101,16 @@ public class CertificateRequestService implements ICertificateRequestService {
 
         return requestsForSubjectsCertificates;
     }
+
+    @Override
+    public ArrayList<CertificateRequest> findRequestsFromRootAndPending(AppUser subject) {
+        ArrayList<CertificateRequest> pendingRequests = certificateRequestRepository.findAllByStatus(RequestStatus.PENDING);
+        ArrayList<CertificateRequest> pendingAndFromRootRequests = new ArrayList<>();
+
+        for (CertificateRequest r : pendingRequests) {
+            if (r.getIssuer().getType().equals(CertificateType.ROOT)) pendingAndFromRootRequests.add(r);
+        }
+
+        return pendingAndFromRootRequests;
+    }
 }

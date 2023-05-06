@@ -10,7 +10,7 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field> -->
-      <mat-form-field class="example-full-width" appearance="fill">
+      <!-- <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Issuer serial number</mat-label>
         <input type="number"
                placeholder="Issuer serial number"
@@ -23,8 +23,13 @@
             {{option}}
           </mat-option>
         </mat-autocomplete>
+      </mat-form-field> -->
+      <mat-form-field>
+        <input type="number"
+        placeholder="Issuer serial number"
+        aria-label="number"
+        matInput>
       </mat-form-field>
-
       <mat-button-toggle-group #group="matButtonToggleGroup" name="type" aria-label="Type" value="END" (change)="onTypeToggleValChange(group.value)">
         <mat-button-toggle value="END">end</mat-button-toggle>
         <mat-button-toggle value="INTERMEDIATE">intermediate</mat-button-toggle>

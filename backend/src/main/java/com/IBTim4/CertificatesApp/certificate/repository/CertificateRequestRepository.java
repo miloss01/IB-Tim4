@@ -16,4 +16,7 @@ public interface CertificateRequestRepository extends JpaRepository<CertificateR
     ArrayList<CertificateRequest> findAllByIssuerAndStatus(AppCertificate issuer, RequestStatus status);
     ArrayList<CertificateRequest> findAllByRequester(AppUser requester);
 
+    ArrayList<CertificateRequest> findAllByStatus(RequestStatus status);
+
+
 }
