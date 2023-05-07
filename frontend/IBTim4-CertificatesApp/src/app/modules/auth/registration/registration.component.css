@@ -1,0 +1,39 @@
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+.flex-elem{
+    padding-left: 3%;
+    width: 47%;
+    margin-bottom: 5vh;
+}
+
+mat-form-field{
+    display: block;
+    width: 75%;
+}
+button{
+    margin-bottom: 2vh;
+    width: 80%;
+}
+.flex-elem2{
+    width: 51%;
+    margin-bottom: 2vh;
+}
+
+.oneLine{
+    display: block;
+    width: 100%;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+@media (max-width: 850px) {
+    .flex-elem{
+        width: 100%;
+        margin-bottom: 5vh;
+    }
+}

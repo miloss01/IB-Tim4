@@ -1,0 +1,46 @@
+<form [formGroup]="registerAccountForm"  fxLayout="column" class="flex-container">
+    <div class="flex-elem" >
+          <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input matInput type="text" name="name" formControlName="name" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Last Name</mat-label>
+              <input matInput type="text" name="surname" formControlName="surname" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput type="text" name="email" formControlName="email" />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Phone</mat-label>
+                <input matInput type="tel" name="phone" formControlName="phone" />
+              </mat-form-field>
+      </div>
+      
+      <div class="flex-elem">
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="password" formControlName="password" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="confirmPassword" formControlName="confirmPassword" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Code</mat-label>
+            <input matInput type="text" name="code" formControlName="code" />
+          </mat-form-field>
+      </div>
+      
+      <div class="flex-elem2">
+        <mat-select [(value)]="matSelectValue">
+            <mat-option value="email">Email verification</mat-option>
+            <mat-option value="phone">Phone verification</mat-option>
+        </mat-select>
+        <button mat-raised-button (click)="sendCode()">Send Code for verification</button>
+        <button color="primary" (click)="registerAccount()" mat-raised-button>CREATE ACCOUNT</button>
+      </div>
+      <a id="already-have-account" routerLink="/login" routerLinkActive="active" class="flex-elem2">ALREADY HAVE AN ACCOUNT? LOG IN HERE</a>
+  
+    </form>

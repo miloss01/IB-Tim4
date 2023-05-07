@@ -11,6 +11,8 @@ export interface UserExpandedDTO {
     name: string,
     lastName: string,
     email: string
+    phone?: string
+    password?: string
 }
 
 export interface IssuerDTO {
@@ -34,4 +36,13 @@ export interface CertificateRequestDTO {
     description: string,
     creationTime: string,
     expirationTime: string,
+}
+export interface TwilioDTO {
+    phone:string
+    code:string
+}
+
+export interface PasswordReset {
+    sender:string
+    type:string
 }

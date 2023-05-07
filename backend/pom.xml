@@ -71,6 +71,18 @@
 			<version>0.9.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio</artifactId>
+			<version>9.0.0-rc.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wildbit.java</groupId>
+			<artifactId>postmark</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

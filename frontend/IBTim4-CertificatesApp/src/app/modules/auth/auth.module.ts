@@ -4,11 +4,15 @@ import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
+import { RegistrationComponent } from './registration/registration.component';
+import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent,
+    ChangePasswordDialogComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +22,8 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
     ReactiveFormsModule,
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ]
 })
 export class LoginAuthModule { }

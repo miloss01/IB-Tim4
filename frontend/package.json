@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@angular/material": "^16.0.0",
-    "@auth0/angular-jwt": "^5.1.2"
-  }
-}
