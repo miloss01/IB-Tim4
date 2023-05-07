@@ -1,0 +1,11 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+
+[mat-raised-button] {
+    justify-content: flex-start;
+    margin-top: 2vh;
+}

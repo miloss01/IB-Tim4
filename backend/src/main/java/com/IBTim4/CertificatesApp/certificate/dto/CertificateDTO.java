@@ -34,4 +34,12 @@ public class CertificateDTO {
             this.issuer = new IssuerDTO(cert.getIssuer().getId(), cert.getIssuer().getType().toString());
         this.type = cert.getType().toString();
     }
+//    public CertificateDTO(AppCertificate certificate) {
+//        this.id = certificate.getId();
+//        this.startTime = certificate.getStartTime().toString();
+//        this.endTime = certificate.getEndTime().toString();
+//        this.subject = new UserExpandedDTO(certificate.getSubject());
+//        this.issuer = new CertificateDTO();
+//        this.type = certificate.getType().toString();
+//    }
 }

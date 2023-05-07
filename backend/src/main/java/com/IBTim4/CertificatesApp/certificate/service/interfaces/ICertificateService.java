@@ -25,4 +25,6 @@ public interface ICertificateService {
     public Boolean retractCertificate(AppCertificate certificate, String reason);
     public Certificate downloadCertificate(String serialNumber);
     public PrivateKey downloadPrivateKey(String serialNumber);
+    public AppCertificate saveCertificate(AppCertificate certificate);
+    public void createCertificate(AppCertificate appCertificate);
 }

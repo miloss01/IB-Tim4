@@ -1,0 +1,58 @@
+<div class="page">
+  <h2>Certificate request</h2>
+  <mat-divider></mat-divider>
+  <form>
+    <!-- <mat-form-field class="SN-list" appearance="fill">
+      <input placeholder="Search by Serial Number" #SNInput [formControl]="SNCtrl" [matAutocomplete]="autocompleteSN"/>
+        <mat-autocomplete #autocompleteSN="matAutocomplete" (optionSelected)="selectedSNFunc($event)">
+          <mat-option *ngFor="let c of filteredSNs | async" [value]="c">
+            {{c}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field> -->
+      <!-- <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Issuer serial number</mat-label>
+        <input type="number"
+               placeholder="Issuer serial number"
+               aria-label="number"
+               matInput
+               [formControl]="SNCtrl"
+               [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of certifSNs" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field> -->
+      <mat-form-field>
+        <input type="number"
+        placeholder="Issuer serial number"
+        aria-label="number"
+        matInput>
+      </mat-form-field>
+      <mat-button-toggle-group #group="matButtonToggleGroup" name="type" aria-label="Type" value="END" (change)="onTypeToggleValChange(group.value)">
+        <mat-button-toggle value="END">end</mat-button-toggle>
+        <mat-button-toggle value="INTERMEDIATE">intermediate</mat-button-toggle>
+        <mat-button-toggle value="ROOT" *ngIf="adminLoggedIn">root</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Expiration date</mat-label>
+      <input [(ngModel)]="selectedDateVal" matInput [matDatepicker]="picker" name="selectedDateVal">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <p>OR select short term expiration </p>
+    <mat-button-toggle-group #group="matButtonToggleGroup" name="shortTerm" aria-label="ShortTerm" value="NONE" (change)="onShortTermToggleValChange(group.value)">
+      <mat-button-toggle value="NONE" >None - End date is selected</mat-button-toggle>
+      <mat-button-toggle value="15">15 minutes</mat-button-toggle>
+      <mat-button-toggle value="60">60 minutes</mat-button-toggle>
+      <mat-button-toggle value="180">180 minutes</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <button mat-raised-button id="requestButton" (click)="onRequestClick()">Send request</button>
+
+  </form>
+</div>

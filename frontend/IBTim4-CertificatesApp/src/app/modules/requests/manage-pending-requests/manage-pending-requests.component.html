@@ -1,0 +1,41 @@
+<div class="page">
+    <h2>Manage received certificate requests</h2>
+    <mat-divider></mat-divider>
+    <div class="grid">
+        <div *ngFor="let req of requests">
+            <mat-card>
+                <mat-card-header class="locations" >
+                    <div class="">
+                        <p><b>{{req.status}}</b> Request</p>
+                        <mat-card-title>For {{req.certificateType}} certificate</mat-card-title>
+                        <p>To be signed by certificate with <b>Serial number: </b> {{req.issuerSN}}</p>
+                        <p><b>From requester: </b> {{req.requesterEmail}}</p>
+                    </div>
+                    </mat-card-header>
+                <mat-divider></mat-divider>
+                <mat-card-content>
+                    <p><b>Details</b></p>
+                    <p >Created at: {{req.creationTime}}</p>
+                    <p>Certificate to expire at: {{req.expirationTime}}</p>
+                    <p *ngIf="req.description != null">Description: {{req.description}}</p>
+                    
+                    <mat-expansion-panel [expanded]="panelOpenCondition && req.id == selectedReqId" [hideToggle]="true" [disabled]="true" >
+                        <mat-expansion-panel-header>
+                            <mat-button-toggle-group #group="matButtonToggleGroup" name="choice" aria-label="TimeFrame" (change)="onChoiceToggleValChange(group.value, req.id)">
+                                <mat-button-toggle value="ACCEPT">Accept</mat-button-toggle>
+                                <mat-button-toggle value="DECLINE">Decline</mat-button-toggle>
+                            </mat-button-toggle-group>
+                            
+                        </mat-expansion-panel-header>
+                        <p *ngIf="selectedDecline">Enter reason for declining: </p>
+                        <input *ngIf="selectedDecline" matInput type="text" name="decline" placeholder="Reason" aria-label="Reason" [(ngModel)]="declineReason"/>
+                        <button mat-button (click)="onConfirmClick(req)">Confirm</button>
+                    </mat-expansion-panel>
+
+                </mat-card-content>
+                <mat-card-actions>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div> 

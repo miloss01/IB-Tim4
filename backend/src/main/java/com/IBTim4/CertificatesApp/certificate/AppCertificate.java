@@ -35,6 +35,9 @@ public class AppCertificate {
     private boolean retracted;
     private String reasonForRetracting;
 
+    public AppCertificate(long l, LocalDateTime start, LocalDateTime end, AppUser requester, AppCertificate issuer, CertificateType certificateType) {
+    }
+
     public boolean isValid() {
         return !retracted && endTime.isAfter(LocalDateTime.now());
     }
