@@ -201,10 +201,11 @@ public class AppUserController {
 
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO twilloDTO) {
+
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
 
         try {
-
+            System.out.println("ovde");
             VerificationCheck verificationCheck = VerificationCheck.creator(
                             TwilloConstants.serviceSid)
                     .setTo(twilloDTO.getPhone())
@@ -222,9 +223,11 @@ public class AppUserController {
             appUserService.changePassword(appUser.get(), twilloDTO.getPassword());
 
         } catch (Exception e) {
-            return new ResponseEntity<>("Changing password failed due to incorrect verification.", HttpStatus.BAD_REQUEST);
+            System.out.println(e);
+            return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Password change has been completed successfully", HttpStatus.OK);
+
     }
 
 }

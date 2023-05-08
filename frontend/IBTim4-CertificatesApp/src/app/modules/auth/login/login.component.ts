@@ -93,7 +93,7 @@ export class LoginComponent {
 
   sendCodePswChange() {
     if (this.matSelectValue === 'phone'){
-      this.authService.sendPhoneCode(this.authService.getPhone()).subscribe((res: any) => {     
+      this.authService.sendPhoneCode(this.loginForm.value.username).subscribe((res: any) => {     
         console.log(res)
         this.errorMessage = res
       },
@@ -102,7 +102,7 @@ export class LoginComponent {
         this.errorMessage = err.error.message
       })
     } else {
-        this.authService.sendEmailCode(this.authService.getEmail()).subscribe((res: any) => {     
+        this.authService.sendEmailCode(this.loginForm.value.username).subscribe((res: any) => {     
           console.log(res)
           this.errorMessage = res
         },

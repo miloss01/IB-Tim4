@@ -28,9 +28,11 @@
         <input type="number"
         placeholder="Issuer serial number"
         aria-label="number"
-        matInput>
+        matInput
+        [(ngModel)]="selectedSN"
+        [ngModelOptions]="{standalone: true}">
       </mat-form-field>
-      <mat-button-toggle-group #group="matButtonToggleGroup" name="type" aria-label="Type" value="END" (change)="onTypeToggleValChange(group.value)">
+      <mat-button-toggle-group #groupT="matButtonToggleGroup" name="type" aria-label="Type" value="END" (change)="onTypeToggleValChange(groupT.value)">
         <mat-button-toggle value="END">end</mat-button-toggle>
         <mat-button-toggle value="INTERMEDIATE">intermediate</mat-button-toggle>
         <mat-button-toggle value="ROOT" *ngIf="adminLoggedIn">root</mat-button-toggle>
@@ -45,7 +47,7 @@
     </mat-form-field>
 
     <p>OR select short term expiration </p>
-    <mat-button-toggle-group #group="matButtonToggleGroup" name="shortTerm" aria-label="ShortTerm" value="NONE" (change)="onShortTermToggleValChange(group.value)">
+    <mat-button-toggle-group #groupS="matButtonToggleGroup" name="shortTerm" aria-label="ShortTerm" value="NONE" (change)="onShortTermToggleValChange(groupS.value)">
       <mat-button-toggle value="NONE" >None - End date is selected</mat-button-toggle>
       <mat-button-toggle value="15">15 minutes</mat-button-toggle>
       <mat-button-toggle value="60">60 minutes</mat-button-toggle>

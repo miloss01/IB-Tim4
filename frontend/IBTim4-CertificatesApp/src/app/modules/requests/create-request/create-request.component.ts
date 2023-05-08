@@ -24,8 +24,8 @@ export class CreateRequestComponent implements OnInit {
   selectedSN: string = '';
 
   adminLoggedIn: boolean = false
-  selectedTypeToggleVal: string = '';
-  selectedShortTermToggleVal: string = 'END';
+  selectedTypeToggleVal: string = 'END';
+  selectedShortTermToggleVal: string = 'NONE';
   selectedDateVal: any;
 
   constructor(
@@ -71,18 +71,36 @@ export class CreateRequestComponent implements OnInit {
   }
 
   public onShortTermToggleValChange(val: string) {
-    this.selectedTypeToggleVal = val;
+    this.selectedShortTermToggleVal = val;
   }
 
   public onRequestClick() {
-    const req = {
-      type: this.selectedTypeToggleVal,
+    console.log(this.selectedDateVal)
+    let req = {
+      certificateType: this.selectedTypeToggleVal,
       issuerSN: this.selectedSN,
       requesterEmail: this.authService.getEmail(),
-      expirationTime: this.selectedDateVal
+      expirationTime: ''
     }
+    console.log(this.selectedShortTermToggleVal)
+    if (this.selectedShortTermToggleVal != 'NONE') {
+      let t = new Date() 
+      let tT = t.getTime() + 1000 * 60 * parseInt(this.selectedShortTermToggleVal)
+      t.setTime(tT)
+      req.expirationTime = t.toISOString()
+    } else {
+      req.expirationTime = this.selectedDateVal.toISOString()
+    }
+    console.log(req.expirationTime)
+    console.log(req)
     this.certService.sendRequest(req).subscribe(res => {
-      alert(res)
+      alert('Request sent successfully.')
+    },
+      (err: any) => {
+        console.log(err)
+        if (err.status == 400) alert(err.error.message)
+        else (alert('Error'))
+
     })
   }
 

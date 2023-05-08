@@ -4,6 +4,7 @@ import com.IBTim4.CertificatesApp.appUser.AppUser;
 import com.IBTim4.CertificatesApp.appUser.repository.AppUserRepository;
 import com.IBTim4.CertificatesApp.appUser.service.interfaces.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class AppUserService implements IAppUserService {
 
     @Override
     public AppUser changePassword(AppUser appUser, String newPassword) {
-        appUser.setPassword(newPassword);
+        appUser.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         return appUserRepository.save(appUser);
     }
 

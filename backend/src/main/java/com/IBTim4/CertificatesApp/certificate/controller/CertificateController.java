@@ -131,7 +131,7 @@ public class CertificateController {
         if (certificateRequestDTO.getCertificateType().equals(CertificateType.ROOT.name()) && !requester.get().getRole().equals(Role.ADMIN))
             throw new CustomExceptionWithMessage("Only admin can create root certificate!", HttpStatus.BAD_REQUEST);
 
-        LocalDateTime expirationTime = LocalDateTime.parse(certificateRequestDTO.getExpirationTime());
+        LocalDateTime expirationTime = LocalDateTime.parse(certificateRequestDTO.getExpirationTime().substring(0, certificateRequestDTO.getExpirationTime().length()-2));
 
         if (!certificateRequestDTO.getCertificateType().equals(CertificateType.ROOT.name())) {
 
@@ -164,7 +164,7 @@ public class CertificateController {
         certificateRequest.setStatus(RequestStatus.PENDING);
         certificateRequest.setCreationTime(LocalDateTime.now());
         certificateRequest.setDescription(null);
-        certificateRequest.setExpirationTime(LocalDateTime.parse(certificateRequestDTO.getExpirationTime()));
+        certificateRequest.setExpirationTime(expirationTime);
 
         certificateRequestService.saveForCreation(certificateRequest);
 

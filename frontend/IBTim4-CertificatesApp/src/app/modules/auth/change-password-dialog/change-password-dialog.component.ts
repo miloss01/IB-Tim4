@@ -32,11 +32,9 @@ export class ChangePasswordDialogComponent implements OnInit{
       this.snackBar.open('New password and repeat password do not match', 'Close')
       return
     }
-    let sender = this.authService.getEmail()
-    if (this.data.type === 'phone') sender = this.authService.getPhone()
-    this.authService.changePassword({email: this.authService.getEmail(), password: this.newPassword, phone: sender, code: this.code}).subscribe((res: any) => {     
-      console.log(res)
-      this.snackBar.open('Successful password change :)', 'Close')
+    let sender = this.data.sender
+    this.authService.changePassword({email: sender, password: this.newPassword, phone: sender, code: this.code}).subscribe((res: any) => {     
+    this.snackBar.open('Successful password change :)', 'Close')
     },
     (err: any) => {
       console.log(err)
