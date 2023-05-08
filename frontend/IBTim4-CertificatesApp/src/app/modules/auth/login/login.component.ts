@@ -18,14 +18,17 @@ export class LoginComponent {
     isDisabled: boolean = false
 
   loginForm = new FormGroup({
-    username: new FormControl({value: '', disabled: this.isDisabled}),
-    password: new FormControl({value: '', disabled: true})
+    username: new FormControl(),
+    password: new FormControl()
   })
 
   errorMessage: string = ""
   codeSent: boolean = false
   code: string = ""
   matSelectValue: string = "email"
+  usersEmail: string = ""
+  usersPhone: string = ""
+  userres:any = ''
 
 
   ngOnInit(): void {
@@ -39,11 +42,18 @@ export class LoginComponent {
       this.errorMessage = "Please verify your code"
       this.codeSent = true      
       console.log(res)
+      this.userres = res
       localStorage.setItem('user', JSON.stringify(res.accessToken))
       this.authService.setUser()
       console.log(this.authService.getRole())
+      this.usersEmail = this.authService.getEmail()
+      this.usersPhone = this.authService.getPhone()
+      console.log("AAAAAAAAAAAAA")
+      console.log(this.usersEmail)
+      this.authService.logout()
+      console.log(this.usersEmail)
 
-      // this.sendCode()
+      this.sendCode()
     },
     (err: any) => {
       console.log(err)
@@ -52,7 +62,7 @@ export class LoginComponent {
   }
   sendCode() {
     if (this.matSelectValue === 'phone'){
-      this.authService.sendPhoneCode(this.authService.getPhone()).subscribe((res: any) => {     
+      this.authService.sendPhoneCode(this.usersPhone).subscribe((res: any) => {     
         console.log(res)
         this.errorMessage = res
       },
@@ -61,7 +71,7 @@ export class LoginComponent {
         this.errorMessage = err.error.message
       })
     } else {
-        this.authService.sendEmailCode(this.authService.getEmail()).subscribe((res: any) => {     
+        this.authService.sendEmailCode(this.usersEmail).subscribe((res: any) => {     
           console.log(res)
           this.errorMessage = res
         },
@@ -73,11 +83,14 @@ export class LoginComponent {
   }
 
   verifyCode():void {
-    let sender = this.authService.getEmail()
-    if (this.matSelectValue === 'phone') sender = this.authService.getPhone()
+    let sender = this.usersEmail
+    if (this.matSelectValue === 'phone') sender = this.usersPhone
     this.authService.verifyCode({phone: sender, code: this.code}).subscribe((res: any) => {     
       console.log(res)
       this.errorMessage = res
+      localStorage.setItem('user', JSON.stringify(this.userres.accessToken))
+      this.authService.setUser()
+      console.log(this.authService.getRole())
     },
     (err: any) => {
       console.log(err)
