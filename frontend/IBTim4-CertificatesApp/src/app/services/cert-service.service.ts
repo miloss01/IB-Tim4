@@ -28,7 +28,7 @@ export class CertService {
   }
 
   getRequestsForManaging() : Observable<CertificateRequestDTO[]> {
-    if (this.authService.getRole() === 'ADMIN') return this.http.get<CertificateRequestDTO[]>(environment.apiHost + 'certificate/request/manage')
+    if (this.authService.getRole() === 'ADMIN') return this.http.get<CertificateRequestDTO[]>(environment.apiHost + `certificate/request/manage-admin/${this.authService.getId()}`)
     return this.http.get<CertificateRequestDTO[]>(environment.apiHost + `certificate/request/manage/${this.authService.getId()}`)
   }
 

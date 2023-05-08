@@ -1,5 +1,5 @@
 export interface CertifDTO {
-    id: number,
+    serialNumber: number,
     startTime: string,
     endTime: string,
     subject: UserExpandedDTO,

@@ -33,6 +33,7 @@ export class CreateRequestComponent implements OnInit {
     private http: HttpClient,
     private authService: LoginAuthService
     ) {
+      this.adminLoggedIn = this.authService.getRole() === 'ADMIN'
     // this.getAllSNs()
     // this.filteredSNs = this.SNCtrl.valueChanges.pipe(
     //   startWith(null),
@@ -75,14 +76,12 @@ export class CreateRequestComponent implements OnInit {
   }
 
   public onRequestClick() {
-    console.log(this.selectedDateVal)
     let req = {
       certificateType: this.selectedTypeToggleVal,
       issuerSN: this.selectedSN,
       requesterEmail: this.authService.getEmail(),
       expirationTime: ''
     }
-    console.log(this.selectedShortTermToggleVal)
     if (this.selectedShortTermToggleVal != 'NONE') {
       let t = new Date() 
       let tT = t.getTime() + 1000 * 60 * parseInt(this.selectedShortTermToggleVal)
@@ -91,8 +90,6 @@ export class CreateRequestComponent implements OnInit {
     } else {
       req.expirationTime = this.selectedDateVal.toISOString()
     }
-    console.log(req.expirationTime)
-    console.log(req)
     this.certService.sendRequest(req).subscribe(res => {
       alert('Request sent successfully.')
     },

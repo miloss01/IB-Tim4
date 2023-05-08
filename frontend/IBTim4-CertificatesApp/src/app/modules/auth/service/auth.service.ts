@@ -63,6 +63,7 @@ export class LoginAuthService {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
       const role = helper.decodeToken(accessToken).role;
+      console.log(role)
       return role;
     }
     return null;

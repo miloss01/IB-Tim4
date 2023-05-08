@@ -189,7 +189,7 @@ public class CertificateController {
         String email = authentication.getName();
         Optional<AppUser> loggedIn = appUserService.findByEmail(email);
 
-        if (loggedIn.get().getId() != req.getRequester().getId())
+        if ( req.getIssuer().getSubject() != null && (loggedIn.get().getId() != req.getIssuer().getSubject().getId()))
             throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
 
         AppCertificate cert = certificateService.createCertificate(req);
@@ -215,7 +215,7 @@ public class CertificateController {
         String email = authentication.getName();
         Optional<AppUser> loggedIn = appUserService.findByEmail(email);
 
-        if (loggedIn.get().getId() != req.getRequester().getId())
+        if (loggedIn.get().getId() != req.getIssuer().getSubject().getId())
             throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
 
         if (!req.getStatus().equals(RequestStatus.PENDING))
@@ -288,24 +288,23 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/request/manage/{userId}")
-    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsIssuer(@PathVariable Integer userId) {
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsSubjectInIssuer(@PathVariable Integer userId) {
 
         Optional<AppUser> subject = appUserService.findById(Long.valueOf(userId));
 
         if (!subject.isPresent())
             throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
 
-        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject.get());
+        ArrayList<CertificateRequest> requests = certificateRequestService.findWhereSubjectInIssuerAndStatusPending(subject.get());
 
         ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
-        for (CertificateRequest request : requests)
-            ret.add(new CertificateRequestDTO(request));
+        for (CertificateRequest request : requests)  ret.add(new CertificateRequestDTO(request));
 
         return new ResponseEntity<>(ret, HttpStatus.OK);
 
     }
 
-    @GetMapping(value = "/request/manage-admin")
+    @GetMapping(value = "/request/manage-admin/{userId}")
     @PreAuthorize(value = "hasRole('ADMIN')")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsFromRootCertificates(@PathVariable Integer userId) {
 
@@ -352,7 +351,7 @@ public class CertificateController {
         if (!subject.isPresent())
             throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
 
-        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject.get());
+        ArrayList<CertificateRequest> requests = certificateRequestService.findWhereSubjectInIssuerAndStatusPending(subject.get());
 
         ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
         for (CertificateRequest request : requests)

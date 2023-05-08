@@ -7,7 +7,7 @@
             <mat-card-header class="locations" >
                 <div class="">
                     <mat-card-title>{{cert.type}}</mat-card-title>
-                    <p><b>Serial number: </b> {{cert.id}}</p>
+                    <p><b>Serial number: </b> {{cert.serialNumber}}</p>
                     <p *ngIf="cert.subject != null"><b>Subject: </b> {{cert.subject.email}}</p>
                     <button mat-button id="">Download</button>
                 </div>

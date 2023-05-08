@@ -1,0 +1,72 @@
+mat-card {
+    max-width: 480px;
+    margin-bottom: 8px;
+ }
+
+.grid { 
+    padding-top: 5vh;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    grid-gap: 30px;
+    align-items: stretch;
+}
+
+
+
+mat-card-header{
+    padding: 2vh !important;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+
+mat-card-actions {
+    padding-right: 5px;
+}
+
+::ng-deep .mat-card-header-text {  
+    margin: 0px 0px 0px 0px !important;
+}
+
+
+mat-card-title {
+    font-size: 0.9em;
+    margin-bottom: 0 !important;
+}
+
+mat-card-subtitle {
+    color: rgb(41, 41, 41) !important;
+}
+
+mat-card-content {
+    padding: 2vh !important;
+}
+ 
+p {
+    font-size: 0.8em;
+    margin: 0 !important;
+    margin-top: 10px !important;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+button {
+    background-color: rgb(249, 249, 249);
+    color: rgb(43, 43, 43);
+    margin-top: 2vh !important;
+    width: 100%;
+}
+
+
+mat-expansion-panel {
+    margin-top: 2vh !important;
+}
