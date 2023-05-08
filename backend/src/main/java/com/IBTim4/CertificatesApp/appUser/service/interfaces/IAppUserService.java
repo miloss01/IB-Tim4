@@ -10,4 +10,6 @@ public interface IAppUserService {
     Optional<AppUser> findById(Long id);
     AppUser saveAppUser(AppUser appUser);
 
+    AppUser changePassword(AppUser appUser, String newPassword);
+
 }

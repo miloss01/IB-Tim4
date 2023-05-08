@@ -29,3 +29,10 @@ export interface PasswordReset {
     sender:string
     type:string
 }
+
+export interface PasswordChangeDTO {
+    email: string
+    password: string
+    phone:string
+    code:string
+}

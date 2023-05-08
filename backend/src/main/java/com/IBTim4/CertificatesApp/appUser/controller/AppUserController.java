@@ -170,4 +170,32 @@ public class AppUserController {
         return new ResponseEntity<>("This user's verification has been completed successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO twilloDTO) {
+        Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+
+        try {
+
+            VerificationCheck verificationCheck = VerificationCheck.creator(
+                            TwilloConstants.serviceSid)
+                    .setTo(twilloDTO.getPhone())
+                    .setCode(twilloDTO.getCode())
+                    .create();
+
+            System.out.println(verificationCheck.getStatus());
+
+            Optional<AppUser> appUser = appUserService.findByEmail(twilloDTO.getEmail());
+
+            if (!appUser.isPresent()) {
+                throw new CustomExceptionWithMessage("User with that email doesn't exists!", HttpStatus.BAD_REQUEST);
+            }
+
+            appUserService.changePassword(appUser.get(), twilloDTO.getPassword());
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Changing password failed due to incorrect verification.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Password change has been completed successfully", HttpStatus.OK);
+    }
+
 }
