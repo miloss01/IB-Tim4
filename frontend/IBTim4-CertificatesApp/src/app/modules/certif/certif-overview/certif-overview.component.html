@@ -8,10 +8,10 @@
             <mat-card-header class="locations" >
                 <div class="">
                     <mat-card-title>{{cert.type}}</mat-card-title>
-                    <p><b>Serial number: </b> {{cert.id}}</p>
+                    <p><b>Serial number: </b> {{cert.serialNumber}}</p>
                     <p *ngIf="cert.subject != null"><b>Subject: </b> {{cert.subject.email}}</p>
-                    <button mat-button id="" (click)="downloadCert(cert.id)">Download</button>
-                    <button mat-button (click)="retractCert(cert.id)" *ngIf="cert.subject.email == loggedIn">Retract</button>
+                    <button mat-button id="" (click)="downloadCert(cert.serialNumber)">Download</button>
+                    <button mat-button (click)="retractCert(cert.serialNumber)" *ngIf="cert.subject.email == loggedIn">Retract</button>
                 </div>
                 </mat-card-header>
             <mat-divider></mat-divider>

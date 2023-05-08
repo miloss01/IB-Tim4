@@ -23,7 +23,7 @@ public interface ICertificateRequestService {
     public LocalDateTime getEndTime(LocalDateTime start, CertificateType certificateType);
     public void userAuthenticity(AppUser subject);
 
-    ArrayList<CertificateRequest> findBySubjectPending(AppUser subject);
+    ArrayList<CertificateRequest> findWhereSubjectInIssuerAndStatusPending(AppUser subject);
     ArrayList<CertificateRequest> findRequestsFromRootAndPending(AppUser subject);
 
 

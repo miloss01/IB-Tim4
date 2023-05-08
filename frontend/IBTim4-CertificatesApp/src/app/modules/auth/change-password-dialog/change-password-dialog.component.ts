@@ -17,7 +17,7 @@ export class ChangePasswordDialogComponent implements OnInit{
 
   constructor (@Inject(MAT_DIALOG_DATA) public data: PasswordReset,
     public dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
-    private readonly loginAuthService: LoginAuthService,
+    private readonly authService: LoginAuthService,
     private readonly snackBar: MatSnackBar) { }
 
   ngOnInit (): void {
@@ -27,11 +27,19 @@ export class ChangePasswordDialogComponent implements OnInit{
     this.dialogRef.close()
   }
 
-  requestCode (): void {
+  onChangeClick (): void {
     if (this.newPassword !== this.newPasswordRepeated) {
       this.snackBar.open('New password and repeat password do not match', 'Close')
       return
     }
+    let sender = this.data.sender
+    this.authService.changePassword({email: sender, password: this.newPassword, phone: sender, code: this.code}).subscribe((res: any) => {     
+    this.snackBar.open('Successful password change :)', 'Close')
+    },
+    (err: any) => {
+      console.log(err)
+      this.snackBar.open('Unsuccessful password change :(', 'Close')
+    })
     
   }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { TwilioDTO, UserExpandedDTO } from 'src/app/models/models';
+import { PasswordChangeDTO, TwilioDTO, UserExpandedDTO } from 'src/app/models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +63,7 @@ export class LoginAuthService {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
       const role = helper.decodeToken(accessToken).role;
+      console.log(role)
       return role;
     }
     return null;
@@ -88,7 +89,7 @@ export class LoginAuthService {
       const id = helper.decodeToken(accessToken).id;
       return id;
     }
-    return 1;
+    return null;
   }
 
   isLoggedIn(): boolean {
@@ -110,4 +111,14 @@ export class LoginAuthService {
     localStorage.removeItem("user")
     this.user$.next({})
   }
+
+  changePassword(twilo: PasswordChangeDTO): Observable<any> {
+    const options: any = {
+      responseType: 'text',
+    };
+    return this.http.post<string>(environment.apiHost + "user/changePassword", twilo, options );
+  }
+
+
+
 }

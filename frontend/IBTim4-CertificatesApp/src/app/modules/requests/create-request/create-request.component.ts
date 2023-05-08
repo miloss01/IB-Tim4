@@ -24,8 +24,8 @@ export class CreateRequestComponent implements OnInit {
   selectedSN: string = '';
 
   adminLoggedIn: boolean = false
-  selectedTypeToggleVal: string = '';
-  selectedShortTermToggleVal: string = 'END';
+  selectedTypeToggleVal: string = 'END';
+  selectedShortTermToggleVal: string = 'NONE';
   selectedDateVal: any;
 
   constructor(
@@ -33,6 +33,7 @@ export class CreateRequestComponent implements OnInit {
     private http: HttpClient,
     private authService: LoginAuthService
     ) {
+      this.adminLoggedIn = this.authService.getRole() === 'ADMIN'
     // this.getAllSNs()
     // this.filteredSNs = this.SNCtrl.valueChanges.pipe(
     //   startWith(null),
@@ -71,18 +72,32 @@ export class CreateRequestComponent implements OnInit {
   }
 
   public onShortTermToggleValChange(val: string) {
-    this.selectedTypeToggleVal = val;
+    this.selectedShortTermToggleVal = val;
   }
 
   public onRequestClick() {
-    const req = {
-      type: this.selectedTypeToggleVal,
+    let req = {
+      certificateType: this.selectedTypeToggleVal,
       issuerSN: this.selectedSN,
       requesterEmail: this.authService.getEmail(),
-      expirationTime: this.selectedDateVal
+      expirationTime: ''
+    }
+    if (this.selectedShortTermToggleVal != 'NONE') {
+      let t = new Date() 
+      let tT = t.getTime() + 1000 * 60 * parseInt(this.selectedShortTermToggleVal)
+      t.setTime(tT)
+      req.expirationTime = t.toISOString()
+    } else {
+      req.expirationTime = this.selectedDateVal.toISOString()
     }
     this.certService.sendRequest(req).subscribe(res => {
-      alert(res)
+      alert('Request sent successfully.')
+    },
+      (err: any) => {
+        console.log(err)
+        if (err.status == 400) alert(err.error.message)
+        else (alert('Error'))
+
     })
   }
 

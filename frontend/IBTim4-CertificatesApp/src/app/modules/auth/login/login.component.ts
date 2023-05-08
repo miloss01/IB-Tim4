@@ -101,9 +101,30 @@ export class LoginComponent {
   goToRegister (): void { this.router.navigate(['/registration']) }
 
   changePassword(){
+    this.sendCodePswChange()
     const dialog = this.changePasswordDialog.open(ChangePasswordDialogComponent, {data: {sender:this.loginForm.value.username, type: this.matSelectValue}})
-
   }
 
+  sendCodePswChange() {
+    if (this.matSelectValue === 'phone'){
+      this.authService.sendPhoneCode(this.loginForm.value.username).subscribe((res: any) => {     
+        console.log(res)
+        this.errorMessage = res
+      },
+      (err: any) => {
+        console.log(err)
+        this.errorMessage = err.error.message
+      })
+    } else {
+        this.authService.sendEmailCode(this.loginForm.value.username).subscribe((res: any) => {     
+          console.log(res)
+          this.errorMessage = res
+        },
+        (err: any) => {
+          console.log(err)
+          this.errorMessage = err.error.message
+        })
+    }
+  }
 
 }

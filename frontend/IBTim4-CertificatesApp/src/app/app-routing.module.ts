@@ -13,13 +13,14 @@ import { ValidateCertificateComponent } from './modules/certif/validate-certific
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'registration', component: RegistrationComponent},
   {path: 'certifs-overview', component: CertifOverviewComponent, canActivate: [TokenGuard]},
   {path: 'create-req', component: CreateRequestComponent, canActivate: [TokenGuard]},
   {path: 'req-overview', component: RequestOverviewComponent, canActivate: [TokenGuard]},
   {path: 'manage-req', component: ManagePendingRequestsComponent, canActivate: [TokenGuard]},
   {path: 'validate', component: ValidateCertificateComponent, canActivate: [TokenGuard]},
   {path: '', component: LandingComponent},
-  {path: 'registration', component: RegistrationComponent}
+
 ];
 
 @NgModule({

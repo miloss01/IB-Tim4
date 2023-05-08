@@ -146,7 +146,7 @@ public class CertificateController {
         if (certificateRequestDTO.getCertificateType().equals(CertificateType.ROOT.name()) && !requester.get().getRole().equals(Role.ADMIN))
             throw new CustomExceptionWithMessage("Only admin can create root certificate!", HttpStatus.BAD_REQUEST);
 
-        LocalDateTime expirationTime = LocalDateTime.parse(certificateRequestDTO.getExpirationTime());
+        LocalDateTime expirationTime = LocalDateTime.parse(certificateRequestDTO.getExpirationTime().substring(0, certificateRequestDTO.getExpirationTime().length()-2));
 
         if (!certificateRequestDTO.getCertificateType().equals(CertificateType.ROOT.name())) {
 
@@ -179,7 +179,7 @@ public class CertificateController {
         certificateRequest.setStatus(RequestStatus.PENDING);
         certificateRequest.setCreationTime(LocalDateTime.now());
         certificateRequest.setDescription(null);
-        certificateRequest.setExpirationTime(LocalDateTime.parse(certificateRequestDTO.getExpirationTime()));
+        certificateRequest.setExpirationTime(expirationTime);
 
         certificateRequestService.saveForCreation(certificateRequest);
 
@@ -204,7 +204,7 @@ public class CertificateController {
         String email = authentication.getName();
         Optional<AppUser> loggedIn = appUserService.findByEmail(email);
 
-        if (loggedIn.get().getId() != req.getRequester().getId())
+        if ( req.getIssuer().getSubject() != null && (loggedIn.get().getId() != req.getIssuer().getSubject().getId()))
             throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
 
         AppCertificate cert = certificateService.createCertificate(req);
@@ -230,7 +230,7 @@ public class CertificateController {
         String email = authentication.getName();
         Optional<AppUser> loggedIn = appUserService.findByEmail(email);
 
-        if (loggedIn.get().getId() != req.getRequester().getId())
+        if (loggedIn.get().getId() != req.getIssuer().getSubject().getId())
             throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
 
         if (!req.getStatus().equals(RequestStatus.PENDING))
@@ -303,24 +303,23 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/request/manage/{userId}")
-    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsIssuer(@PathVariable Integer userId) {
+    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsSubjectInIssuer(@PathVariable Integer userId) {
 
         Optional<AppUser> subject = appUserService.findById(Long.valueOf(userId));
 
         if (!subject.isPresent())
             throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
 
-        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject.get());
+        ArrayList<CertificateRequest> requests = certificateRequestService.findWhereSubjectInIssuerAndStatusPending(subject.get());
 
         ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
-        for (CertificateRequest request : requests)
-            ret.add(new CertificateRequestDTO(request));
+        for (CertificateRequest request : requests)  ret.add(new CertificateRequestDTO(request));
 
         return new ResponseEntity<>(ret, HttpStatus.OK);
 
     }
 
-    @GetMapping(value = "/request/manage-admin")
+    @GetMapping(value = "/request/manage-admin/{userId}")
     @PreAuthorize(value = "hasRole('ADMIN')")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsFromRootCertificates(@PathVariable Integer userId) {
 
@@ -339,100 +338,6 @@ public class CertificateController {
 
     }
 
-
-    // ---------------------------- TESTING - ZBOG 401
-    @GetMapping(value = "/request-1")
-    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForRequesterTesting() {
-
-        Optional<AppUser> requester = appUserService.findById(1L);
-
-        if (!requester.isPresent())
-            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
-
-        ArrayList<CertificateRequest> requests = certificateRequestService.findByRequester(requester.get());
-
-        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
-        for (CertificateRequest request : requests)
-            ret.add(new CertificateRequestDTO(request));
-
-        return new ResponseEntity<>(ret, HttpStatus.OK);
-
-    }
-
-    @GetMapping(value = "/request/manage-1")
-    public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForIssuerTesting() {
-
-        Optional<AppUser> subject = appUserService.findById(1L);
-
-        if (!subject.isPresent())
-            throw new CustomExceptionWithMessage("User with that id does not exist!", HttpStatus.BAD_REQUEST);
-
-        ArrayList<CertificateRequest> requests = certificateRequestService.findBySubjectPending(subject.get());
-
-        ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
-        for (CertificateRequest request : requests)
-            ret.add(new CertificateRequestDTO(request));
-
-        return new ResponseEntity<>(ret, HttpStatus.OK);
-
-    }
-
-    @PostMapping(value = "/request/accept-{requestId}")
-    public ResponseEntity<Void> acceptCertificateRequestTesting(@PathVariable Long requestId) {
-
-        Optional<CertificateRequest> certificateRequest = certificateRequestService.findById(requestId);
-
-        if (!certificateRequest.isPresent())
-            throw new CustomExceptionWithMessage("Certificate request with that id does not exist!", HttpStatus.BAD_REQUEST);
-
-        CertificateRequest req = certificateRequest.get();
-
-        if (!req.getStatus().equals(RequestStatus.PENDING))
-            throw new CustomExceptionWithMessage("Cannot accept request that is not in pending state!", HttpStatus.BAD_REQUEST);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
-
-//        if (loggedIn.get().getId() != req.getRequester().getId())
-//            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
-
-        AppCertificate cert = certificateService.createCertificate(req);
-
-        req.setStatus(RequestStatus.APPROVED);
-        certificateRequestService.save(req);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
-    @PostMapping(value = "/request/deny-{requestId}")
-    public ResponseEntity<Void> denyCertificateRequestTesting(@PathVariable Long requestId, @RequestBody String reason) {
-
-        Optional<CertificateRequest> certificateRequest = certificateRequestService.findById(requestId);
-
-        if (!certificateRequest.isPresent())
-            throw new CustomExceptionWithMessage("Certificate request with that id does not exist!", HttpStatus.BAD_REQUEST);
-
-        CertificateRequest req = certificateRequest.get();
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
-
-//        if (loggedIn.get().getId() != req.getRequester().getId())
-//            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
-
-        if (!req.getStatus().equals(RequestStatus.PENDING))
-            throw new CustomExceptionWithMessage("Cannot deny request that is not in pending state!", HttpStatus.BAD_REQUEST);
-
-        req.setDescription(reason);
-        req.setStatus(RequestStatus.DENIED);
-        certificateRequestService.save(req);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
 
     @GetMapping(value = "/download/{serialNumber}", produces="application/zip")
     public void getAllCertificateRequests(@PathVariable String serialNumber, HttpServletResponse response) {

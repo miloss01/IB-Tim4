@@ -1,5 +1,5 @@
 export interface CertifDTO {
-    id: number,
+    serialNumber: number,
     startTime: string,
     endTime: string,
     subject: UserExpandedDTO,
@@ -22,7 +22,7 @@ export interface IssuerDTO {
 }
 
 export interface CertifRequestDTO {
-    type: string
+    certificateType: string
     issuerSN: string,
     requesterEmail: string,
     expirationTime: string,
@@ -38,6 +38,7 @@ export interface CertificateRequestDTO {
     creationTime: string,
     expirationTime: string,
 }
+
 export interface TwilioDTO {
     phone:string
     code:string
@@ -46,4 +47,11 @@ export interface TwilioDTO {
 export interface PasswordReset {
     sender:string
     type:string
+}
+
+export interface PasswordChangeDTO {
+    email: string
+    password: string
+    phone:string
+    code:string
 }

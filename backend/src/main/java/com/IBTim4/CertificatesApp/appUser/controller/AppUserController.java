@@ -2,6 +2,10 @@ package com.IBTim4.CertificatesApp.appUser.controller;
 
 import com.IBTim4.CertificatesApp.appUser.AppUser;
 import com.IBTim4.CertificatesApp.appUser.Role;
+import com.IBTim4.CertificatesApp.appUser.dto.LoginDTO;
+import com.IBTim4.CertificatesApp.appUser.dto.RegistrationRequestDTO;
+import com.IBTim4.CertificatesApp.appUser.dto.TokenResponseDTO;
+import com.IBTim4.CertificatesApp.appUser.dto.UserExpandedDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.*;
 import com.IBTim4.CertificatesApp.appUser.service.interfaces.IAppUserService;
 import com.IBTim4.CertificatesApp.auth.JwtTokenUtil;
@@ -89,34 +93,32 @@ public class AppUserController {
         );
     }
 
-    @PostMapping(value = "/login2", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<TokenResponseDTO> login2(@RequestBody LoginDTO loginDTO) {
-        System.out.println("LOGIN");
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
-//        System.out.println(authRequest.getCredentials());
-//        System.out.println(authRequest.getPrincipal());
-        Authentication authentication = authenticationManager.authenticate(authRequest);
-        System.out.println(authentication);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        String role = securityContext.getAuthentication().getAuthorities().toString();
-        Optional<AppUser> optionalAppUser = appUserService.findByEmail(loginDTO.getEmail());
-        if (!optionalAppUser.isPresent()) {
-            throw new CustomExceptionWithMessage("User does not exist!", HttpStatus.NOT_FOUND);
-        }
-        AppUser user = optionalAppUser.get();
+//    @PostMapping(value = "/login2", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<TokenResponseDTO> login2(@RequestBody LoginDTO loginDTO){
+//        System.out.println("LOGIN");
+//        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
+////        System.out.println(authRequest.getCredentials());
+////        System.out.println(authRequest.getPrincipal());
+//        Authentication authentication = authenticationManager.authenticate(authRequest);
+//        System.out.println(authentication);
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        securityContext.setAuthentication(authentication);
+//
+//        String role = securityContext.getAuthentication().getAuthorities().toString();
+//        Optional<AppUser> optionalAppUser= appUserService.findByEmail(loginDTO.getEmail());
+//        if (!optionalAppUser.isPresent()){
+//            throw new CustomExceptionWithMessage("User does not exist!", HttpStatus.NOT_FOUND);
+//        }
+//        AppUser user = optionalAppUser.get();
 //        String token = jwtTokenUtil.generateToken(user.getEmail(),
 //                Role.valueOf(role.substring(role.indexOf("_") + 1, role.length() - 1)),
 //                user.getId());
-        String token = "";
-
-        return new ResponseEntity<>(
-                new TokenResponseDTO(token, ""),
-                HttpStatus.OK
-        );
-    }
-
+//
+//        return new ResponseEntity<>(
+//                new TokenResponseDTO(token, ""),
+//                HttpStatus.OK
+//        );
+//    }
     @GetMapping(value = "/generateOTP/{phoneNum}")
     public ResponseEntity<String> generateOTP(@PathVariable String phoneNum){
 
@@ -195,6 +197,38 @@ public class AppUserController {
             return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("This user's verification has been completed successfully", HttpStatus.OK);
+
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO twilloDTO) {
+
+        Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+
+        try {
+            System.out.println("ovde");
+            VerificationCheck verificationCheck = VerificationCheck.creator(
+                            TwilloConstants.serviceSid)
+                    .setTo(twilloDTO.getPhone())
+                    .setCode(twilloDTO.getCode())
+                    .create();
+
+            System.out.println(verificationCheck.getStatus());
+
+            Optional<AppUser> appUser = appUserService.findByEmail(twilloDTO.getEmail());
+
+            if (!appUser.isPresent()) {
+                throw new CustomExceptionWithMessage("User with that email doesn't exists!", HttpStatus.BAD_REQUEST);
+            }
+
+            appUserService.changePassword(appUser.get(), twilloDTO.getPassword());
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Password change has been completed successfully", HttpStatus.OK);
+
     }
 
 }

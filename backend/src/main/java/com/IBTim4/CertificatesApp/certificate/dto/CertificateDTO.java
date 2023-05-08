@@ -3,7 +3,6 @@ package com.IBTim4.CertificatesApp.certificate.dto;
 import com.IBTim4.CertificatesApp.appUser.dto.UserExpandedDTO;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
 import lombok.*;
-import javax.persistence.*;
 
 import static com.IBTim4.CertificatesApp.helper.StringFormatting.dateTimeFormatter;
 
@@ -15,8 +14,7 @@ import static com.IBTim4.CertificatesApp.helper.StringFormatting.dateTimeFormatt
 @ToString
 public class CertificateDTO {
 
-
-    private Long id;
+    private Long serialNumber;
     private String startTime;
     private String endTime;
     private UserExpandedDTO subject;
@@ -27,7 +25,7 @@ public class CertificateDTO {
     private Boolean retracted;
 
     public CertificateDTO(AppCertificate cert) {
-        this.id = Long.valueOf(cert.getSerialNumber());
+        this.serialNumber = Long.valueOf(cert.getSerialNumber());
         this.startTime = cert.getStartTime().format(dateTimeFormatter);
         this.endTime = cert.getEndTime().format(dateTimeFormatter);
         if (cert.getSubject() != null) this.subject = new UserExpandedDTO(cert.getSubject());

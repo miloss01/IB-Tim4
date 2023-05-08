@@ -53,7 +53,7 @@ public class CertificateRequestService implements ICertificateRequestService {
 
     @Override
     public CertificateRequest saveForCreation(CertificateRequest req) {
-        if (req.getRequester().getRole().equals(Role.ADMIN) ||
+        if ( (req.getRequester().getRole().equals(Role.ADMIN) && req.getCertificateType()==CertificateType.ROOT) ||
                 (req.getIssuer().getSubject() != null && req.getRequester().getEmail().equals(req.getIssuer().getSubject().getEmail()))) {
             req.setStatus(RequestStatus.APPROVED);
             certificateService.createCertificate(req);
@@ -91,12 +91,19 @@ public class CertificateRequestService implements ICertificateRequestService {
     }
 
     @Override
-    public ArrayList<CertificateRequest> findBySubjectPending(AppUser subject) {
+    public ArrayList<CertificateRequest> findWhereSubjectInIssuerAndStatusPending(AppUser subject) {
         ArrayList<AppCertificate> subjectsCertificates = certificateService.findByAllBySubject(subject);
         ArrayList<CertificateRequest> requestsForSubjectsCertificates = new ArrayList<>();
 
         for (AppCertificate c : subjectsCertificates) {
             requestsForSubjectsCertificates.addAll(certificateRequestRepository.findAllByIssuerAndStatus(c, RequestStatus.PENDING));
+//            System.out.println(c.getSubject().getId());
+//            System.out.println(c);
+//            ArrayList<CertificateRequest> cs = certificateRequestRepository.findAllByIssuer(c);
+//            for (CertificateRequest cr : cs) {
+//                System.out.println(cr.getId());
+//                if (cr.getStatus().equals(RequestStatus.PENDING)) requestsForSubjectsCertificates.add(cr);
+//            }
         }
 
         return requestsForSubjectsCertificates;
@@ -108,7 +115,10 @@ public class CertificateRequestService implements ICertificateRequestService {
         ArrayList<CertificateRequest> pendingAndFromRootRequests = new ArrayList<>();
 
         for (CertificateRequest r : pendingRequests) {
-            if (r.getIssuer().getType().equals(CertificateType.ROOT)) pendingAndFromRootRequests.add(r);
+            if (r.getIssuer().getType().equals(CertificateType.ROOT)
+                    || r.getIssuer().getSubject().getId().equals(subject.getId())) {
+                pendingAndFromRootRequests.add(r);
+            }
         }
 
         return pendingAndFromRootRequests;
