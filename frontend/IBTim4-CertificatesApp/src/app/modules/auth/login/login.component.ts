@@ -15,13 +15,14 @@ export class LoginComponent {
     private readonly router: Router, 
     private readonly authService: LoginAuthService,
     public changePasswordDialog: MatDialog) { }
+    isDisabled: boolean = false
 
   loginForm = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl()
+    username: new FormControl({value: '', disabled: this.isDisabled}),
+    password: new FormControl({value: '', disabled: true})
   })
 
-  errorMessage: string = ''
+  errorMessage: string = ""
   codeSent: boolean = false
   code: string = ""
   matSelectValue: string = "email"
