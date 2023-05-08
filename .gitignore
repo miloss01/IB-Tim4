@@ -29,6 +29,8 @@ log/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+backend/src/main/java/com/IBTim4/CertificatesApp/helper/TwilloConstants.java
+
 
 ### VS Code ###
 .vscode/

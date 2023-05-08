@@ -1,6 +1,12 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "@angular/material": "^16.0.0",
+=======
+    "@angular/core": "^16.0.0",
+    "@angular/material": "^16.0.0",
+    "@angular/router": "^16.0.0",
+>>>>>>> feature/3-password-reset
     "@auth0/angular-jwt": "^5.1.2"
   }
 }

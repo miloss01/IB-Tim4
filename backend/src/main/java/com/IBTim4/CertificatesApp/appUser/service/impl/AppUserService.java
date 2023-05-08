@@ -29,4 +29,10 @@ public class AppUserService implements IAppUserService {
         return appUserRepository.save(appUser);
     }
 
+    @Override
+    public AppUser changePassword(AppUser appUser, String newPassword) {
+        appUser.setPassword(newPassword);
+        return appUserRepository.save(appUser);
+    }
+
 }

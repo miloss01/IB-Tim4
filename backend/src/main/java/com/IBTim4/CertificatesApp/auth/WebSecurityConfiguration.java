@@ -36,6 +36,8 @@ public class WebSecurityConfiguration {
 //                .antMatchers(HttpMethod.POST, "/api/certificate/request").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/certificate/request/accept").permitAll()
                 .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/user/changePassword").permitAll()
+                .antMatchers("/api/user/*OTP*/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
