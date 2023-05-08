@@ -4,10 +4,10 @@
   </button>
 
   <span class="example-spacer"></span>
-    <button mat-button class="white-text" [routerLink]="['/login']" *ngIf="this.user == null">
+    <button mat-button class="white-text" [routerLink]="['/login']" *ngIf="this.user.email == null">
     Log in
   </button>
-  <button mat-button class="white-text" *ngIf="this.user != null">
+  <button mat-button class="white-text" *ngIf="this.user.email != null" (click)="logout()">
     Log out
   </button>
 </mat-toolbar>

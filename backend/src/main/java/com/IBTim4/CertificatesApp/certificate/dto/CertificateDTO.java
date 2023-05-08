@@ -24,15 +24,17 @@ public class CertificateDTO {
     private IssuerDTO issuer;
 
     private String type;
+    private Boolean retracted;
 
     public CertificateDTO(AppCertificate cert) {
-        this.id = cert.getId();
+        this.id = Long.valueOf(cert.getSerialNumber());
         this.startTime = cert.getStartTime().format(dateTimeFormatter);
         this.endTime = cert.getEndTime().format(dateTimeFormatter);
         if (cert.getSubject() != null) this.subject = new UserExpandedDTO(cert.getSubject());
         if (cert.getIssuer() != null)
-            this.issuer = new IssuerDTO(cert.getIssuer().getId(), cert.getIssuer().getType().toString());
+            this.issuer = new IssuerDTO(Long.valueOf(cert.getIssuer().getSerialNumber()), cert.getIssuer().getType().toString());
         this.type = cert.getType().toString();
+        this.retracted = cert.isRetracted();
     }
 //    public CertificateDTO(AppCertificate certificate) {
 //        this.id = certificate.getId();

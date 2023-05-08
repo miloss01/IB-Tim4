@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CertifDTO, CertificateRequestDTO, CertifRequestDTO } from '../models/models';
 import { LoginAuthService } from '../modules/auth/service/auth.service';
@@ -38,6 +38,24 @@ export class CertService {
 
   declineCertificateRequest(reqId: string, reason: string) : Observable<any> {
     return this.http.post<any>(environment.apiHost + `certificate/request/deny-${reqId}`, reason)
+  }
+
+  downloadCertificate(certId: number): Observable<any> {
+    return this.http.get(environment.apiHost + "certificate/download/" + certId, {responseType: 'arraybuffer'})
+  }
+
+  retractCertificate(certId: number, reason: string): Observable<any> {
+    return this.http.post(environment.apiHost + "certificate/retract/" + certId, reason)
+  }
+
+  validateBySerialNumber(certId: number): Observable<any> {
+    return this.http.get(environment.apiHost + "certificate/valid?serialNumber=" + certId)
+  }
+
+  validateByFileUpload(bytes: string): Observable<any> {
+    // const headers = new HttpHeaders().set('Content-Type', 'application/octet-stream');
+    // console.log(bytes)
+    return this.http.post(environment.apiHost + "certificate/valid/upload", bytes)
   }
 
 

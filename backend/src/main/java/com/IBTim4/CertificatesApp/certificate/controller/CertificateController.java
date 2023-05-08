@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import com.IBTim4.CertificatesApp.appUser.AppUser;
 import com.IBTim4.CertificatesApp.appUser.Role;
@@ -23,8 +24,11 @@ import com.IBTim4.CertificatesApp.certificate.dto.CertificateRequestDTO;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateRequestService;
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import org.springframework.validation.annotation.Validated;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.*;
@@ -34,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -428,8 +434,8 @@ public class CertificateController {
 
     }
 
-    @GetMapping(value = "/download/{serialNumber}")
-    public ResponseEntity<DownloadCertificateAndPrivateKeyDTO> getAllCertificateRequests(@PathVariable String serialNumber) {
+    @GetMapping(value = "/download/{serialNumber}", produces="application/zip")
+    public void getAllCertificateRequests(@PathVariable String serialNumber, HttpServletResponse response) {
 
         Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
 
@@ -440,25 +446,43 @@ public class CertificateController {
         String email = authentication.getName();
         Optional<AppUser> loggedIn = appUserService.findByEmail(email);
 
-        if (certificate.get().getSubject().getId() != loggedIn.get().getId() && loggedIn.get().getRole() != Role.ADMIN)
-            throw new CustomExceptionWithMessage("You don't have access to that endpoint!", HttpStatus.FORBIDDEN);
+        Boolean certAndPk = false;
+
+        if (certificate.get().getSubject().getId() == loggedIn.get().getId())
+            certAndPk = true;
 
         Certificate cert = certificateService.downloadCertificate(serialNumber);
         PrivateKey privateKey = certificateService.downloadPrivateKey(serialNumber);
 
         try {
-//            ByteArrayResource resource = new ByteArrayResource(cert.getEncoded());
-            String certEncoded = new String(Base64.getEncoder().encode(cert.getEncoded()));
-            String privateKeyEncoded = new String(Base64.getEncoder().encode(privateKey.getEncoded()));
+            ByteArrayResource certResource = new ByteArrayResource(cert.getEncoded());
+            ByteArrayResource pkResource = new ByteArrayResource(privateKey.getEncoded());
+//            String certEncoded = new String(Base64.getEncoder().encode(cert.getEncoded()));
+//            String privateKeyEncoded = new String(Base64.getEncoder().encode(privateKey.getEncoded()));
 
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//            headers.set("Content-Disposition", "attachment; filename=certificate.cert");
+            ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream());
 
-            return new ResponseEntity<>(
-                    new DownloadCertificateAndPrivateKeyDTO(certEncoded, privateKeyEncoded),
-                    HttpStatus.OK);
-        } catch (CertificateEncodingException e) {
+            ZipEntry zipEntry = new ZipEntry("cert" + serialNumber + ".crt");
+            zipEntry.setSize(certResource.contentLength());
+            zipOut.putNextEntry(zipEntry);
+            StreamUtils.copy(certResource.getInputStream(), zipOut);
+            zipOut.closeEntry();
+
+            if (certAndPk) {
+                ZipEntry zipEntry2 = new ZipEntry("pk" + serialNumber + ".pk");
+                zipEntry.setSize(pkResource.contentLength());
+                zipOut.putNextEntry(zipEntry2);
+                StreamUtils.copy(pkResource.getInputStream(), zipOut);
+                zipOut.closeEntry();
+            }
+
+            zipOut.finish();
+            zipOut.close();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "zipovano.zip" + "\"");
+
+        } catch (CertificateEncodingException | IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -486,6 +510,7 @@ public class CertificateController {
             return new ResponseEntity<>(valid, HttpStatus.OK);
 
         } catch (CertificateException e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(false, HttpStatus.OK);
         }
 

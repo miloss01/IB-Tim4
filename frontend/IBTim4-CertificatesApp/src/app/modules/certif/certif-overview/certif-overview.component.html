@@ -1,5 +1,6 @@
 <div class="page">
 <h2>Certificates overview</h2>
+<input matInput placeholder="Reason for retracting" [(ngModel)]="reason">
 <mat-divider></mat-divider>
 <div class="grid">
     <div *ngFor="let cert of certs">
@@ -9,7 +10,8 @@
                     <mat-card-title>{{cert.type}}</mat-card-title>
                     <p><b>Serial number: </b> {{cert.id}}</p>
                     <p *ngIf="cert.subject != null"><b>Subject: </b> {{cert.subject.email}}</p>
-                    <button mat-button id="">Download</button>
+                    <button mat-button id="" (click)="downloadCert(cert.id)">Download</button>
+                    <button mat-button (click)="retractCert(cert.id)" *ngIf="cert.subject.email == loggedIn">Retract</button>
                 </div>
                 </mat-card-header>
             <mat-divider></mat-divider>
@@ -18,6 +20,7 @@
                 <p  *ngIf="cert.issuer != null">Issuer ID: {{cert.issuer.serialNumber}}</p>
                 <p>Valid from: {{cert.startTime}}</p>
                 <p>Valid to: {{cert.endTime}}</p>
+                <p *ngIf="cert.retracted">RETRACTED</p>
 
             </mat-card-content>
             <mat-card-actions align="end">

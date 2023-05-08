@@ -1,0 +1,10 @@
+
+<div>
+  <input matInput placeholder="Serial number" [(ngModel)]="serialNumber">
+  <button mat-button (click)="validateBySerialNumber()">Validate by serial number</button>
+  <mat-divider></mat-divider>
+  <input type="file" id="certFileInput" (change)="onFileSelected($event)">
+  <button mat-button (click)="validateByFileUpload()">Validate by file upload</button>
+
+  <h2>{{result}}</h2>
+</div>
