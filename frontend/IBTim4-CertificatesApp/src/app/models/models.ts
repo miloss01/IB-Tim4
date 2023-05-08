@@ -4,7 +4,8 @@ export interface CertifDTO {
     endTime: string,
     subject: UserExpandedDTO,
     issuer: IssuerDTO,
-    type: string
+    type: string,
+    retracted: boolean
 }
 
 export interface UserExpandedDTO {

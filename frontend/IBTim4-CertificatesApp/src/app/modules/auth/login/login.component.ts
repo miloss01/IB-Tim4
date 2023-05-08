@@ -43,7 +43,7 @@ export class LoginComponent {
       this.authService.setUser()
       console.log(this.authService.getRole())
 
-      this.sendCode()
+      // this.sendCode()
     },
     (err: any) => {
       console.log(err)
