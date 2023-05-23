@@ -1,7 +1,7 @@
 <div class="page">
   <h2>Certificate request</h2>
   <mat-divider></mat-divider>
-  <form>
+  <form #form="ngForm">
     <!-- <mat-form-field class="SN-list" appearance="fill">
       <input placeholder="Search by Serial Number" #SNInput [formControl]="SNCtrl" [matAutocomplete]="autocompleteSN"/>
         <mat-autocomplete #autocompleteSN="matAutocomplete" (optionSelected)="selectedSNFunc($event)">
@@ -53,8 +53,13 @@
       <mat-button-toggle value="60">60 minutes</mat-button-toggle>
       <mat-button-toggle value="180">180 minutes</mat-button-toggle>
   </mat-button-toggle-group>
+  
+  <re-captcha id="recaptcha" name="recaptcha" #recaptcha="ngModel" [(ngModel)]="token" required [class.is-invalid]="recaptcha.invalid && (recaptcha.dirty || recaptcha.touched)"></re-captcha>
+  <div *ngIf="recaptcha.invalid && (recaptcha.dirty || recaptcha.touched)" class="invalid-feedback">
+      <div *ngIf="recaptcha.errors?.['required']">This field is required.</div>
+  </div>
 
-  <button mat-raised-button id="requestButton" (click)="onRequestClick()">Send request</button>
+  <button mat-raised-button id="requestButton" (click)="onRequestClick(form)">Send request</button>
 
   </form>
 </div>

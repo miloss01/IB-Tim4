@@ -6,7 +6,11 @@ export const environment = {
   production: false,
 
   apiHost: 'http://localhost:8081/api/',
-  socketHost: 'http://localhost:8081/socket'
+  socketHost: 'http://localhost:8081/socket',
+  
+  recaptcha: {
+    siteKey: '6LfCJS4mAAAAAEeqvP5164l8TE875MTCtDZUWZLh'
+  },
 }
 
 /*

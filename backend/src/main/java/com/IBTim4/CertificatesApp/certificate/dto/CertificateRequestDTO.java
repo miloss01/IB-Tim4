@@ -29,6 +29,8 @@ public class CertificateRequestDTO {
     private String creationTime;
     private String expirationTime;
 
+    private String recaptchaToken;
+
     public CertificateRequestDTO(CertificateRequest request) {
         this.id = request.getId().toString();
         this.certificateType = request.getCertificateType().toString();

@@ -5,6 +5,7 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RequestOverviewComponent } from './request-overview/request-overview.component';
 import { ManagePendingRequestsComponent } from './manage-pending-requests/manage-pending-requests.component';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 
 
 
@@ -19,7 +20,9 @@ import { ManagePendingRequestsComponent } from './manage-pending-requests/manage
     CommonModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ]
 })
 export class RequestsModule { }

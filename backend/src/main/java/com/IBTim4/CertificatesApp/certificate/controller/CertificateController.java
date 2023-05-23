@@ -1,9 +1,9 @@
 package com.IBTim4.CertificatesApp.certificate.controller;
 
+import com.IBTim4.CertificatesApp.Constants;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
-import com.IBTim4.CertificatesApp.certificate.dto.CertificateDTO;
-import com.IBTim4.CertificatesApp.certificate.dto.DownloadCertificateAndPrivateKeyDTO;
-import com.IBTim4.CertificatesApp.certificate.dto.RejectionDTO;
+import com.IBTim4.CertificatesApp.certificate.dto.*;
+import com.IBTim4.CertificatesApp.certificate.service.impl.CaptchaService;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -20,10 +20,12 @@ import com.IBTim4.CertificatesApp.appUser.service.interfaces.IAppUserService;
 import com.IBTim4.CertificatesApp.certificate.CertificateRequest;
 import com.IBTim4.CertificatesApp.certificate.CertificateType;
 import com.IBTim4.CertificatesApp.certificate.RequestStatus;
-import com.IBTim4.CertificatesApp.certificate.dto.CertificateRequestDTO;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateRequestService;
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -53,6 +55,8 @@ public class CertificateController {
     private ICertificateService certificateService;
     @Autowired
     private ICertificateRequestService certificateRequestService;
+    @Autowired
+    private CaptchaService captchaService;
 
     @GetMapping(value = "/valid", produces = "application/json")
     public ResponseEntity<Boolean> checkValidity(@RequestParam String serialNumber) {
@@ -135,6 +139,8 @@ public class CertificateController {
 
     @PostMapping(value = "/request", consumes = "application/json")
     public ResponseEntity<Void> createCertificateRequest(@Valid @RequestBody CertificateRequestDTO certificateRequestDTO) {
+
+        captchaService.processResponse(certificateRequestDTO.getRecaptchaToken());
 
         Optional<AppUser> requester = appUserService.findByEmail(certificateRequestDTO.getRequesterEmail());
 
