@@ -33,30 +33,17 @@ export class ValidateCertificateComponent implements OnInit {
     })
   }
 
-  readFile(file: any) {
-    return new Promise((resolve, reject) => {
-      // Create file reader
-      let reader = new FileReader()
-  
-      // Register event listeners
-      reader.addEventListener("loadend", e => resolve(e.target?.result))
-      reader.addEventListener("error", reject)
-  
-      // Read file
-      reader.readAsArrayBuffer(file)
-    })
-  }
-
-  fileChange(target: any) {
-    let files: any[] = target.files
-    if (files && files.length > 0) {
-      let file = files[0];
-      this.fileToUpload.append('file', file);
-    }  
-  }
-
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
+
+    let mb5size = 1024 * 1024 * 1
+    if (selectedFile.size > mb5size) {
+      this.result = "File is bigger than 5MB"
+      let el = document.getElementById("certFileInput") as HTMLInputElement
+      el.value = ""
+      return
+    }
+
     const reader = new FileReader();
     reader.onload = (e: any) => {
       const base64String = btoa(e.target.result);
