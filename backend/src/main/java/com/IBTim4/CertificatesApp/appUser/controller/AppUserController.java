@@ -1,6 +1,7 @@
 package com.IBTim4.CertificatesApp.appUser.controller;
 
 import com.IBTim4.CertificatesApp.appUser.AppUser;
+import com.IBTim4.CertificatesApp.appUser.PasswordRecord;
 import com.IBTim4.CertificatesApp.appUser.Role;
 import com.IBTim4.CertificatesApp.appUser.dto.LoginDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.RegistrationRequestDTO;
@@ -8,6 +9,7 @@ import com.IBTim4.CertificatesApp.appUser.dto.TokenResponseDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.UserExpandedDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.*;
 import com.IBTim4.CertificatesApp.appUser.service.interfaces.IAppUserService;
+import com.IBTim4.CertificatesApp.appUser.service.interfaces.IPasswordRecordService;
 import com.IBTim4.CertificatesApp.auth.JwtTokenUtil;
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import com.IBTim4.CertificatesApp.helper.TwilloConstants;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -45,6 +48,8 @@ public class AppUserController {
     AuthenticationManager authenticationManager;
     @Autowired
     IAppUserService appUserService;
+    @Autowired
+    IPasswordRecordService passwordRecordService;
 
 
     @PostMapping(produces = "application/json", consumes = "application/json")
@@ -57,6 +62,12 @@ public class AppUserController {
         }
         userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
         AppUser saved = appUserService.saveAppUser(new AppUser(userDTO));
+
+        PasswordRecord passwordRecord = new PasswordRecord();
+        passwordRecord.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        passwordRecord.setUser(saved);
+        passwordRecord.setTimestamp(LocalDateTime.now());
+        PasswordRecord savedPasswordRecord = passwordRecordService.save(passwordRecord);
 
         return new ResponseEntity<>(new UserExpandedDTO(saved), HttpStatus.OK);
     }
@@ -221,13 +232,50 @@ public class AppUserController {
                 throw new CustomExceptionWithMessage("User with that email doesn't exists!", HttpStatus.BAD_REQUEST);
             }
 
+            ArrayList<PasswordRecord> passwordRecords = passwordRecordService.findAllPasswordRecordsByUser(appUser.get());
+
+            for (PasswordRecord passwordRecord : passwordRecords)
+                if (new BCryptPasswordEncoder().matches(twilloDTO.getPassword(), passwordRecord.getPassword()))
+                    throw new CustomExceptionWithMessage("New password cannot be the same as any of the last three!", HttpStatus.BAD_REQUEST);
+
             appUserService.changePassword(appUser.get(), twilloDTO.getPassword());
+
+            PasswordRecord passwordRecord = new PasswordRecord();
+            passwordRecord.setPassword(new BCryptPasswordEncoder().encode(twilloDTO.getPassword()));
+            passwordRecord.setUser(appUser.get());
+            passwordRecord.setTimestamp(LocalDateTime.now());
+            PasswordRecord savedPasswordRecord = passwordRecordService.save(passwordRecord);
 
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Password change has been completed successfully", HttpStatus.OK);
+
+    }
+
+    @PostMapping(value = "/refreshPassword")
+    public ResponseEntity refreshPassword(@RequestBody String newPassword) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        ArrayList<PasswordRecord> passwordRecords = passwordRecordService.findAllPasswordRecordsByUser(loggedIn.get());
+
+        for (PasswordRecord passwordRecord : passwordRecords) {
+            System.out.println(passwordRecord.getPassword());
+            if (new BCryptPasswordEncoder().matches(newPassword, passwordRecord.getPassword()))
+                throw new CustomExceptionWithMessage("New password cannot be the same as any of the last three!", HttpStatus.BAD_REQUEST);
+        }
+
+        PasswordRecord passwordRecord = new PasswordRecord();
+        passwordRecord.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        passwordRecord.setUser(loggedIn.get());
+        passwordRecord.setTimestamp(LocalDateTime.now());
+        PasswordRecord savedPasswordRecord = passwordRecordService.save(passwordRecord);
+
+        return new ResponseEntity(HttpStatus.OK);
 
     }
 

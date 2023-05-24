@@ -11,7 +11,7 @@
                     <p><b>Serial number: </b> {{cert.serialNumber}}</p>
                     <p *ngIf="cert.subject != null"><b>Subject: </b> {{cert.subject.email}}</p>
                     <button mat-button id="" (click)="downloadCert(cert.serialNumber)">Download</button>
-                    <button mat-button (click)="retractCert(cert.serialNumber)" *ngIf="cert.subject.email == loggedIn">Retract</button>
+                    <button mat-button (click)="retractCert(cert.serialNumber)" *ngIf="cert.subject.email == loggedIn || loggedInRole == 'ADMIN'">Retract</button>
                 </div>
                 </mat-card-header>
             <mat-divider></mat-divider>

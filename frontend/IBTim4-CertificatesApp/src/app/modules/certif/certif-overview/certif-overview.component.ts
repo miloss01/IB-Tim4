@@ -14,6 +14,7 @@ export class CertifOverviewComponent implements AfterViewInit, OnInit {
   certs: CertifDTO[] = []
   reason: string = ""
   loggedIn: string = ""
+  loggedInRole: string = ""
 
   constructor( 
     private certService: CertService,
@@ -22,6 +23,7 @@ export class CertifOverviewComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.loggedIn = this.authService.getEmail()
+    this.loggedInRole = this.authService.getRole()
   }
 
   ngAfterViewInit (): void {
