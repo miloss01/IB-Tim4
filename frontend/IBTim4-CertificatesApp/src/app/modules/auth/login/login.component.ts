@@ -39,6 +39,14 @@ export class LoginComponent {
       email: this.loginForm.value.username,
       password: this.loginForm.value.password
     }).subscribe((res: any) => {
+
+      if (res.refreshPassword) {
+        localStorage.setItem('user', JSON.stringify(res.accessToken))
+        localStorage.setItem('refreshPassword', "refresh")
+        this.router.navigate(['/refresh-password'])
+        return
+      }
+
       this.errorMessage = "Please verify your code"
       this.codeSent = true      
       console.log(res)

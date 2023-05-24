@@ -119,6 +119,8 @@ export class LoginAuthService {
     return this.http.post<string>(environment.apiHost + "user/changePassword", twilo, options );
   }
 
-
+  refreshPassword(password: string): Observable<any> {
+    return this.http.post<string>(environment.apiHost + "user/refreshPassword", password);
+  }
 
 }

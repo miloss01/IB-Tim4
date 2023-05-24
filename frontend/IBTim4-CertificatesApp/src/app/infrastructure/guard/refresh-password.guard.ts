@@ -5,21 +5,21 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TokenGuard implements CanActivate {
-  
+export class RefreshPasswordGuard implements CanActivate {
+
   constructor(private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-    if (localStorage.getItem("user") != null && localStorage.getItem("refreshPassword") == null)
+    
+    if (localStorage.getItem("refreshPassword") != null)
       return true
     else {
       this.router.navigateByUrl('/')
       return false
     }
-    
+
   }
   
 }

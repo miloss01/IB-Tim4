@@ -10,6 +10,8 @@ import { RegistrationComponent } from './modules/auth/registration/registration.
 import { UnregisteredGuard } from './infrastructure/guard/unregistered.guard';
 import { TokenGuard } from './infrastructure/guard/token.guard';
 import { ValidateCertificateComponent } from './modules/certif/validate-certificate/validate-certificate.component';
+import { RefreshPasswordComponent } from './modules/auth/refresh-password/refresh-password.component';
+import { RefreshPasswordGuard } from './infrastructure/guard/refresh-password.guard';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -19,6 +21,7 @@ const routes: Routes = [
   {path: 'req-overview', component: RequestOverviewComponent, canActivate: [TokenGuard]},
   {path: 'manage-req', component: ManagePendingRequestsComponent, canActivate: [TokenGuard]},
   {path: 'validate', component: ValidateCertificateComponent, canActivate: [TokenGuard]},
+  {path: 'refresh-password', component: RefreshPasswordComponent, canActivate: [RefreshPasswordGuard]},
   {path: '', component: LandingComponent},
 
 ];

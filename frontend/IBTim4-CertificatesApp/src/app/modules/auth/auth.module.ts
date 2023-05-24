@@ -6,13 +6,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { RegistrationComponent } from './registration/registration.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
+import { RefreshPasswordComponent } from './refresh-password/refresh-password.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistrationComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    RefreshPasswordComponent
   ],
   imports: [
     CommonModule,

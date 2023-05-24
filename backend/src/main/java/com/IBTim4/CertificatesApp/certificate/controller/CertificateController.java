@@ -353,7 +353,7 @@ public class CertificateController {
 
         Boolean certAndPk = false;
 
-        if (certificate.get().getSubject().getId() == loggedIn.get().getId())
+        if (certificate.get().getSubject().getId() == loggedIn.get().getId() || loggedIn.get().getRole() == Role.ADMIN)
             certAndPk = true;
 
         Certificate cert = certificateService.downloadCertificate(serialNumber);

@@ -98,8 +98,17 @@ public class AppUserController {
                 user.getId(),
                 user.getPhone());
 
+        Boolean refreshPassword = false;
+
+        ArrayList<PasswordRecord> passwordRecords = passwordRecordService.findAllPasswordRecordsByUser(user);
+        LocalDateTime lastChanged = passwordRecords.get(0).getTimestamp();
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isAfter(lastChanged.plusDays(7L)))
+            refreshPassword = true;
+
         return new ResponseEntity<>(
-                new TokenResponseDTO(token, ""),
+                new TokenResponseDTO(token, "", refreshPassword),
                 HttpStatus.OK
         );
     }
@@ -269,11 +278,16 @@ public class AppUserController {
                 throw new CustomExceptionWithMessage("New password cannot be the same as any of the last three!", HttpStatus.BAD_REQUEST);
         }
 
+        String newPass = new BCryptPasswordEncoder().encode(newPassword);
+
         PasswordRecord passwordRecord = new PasswordRecord();
-        passwordRecord.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        passwordRecord.setPassword(newPass);
         passwordRecord.setUser(loggedIn.get());
         passwordRecord.setTimestamp(LocalDateTime.now());
         PasswordRecord savedPasswordRecord = passwordRecordService.save(passwordRecord);
+
+        loggedIn.get().setPassword(newPass);
+        appUserService.saveAppUser(loggedIn.get());
 
         return new ResponseEntity(HttpStatus.OK);
 
