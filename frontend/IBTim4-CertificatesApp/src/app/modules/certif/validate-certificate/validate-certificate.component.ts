@@ -36,7 +36,7 @@ export class ValidateCertificateComponent implements OnInit {
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
 
-    let mb5size = 1024 * 1024 * 1
+    let mb5size = 1024 * 1024 * 5
     if (selectedFile.size > mb5size) {
       this.result = "File is bigger than 5MB"
       let el = document.getElementById("certFileInput") as HTMLInputElement

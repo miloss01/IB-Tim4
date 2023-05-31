@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginAuthService } from '../service/auth.service';
 
@@ -18,7 +18,7 @@ export class RefreshPasswordComponent implements OnInit {
   errorMsg: string = ""
 
   refreshPasswordForm = new FormGroup({
-    pass: new FormControl(),
+    pass: new FormControl("", [Validators.required, Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\s]{8,15}$/)]),
     confirmPass: new FormControl()
   })
 
@@ -32,7 +32,7 @@ export class RefreshPasswordComponent implements OnInit {
       return
     }
 
-    this.authService.refreshPassword(this.refreshPasswordForm.value.pass).subscribe((res: any) => {
+    this.authService.refreshPassword(this.refreshPasswordForm.value.pass!).subscribe((res: any) => {
       console.log("promenjeno")
       console.log(res)
       localStorage.removeItem("refreshPassword")
