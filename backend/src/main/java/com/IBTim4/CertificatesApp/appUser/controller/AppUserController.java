@@ -36,6 +36,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @CrossOrigin
 @RestController
@@ -80,7 +81,7 @@ public class AppUserController {
     }
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<TokenResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
         System.out.println("LOGIN");
 
         logger.info("Login started.");
@@ -175,7 +176,7 @@ public class AppUserController {
     }
 
     @PostMapping("/verifyOTP/")
-    public ResponseEntity<?> verifyUserOTP(@RequestBody TwilloDTO twilloDTO) {
+    public ResponseEntity<?> verifyUserOTP(@Valid @RequestBody TwilloDTO twilloDTO) {
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
 
         logger.info("Verifying OTP started.");
@@ -249,7 +250,7 @@ public class AppUserController {
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO twilloDTO) {
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordChangeDTO twilloDTO) {
 
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
 
@@ -298,6 +299,9 @@ public class AppUserController {
 
     @PostMapping(value = "/refreshPassword")
     public ResponseEntity refreshPassword(@RequestBody String newPassword) {
+
+        if (!Pattern.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\\s]{8,64}$", newPassword))
+            throw new CustomExceptionWithMessage("Password must have 8 to 64 characters, 1 digit and 1 special character are required", HttpStatus.BAD_REQUEST);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();

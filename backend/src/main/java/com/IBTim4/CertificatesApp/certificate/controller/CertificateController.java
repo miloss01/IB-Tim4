@@ -323,7 +323,7 @@ public class CertificateController {
 
     //
     @PostMapping(value = "/declineRequest/{requestId}")
-    public ResponseEntity<RejectionDTO> declineCertificate(@PathVariable Integer requestId, @RequestBody RejectionDTO rejectionDTO) {
+    public ResponseEntity<RejectionDTO> declineCertificate(@PathVariable Integer requestId, @Valid @RequestBody RejectionDTO rejectionDTO) {
 
         logger.info("Declining request with ID: " + requestId);
 
