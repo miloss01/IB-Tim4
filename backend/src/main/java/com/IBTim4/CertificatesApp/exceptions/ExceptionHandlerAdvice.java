@@ -1,7 +1,10 @@
 package com.IBTim4.CertificatesApp.exceptions;
 
+import com.IBTim4.CertificatesApp.appUser.controller.AppUserController;
 import lombok.*;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -16,8 +19,11 @@ import javax.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
+    Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
+
     @ExceptionHandler(value = { CustomExceptionWithMessage.class })
     protected ResponseEntity<ErrorMessage> handleCustomExceptionWithMessage(CustomExceptionWithMessage ex) {
+        logger.error("CustomExceptionWithMessage occurred with status " + ex.httpStatus + ": " + ex.message);
         return new ResponseEntity<>(new ErrorMessage(ex.message), ex.httpStatus);
     }
 
@@ -31,6 +37,7 @@ public class ExceptionHandlerAdvice {
             ret += "Constraint violation. Field (" + fieldName + ") format is not valid!\n";
         }
 
+        logger.error("ConstraintViolationException occurred: " + ret);
         return new ResponseEntity<>(ret, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,6 +49,7 @@ public class ExceptionHandlerAdvice {
         for (ObjectError error : ex.getBindingResult().getAllErrors())
             ret += error.getDefaultMessage() + "\n";
 
+        logger.error("MethodArgumentNotValidException occurred: " + ret);
         return new ResponseEntity<>(ret, HttpStatus.BAD_REQUEST);
     }
 
@@ -49,8 +57,10 @@ public class ExceptionHandlerAdvice {
     protected ResponseEntity<String> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
 
         String fieldName = ex.getName();
+        String ret = "Wrong type. Field (" + fieldName + ") format is not valid!\n";
 
-        return new ResponseEntity<>("Wrong type. Field (" + fieldName + ") format is not valid!\n", HttpStatus.BAD_REQUEST);
+        logger.error("MethodArgumentTypeMismatchException occurred: " + ret);
+        return new ResponseEntity<>(ret, HttpStatus.BAD_REQUEST);
     }
 
 }

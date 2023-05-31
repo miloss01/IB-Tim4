@@ -17,6 +17,8 @@ import com.twilio.Twilio;
 import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.http.HttpStatus;
@@ -51,9 +53,12 @@ public class AppUserController {
     @Autowired
     IPasswordRecordService passwordRecordService;
 
+    Logger logger = LoggerFactory.getLogger(AppUserController.class);
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<UserExpandedDTO> registerUser(@Valid @RequestBody RegistrationRequestDTO userDTO) {
+
+        logger.info("Registration started.");
 
         Optional<AppUser> appUser = appUserService.findByEmail(userDTO.getEmail());
 
@@ -62,6 +67,8 @@ public class AppUserController {
         }
         userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
         AppUser saved = appUserService.saveAppUser(new AppUser(userDTO));
+
+        logger.info("User successfully registered.");
 
         PasswordRecord passwordRecord = new PasswordRecord();
         passwordRecord.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
@@ -75,6 +82,8 @@ public class AppUserController {
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
         System.out.println("LOGIN");
+
+        logger.info("Login started.");
 
         UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
 
@@ -92,6 +101,8 @@ public class AppUserController {
         }
         AppUser user = optionalAppUser.get();
 
+        logger.info("Trying to log in user with ID: " + user.getId());
+
         String token = jwtTokenUtil.generateToken(
                 loginDTO.getEmail(),
                 user.getRole(),
@@ -106,6 +117,9 @@ public class AppUserController {
 
         if (now.isAfter(lastChanged.plusDays(7L)))
             refreshPassword = true;
+
+        logger.info("Login successful.");
+        logger.info("Password rotation " + (refreshPassword ? "is" : "is not") + " required.");
 
         return new ResponseEntity<>(
                 new TokenResponseDTO(token, "", refreshPassword),
@@ -140,7 +154,9 @@ public class AppUserController {
 //        );
 //    }
     @GetMapping(value = "/generateOTP/{phoneNum}")
-    public ResponseEntity<String> generateOTP(@PathVariable String phoneNum){
+    public ResponseEntity<String> generateOTP(@PathVariable String phoneNum) {
+
+        logger.info("Generating OTP.");
 
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
 
@@ -153,6 +169,7 @@ public class AppUserController {
         System.out.println(verification.getStatus());
 
         log.info("OTP has been successfully generated, and awaits your verification {}", LocalDateTime.now());
+        logger.info("OTP successfully generated and sent.");
 
         return new ResponseEntity<>("Your OTP has been sent to your verified phone number", HttpStatus.OK);
     }
@@ -160,6 +177,8 @@ public class AppUserController {
     @PostMapping("/verifyOTP/")
     public ResponseEntity<?> verifyUserOTP(@RequestBody TwilloDTO twilloDTO) {
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+
+        logger.info("Verifying OTP started.");
 
         try {
 
@@ -172,13 +191,17 @@ public class AppUserController {
             System.out.println(verificationCheck.getStatus());
 
         } catch (Exception e) {
+            logger.error("Error occurred while verifying.", e);
             return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
         }
+        logger.info("Verification is successful.");
         return new ResponseEntity<>("This user's verification has been completed successfully", HttpStatus.OK);
     }
 
     @GetMapping(value = "/generateEmailOTP/{email}")
-    public ResponseEntity<String> generateEmailOTP(@PathVariable String email){
+    public ResponseEntity<String> generateEmailOTP(@PathVariable String email) {
+
+        logger.info("Generating email OTP started.");
 
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
         Verification verification = Verification.creator(
@@ -195,6 +218,7 @@ public class AppUserController {
                 .create();
 
         log.info("OTP has been successfully generated, and awaits your verification {}", LocalDateTime.now());
+        logger.info("OTP successfully generated and sent.");
 
         return new ResponseEntity<>("Your OTP has been sent to your verified email", HttpStatus.OK);
     }
@@ -202,6 +226,8 @@ public class AppUserController {
     @GetMapping("/verifyEmailOTP/{email}/{code}")
     public ResponseEntity<?> verifyUserEmailOTP(@PathVariable String email, @PathVariable String code) {
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+
+        logger.info("OTP email verification started.");
 
         try {
 
@@ -214,8 +240,10 @@ public class AppUserController {
             System.out.println(verificationCheck.getSid());
 
         } catch (Exception e) {
+            logger.info("Error occurred while verifying email OTP", e);
             return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
         }
+        logger.info("OTP email verification is successful.");
         return new ResponseEntity<>("This user's verification has been completed successfully", HttpStatus.OK);
 
     }
@@ -224,6 +252,8 @@ public class AppUserController {
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO twilloDTO) {
 
         Twilio.init(TwilloConstants.accountSid, TwilloConstants.authToken);
+
+        logger.info("Changing password started.");
 
         try {
             System.out.println("ovde");
@@ -249,6 +279,8 @@ public class AppUserController {
 
             appUserService.changePassword(appUser.get(), twilloDTO.getPassword());
 
+            logger.info("Password is successfully changed for user with ID: " + appUser.get().getId());
+
             PasswordRecord passwordRecord = new PasswordRecord();
             passwordRecord.setPassword(new BCryptPasswordEncoder().encode(twilloDTO.getPassword()));
             passwordRecord.setUser(appUser.get());
@@ -257,6 +289,7 @@ public class AppUserController {
 
         } catch (Exception e) {
             System.out.println(e);
+            logger.error("Error occurred while changing password.", e);
             return new ResponseEntity<>("Verification failed.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Password change has been completed successfully", HttpStatus.OK);
@@ -269,6 +302,8 @@ public class AppUserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Optional<AppUser> loggedIn = appUserService.findByEmail(email);
+
+        logger.info("Password rotation started for user with ID: " + loggedIn.get().getId());
 
         ArrayList<PasswordRecord> passwordRecords = passwordRecordService.findAllPasswordRecordsByUser(loggedIn.get());
 
@@ -288,6 +323,8 @@ public class AppUserController {
 
         loggedIn.get().setPassword(newPass);
         appUserService.saveAppUser(loggedIn.get());
+
+        logger.info("Password successfully rotated.");
 
         return new ResponseEntity(HttpStatus.OK);
 
