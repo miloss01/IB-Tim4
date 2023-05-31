@@ -83,6 +83,12 @@
 			<version>1.9.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.owasp</groupId>
+			<artifactId>dependency-check-maven</artifactId>
+			<version>8.2.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -97,6 +103,15 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>6.1.1</version>
+				<configuration>
+					<connectionTimeout>15000</connectionTimeout>
 				</configuration>
 			</plugin>
 		</plugins>
