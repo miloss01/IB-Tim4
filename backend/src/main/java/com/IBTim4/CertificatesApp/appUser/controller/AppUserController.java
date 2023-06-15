@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-@CrossOrigin
+@CrossOrigin(origins = "https://localhost:4200")
 @RestController
 @RequestMapping("/api/user")
 @Validated

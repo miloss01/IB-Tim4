@@ -11,6 +11,7 @@ import { LoginAuthModule } from './modules/auth/auth.module';
 import { LayoutModule } from './modules/layout/layout.module';
 import { RequestsModule } from './modules/requests/requests.module';
 import { Interceptor } from './infrastructure/interceptor/interceptor.interceptor';
+import { TokenExpirationInterceptor } from './infrastructure/interceptor/token-expiration.interceptor';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,12 @@ import { Interceptor } from './infrastructure/interceptor/interceptor.intercepto
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi: true
-    }
+    },
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: TokenExpirationInterceptor,
+        multi: true
+      }
   ],
   bootstrap: [AppComponent]
 })

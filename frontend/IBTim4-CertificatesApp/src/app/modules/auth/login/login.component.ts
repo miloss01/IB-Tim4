@@ -53,15 +53,11 @@ export class LoginComponent {
       this.userres = res
       localStorage.setItem('user', JSON.stringify(res.accessToken))
       this.authService.setUser()
-      console.log(this.authService.getRole())
       this.usersEmail = this.authService.getEmail()
       this.usersPhone = this.authService.getPhone()
-      console.log("AAAAAAAAAAAAA")
-      console.log(this.usersEmail)
-      this.authService.logout()
-      console.log(this.usersEmail)
 
-      this.sendCode()
+      // this.authService.logout()
+      // this.sendCode()
     },
     (err: any) => {
       console.log(err)

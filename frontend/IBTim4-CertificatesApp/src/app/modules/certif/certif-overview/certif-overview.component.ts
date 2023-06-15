@@ -24,6 +24,7 @@ export class CertifOverviewComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.loggedIn = this.authService.getEmail()
     this.loggedInRole = this.authService.getRole()
+    console.log("AAAAAAAAAAAAAAA")
   }
 
   ngAfterViewInit (): void {

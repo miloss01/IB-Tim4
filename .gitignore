@@ -76,6 +76,7 @@ yarn-error.log
 /frontend/libpeerconnection.log
 testem.log
 /frontend/typings
+/frontend/IBTim4-CertificatesApp/trusted-certificate/localhost.key
 
 # System files
 .DS_Store
