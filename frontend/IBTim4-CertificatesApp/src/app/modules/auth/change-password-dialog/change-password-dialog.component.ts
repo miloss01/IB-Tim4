@@ -28,6 +28,11 @@ export class ChangePasswordDialogComponent implements OnInit{
   }
 
   onChangeClick (): void {
+    const passRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\s]{8,15}$/
+    if (passRegex.test(this.newPassword)) {
+      this.snackBar.open('New password must have 8 to 64 characters, 1 digit and 1 special character are required', 'Close')
+      return
+    }
     if (this.newPassword !== this.newPasswordRepeated) {
       this.snackBar.open('New password and repeat password do not match', 'Close')
       return

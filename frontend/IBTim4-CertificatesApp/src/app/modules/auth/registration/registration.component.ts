@@ -18,10 +18,10 @@ export class RegistrationComponent implements OnInit{
   name: new FormControl('', Validators.required),
   surname: new FormControl('', Validators.required),
   email: new FormControl('', [Validators.email, Validators.required]),
-  password: new FormControl('', Validators.required),
+  password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\s]{8,15}$/)]),
   confirmPassword: new FormControl('', Validators.required),
   code: new FormControl(),
-  phone: new FormControl('', Validators.required),
+  phone: new FormControl('', [Validators.required, Validators.pattern(/^(\+)(3816)([0-9]){6,9}$/)]),
   })
 
   codeSent: boolean = false
@@ -38,6 +38,14 @@ export class RegistrationComponent implements OnInit{
   }
 
   registerAccount(): void {
+  if (!this.registerAccountForm.get("password")?.valid) {
+    alert("Password format is not valid")
+    return
+  }
+  if (!this.registerAccountForm.get("phone")?.valid) {
+    alert("Phone format is not valid")
+    return
+  }
   if (!this.registerAccountForm.valid){
   alert("Please fill in the corect data first")
   return

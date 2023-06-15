@@ -1,10 +1,13 @@
 package com.IBTim4.CertificatesApp.certificate.controller;
 
+import com.IBTim4.CertificatesApp.appUser.controller.AppUserController;
 import com.IBTim4.CertificatesApp.certificate.AppCertificate;
 import com.IBTim4.CertificatesApp.certificate.dto.CertificateDTO;
 import com.IBTim4.CertificatesApp.certificate.dto.DownloadCertificateAndPrivateKeyDTO;
 import com.IBTim4.CertificatesApp.certificate.dto.RejectionDTO;
 import com.IBTim4.CertificatesApp.certificate.service.interfaces.ICertificateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -54,14 +57,19 @@ public class CertificateController {
     @Autowired
     private ICertificateRequestService certificateRequestService;
 
+    Logger logger = LoggerFactory.getLogger(CertificateController.class);
+
     @GetMapping(value = "/valid", produces = "application/json")
     public ResponseEntity<Boolean> checkValidity(@RequestParam String serialNumber) {
+        logger.info("Stated validating certificate with ID: " + serialNumber);
         boolean valid = certificateService.isCertificateValid(serialNumber);
+        logger.info("Certificate is " + (valid ? "" : "not") + " valid.");
         return new ResponseEntity<>(valid, HttpStatus.OK);
     }
 
     @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<ArrayList<CertificateDTO>> getAll() {
+        logger.info("Started getting all certificates.");
         ArrayList<CertificateDTO> certificateDTOS = new ArrayList<>();
         for (AppCertificate cert : certificateService.getAllCertificates()) {
             certificateDTOS.add(new CertificateDTO(cert));
@@ -71,6 +79,7 @@ public class CertificateController {
 
     @GetMapping(value = "/allSN", produces = "application/json")
     public ResponseEntity<ArrayList<String>> getAllSerialNumbers() {
+        logger.info("Started getting all certificate serial numbers.");
         ArrayList<String> serialNumbers = new ArrayList<>();
         for (AppCertificate cert : certificateService.getAllCertificates()) {
             serialNumbers.add(cert.getSerialNumber().toString());
@@ -81,6 +90,7 @@ public class CertificateController {
     @GetMapping(value = "/subject/{subjectId}")
     @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #subjectId)")
     public ResponseEntity<ArrayList<CertificateDTO>> getAllCertificatesForSubject(@PathVariable Long subjectId) {
+        logger.info("Started getting all certificates for subject with ID: " + subjectId);
 
         Optional<AppUser> subject = appUserService.findById(subjectId);
 
@@ -100,17 +110,20 @@ public class CertificateController {
     @GetMapping(value = "/retracted/{serialNumber}")
     public ResponseEntity<Boolean> checkIfCertificateIsRetracted(@PathVariable String serialNumber) {
 
+        logger.info("Started check if certificate with serial number: " + serialNumber + " is revoked.");
         Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
 
         if (!certificate.isPresent())
             throw new CustomExceptionWithMessage("Certificate with that serial number does not exist!", HttpStatus.BAD_REQUEST);
 
+        logger.info("Certificate is " + (certificate.get().isRetracted() ? "" : "not") + " revoked.");
         return new ResponseEntity<>(certificate.get().isRetracted(), HttpStatus.OK);
 
     }
 
     @PostMapping(value = "/retract/{serialNumber}")
     public ResponseEntity<Void> retractCertificate(@PathVariable String serialNumber, @RequestBody String reason) {
+        logger.info("Started revoking certificate with serial number: " + serialNumber);
 
         Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
 
@@ -137,6 +150,8 @@ public class CertificateController {
     public ResponseEntity<Void> createCertificateRequest(@Valid @RequestBody CertificateRequestDTO certificateRequestDTO) {
 
         Optional<AppUser> requester = appUserService.findByEmail(certificateRequestDTO.getRequesterEmail());
+
+        logger.info("Creating request for user with ID: " + requester.get().getId());
 
         if (!requester.isPresent())
             throw new CustomExceptionWithMessage("User with that email does not exist!", HttpStatus.BAD_REQUEST);
@@ -183,12 +198,15 @@ public class CertificateController {
 
         certificateRequestService.saveForCreation(certificateRequest);
 
+        logger.info("Request created.");
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @PostMapping(value = "/request/accept/{requestId}")
     public ResponseEntity<Void> acceptCertificateRequest(@PathVariable Long requestId) {
+
+        logger.info("Accepting request with ID: " + requestId);
 
         Optional<CertificateRequest> certificateRequest = certificateRequestService.findById(requestId);
 
@@ -212,12 +230,15 @@ public class CertificateController {
         req.setStatus(RequestStatus.APPROVED);
         certificateRequestService.save(req);
 
+        logger.info("Request accepted.");
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @PostMapping(value = "/request/deny/{requestId}")
     public ResponseEntity<Void> denyCertificateRequest(@PathVariable Long requestId, @RequestBody String reason) {
+
+        logger.info("Denying request with ID: " + requestId);
 
         Optional<CertificateRequest> certificateRequest = certificateRequestService.findById(requestId);
 
@@ -240,6 +261,7 @@ public class CertificateController {
         req.setStatus(RequestStatus.DENIED);
         certificateRequestService.save(req);
 
+        logger.info("Request accepted.");
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -247,6 +269,8 @@ public class CertificateController {
     @GetMapping(value = "/request/{requesterId}")
     @PreAuthorize(value = "hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #requesterId)")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequestsForRequester(@PathVariable Long requesterId) {
+
+        logger.info("Getting requests for user with ID: " + requesterId);
 
         Optional<AppUser> requester = appUserService.findById(requesterId);
 
@@ -267,6 +291,8 @@ public class CertificateController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllCertificateRequests() {
 
+        logger.info("Getting all requests.");
+
         ArrayList<CertificateRequestDTO> ret = new ArrayList<>();
 
         for (CertificateRequest cr : certificateRequestService.findAll())
@@ -278,6 +304,9 @@ public class CertificateController {
 
     @PostMapping(value = "/approveRequest/{requestId}")
     public ResponseEntity<CertificateDTO> approveCertificate(@PathVariable Integer requestId) {
+
+        logger.info("Approving request with ID: " + requestId);
+
         CertificateRequest certificateRequest = certificateRequestService.getCertificateById(Long.valueOf(requestId));
 //        certificateRequestService.authentify(certificateRequest.getIssuer().getSubject());
         certificateRequest.setStatus(RequestStatus.APPROVED);
@@ -287,23 +316,31 @@ public class CertificateController {
         AppCertificate certificate = new AppCertificate(0L, start, end, certificateRequest.getRequester(),
                 certificateRequest.getIssuer(), certificateRequest.getCertificateType());
         certificateService.saveCertificate(certificate);
+
+        logger.info("Request approved.");
         return new ResponseEntity<>(new CertificateDTO(certificate), HttpStatus.OK);
     }
 
     //
     @PostMapping(value = "/declineRequest/{requestId}")
-    public ResponseEntity<RejectionDTO> declineCertificate(@PathVariable Integer requestId, @RequestBody RejectionDTO rejectionDTO) {
+    public ResponseEntity<RejectionDTO> declineCertificate(@PathVariable Integer requestId, @Valid @RequestBody RejectionDTO rejectionDTO) {
+
+        logger.info("Declining request with ID: " + requestId);
+
         CertificateRequest certificateRequest = certificateRequestService.getCertificateById(Long.valueOf(requestId));
         certificateRequest.setStatus(RequestStatus.DENIED);
         certificateRequest.setDescription(rejectionDTO.getReason());
 //        Rejection rejection = new Rejection(0L, certificateRequest, rejectionDTO.getReason(), LocalDateTime.now());
 //        certificateRequestService.save(rejection);
         certificateRequestService.save(certificateRequest);
+        logger.info("Request approved.");
         return new ResponseEntity<>(new RejectionDTO(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/request/manage/{userId}")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsSubjectInIssuer(@PathVariable Integer userId) {
+
+        logger.info("Getting all pending requests for user with ID: " + userId);
 
         Optional<AppUser> subject = appUserService.findById(Long.valueOf(userId));
 
@@ -323,6 +360,8 @@ public class CertificateController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsFromRootCertificates(@PathVariable Integer userId) {
 
+        logger.info("Getting all pending requests for admin with ID: " + userId);
+
         Optional<AppUser> subject = appUserService.findById(Long.valueOf(userId));
 
         if (!subject.isPresent())
@@ -341,6 +380,8 @@ public class CertificateController {
 
     @GetMapping(value = "/download/{serialNumber}", produces="application/zip")
     public void getAllCertificateRequests(@PathVariable String serialNumber, HttpServletResponse response) {
+
+        logger.info("Downloading certificate with serial number: " + serialNumber);
 
         Optional<AppCertificate> certificate = certificateService.findBySerialNumber(serialNumber);
 
@@ -388,6 +429,7 @@ public class CertificateController {
             response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "zipovano.zip" + "\"");
 
         } catch (CertificateEncodingException | IOException e) {
+            logger.error("Error occurred while download certificate.", e);
             throw new RuntimeException(e);
         }
 
@@ -395,6 +437,8 @@ public class CertificateController {
 
     @PostMapping(value = "/valid/upload")
     public ResponseEntity<Boolean> checkValidityFromUploadedCertificate(@RequestBody String certificateEncoded) {
+
+        logger.info("Validating certificate by upload.");
 
         byte[] certificateBytes = Base64.getDecoder().decode(certificateEncoded);
 
@@ -416,6 +460,7 @@ public class CertificateController {
 
         } catch (CertificateException e) {
             System.out.println(e.getMessage());
+            logger.error("Error occurred while validating certificate by upload.", e);
             return new ResponseEntity<>(false, HttpStatus.OK);
         }
 
