@@ -60,6 +60,7 @@ public class CertificateController {
     Logger logger = LoggerFactory.getLogger(CertificateController.class);
 
     @GetMapping(value = "/valid", produces = "application/json")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Boolean> checkValidity(@RequestParam String serialNumber) {
         logger.info("Stated validating certificate with ID: " + serialNumber);
         boolean valid = certificateService.isCertificateValid(serialNumber);
@@ -68,6 +69,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/all", produces = "application/json")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<ArrayList<CertificateDTO>> getAll() {
         logger.info("Started getting all certificates.");
         ArrayList<CertificateDTO> certificateDTOS = new ArrayList<>();
@@ -78,6 +80,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/allSN", produces = "application/json")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<ArrayList<String>> getAllSerialNumbers() {
         logger.info("Started getting all certificate serial numbers.");
         ArrayList<String> serialNumbers = new ArrayList<>();
@@ -108,6 +111,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/retracted/{serialNumber}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Boolean> checkIfCertificateIsRetracted(@PathVariable String serialNumber) {
 
         logger.info("Started check if certificate with serial number: " + serialNumber + " is revoked.");
@@ -122,6 +126,7 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/retract/{serialNumber}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Void> retractCertificate(@PathVariable String serialNumber, @RequestBody String reason) {
         logger.info("Started revoking certificate with serial number: " + serialNumber);
 
@@ -147,6 +152,7 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/request", consumes = "application/json")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Void> createCertificateRequest(@Valid @RequestBody CertificateRequestDTO certificateRequestDTO) {
 
         Optional<AppUser> requester = appUserService.findByEmail(certificateRequestDTO.getRequesterEmail());
@@ -204,6 +210,7 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/request/accept/{requestId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Void> acceptCertificateRequest(@PathVariable Long requestId) {
 
         logger.info("Accepting request with ID: " + requestId);
@@ -236,6 +243,7 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/request/deny/{requestId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Void> denyCertificateRequest(@PathVariable Long requestId, @RequestBody String reason) {
 
         logger.info("Denying request with ID: " + requestId);
@@ -303,6 +311,7 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/approveRequest/{requestId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<CertificateDTO> approveCertificate(@PathVariable Integer requestId) {
 
         logger.info("Approving request with ID: " + requestId);
@@ -323,6 +332,7 @@ public class CertificateController {
 
     //
     @PostMapping(value = "/declineRequest/{requestId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<RejectionDTO> declineCertificate(@PathVariable Integer requestId, @Valid @RequestBody RejectionDTO rejectionDTO) {
 
         logger.info("Declining request with ID: " + requestId);
@@ -338,6 +348,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/request/manage/{userId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<ArrayList<CertificateRequestDTO>> getAllPendingCertificateRequestsWhereUserIsSubjectInIssuer(@PathVariable Integer userId) {
 
         logger.info("Getting all pending requests for user with ID: " + userId);
@@ -379,6 +390,7 @@ public class CertificateController {
 
 
     @GetMapping(value = "/download/{serialNumber}", produces="application/zip")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public void getAllCertificateRequests(@PathVariable String serialNumber, HttpServletResponse response) {
 
         logger.info("Downloading certificate with serial number: " + serialNumber);
@@ -436,6 +448,7 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/valid/upload")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('AUTHENTICATED_USER')")
     public ResponseEntity<Boolean> checkValidityFromUploadedCertificate(@RequestBody String certificateEncoded) {
 
         logger.info("Validating certificate by upload.");

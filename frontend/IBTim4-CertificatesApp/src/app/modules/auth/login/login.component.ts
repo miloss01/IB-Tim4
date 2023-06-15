@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginAuthService } from '../service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,8 +18,8 @@ export class LoginComponent {
     isDisabled: boolean = false
 
   loginForm = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl()
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\s]{8,15}$/)])
   })
 
   errorMessage: string = ""
@@ -61,7 +61,7 @@ export class LoginComponent {
     },
     (err: any) => {
       console.log(err)
-      this.errorMessage = err.error.message
+      this.errorMessage = err.error
     })
   }
   sendCode() {
@@ -110,7 +110,7 @@ export class LoginComponent {
   }
 
   sendCodePswChange() {
-    if (this.matSelectValue === 'phone'){
+    if (this.matSelectValue === 'phone'&& this.loginForm.value.username){
       this.authService.sendPhoneCode(this.loginForm.value.username).subscribe((res: any) => {     
         console.log(res)
         this.errorMessage = res
@@ -119,7 +119,7 @@ export class LoginComponent {
         console.log(err)
         this.errorMessage = err.error.message
       })
-    } else {
+    } else if(this.loginForm.value.username){
         this.authService.sendEmailCode(this.loginForm.value.username).subscribe((res: any) => {     
           console.log(res)
           this.errorMessage = res

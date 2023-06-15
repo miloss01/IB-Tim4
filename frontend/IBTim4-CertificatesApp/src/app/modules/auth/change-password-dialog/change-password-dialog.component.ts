@@ -29,7 +29,8 @@ export class ChangePasswordDialogComponent implements OnInit{
 
   onChangeClick (): void {
     const passRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\s]{8,15}$/
-    if (passRegex.test(this.newPassword)) {
+    console.log(this.newPassword)
+    if (!passRegex.test(this.newPassword)) {
       this.snackBar.open('New password must have 8 to 64 characters, 1 digit and 1 special character are required', 'Close')
       return
     }
@@ -38,7 +39,7 @@ export class ChangePasswordDialogComponent implements OnInit{
       return
     }
     let sender = this.data.sender
-    this.authService.changePassword({email: sender, password: this.newPassword, phone: sender, code: this.code}).subscribe((res: any) => {     
+    this.authService.changePassword({email: sender, password: this.newPassword, phone: "+38160531317", code: this.code}).subscribe((res: any) => {     
     this.snackBar.open('Successful password change :)', 'Close')
     },
     (err: any) => {
