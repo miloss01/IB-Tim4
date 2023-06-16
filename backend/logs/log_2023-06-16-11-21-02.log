@@ -471,3 +471,6 @@ java.util.NoSuchElementException: No value present
 2023-06-16 11:34:47,541 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-9] Getting GET request on: https://localhost:8081/api/certificate/request
 2023-06-16 11:34:47,541 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-9] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWxlbmEubWlsdXRpbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJwaG9uZSI6IiszODE2MDM1MzEzMTciLCJpZCI6OSwiZXhwIjoxNjg2OTA4MjMwLCJpYXQiOjE2ODY5MDgwNTB9.8wNVmk8QGvlfV5XAuSEJRIIxGo_vAbcXbvvauG__wyi_adq0ZL3EEVKWmP5NMRMsg7eb7J64wyH3XIZ_ZSR1Hw"
 2023-06-16 11:34:47,550 INFO com.IBTim4.CertificatesApp.certificate.controller.CertificateController [https-jsse-nio-8081-exec-9] Getting all requests.
+2023-06-16 11:40:44,228 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 11:40:44,236 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-06-16 11:40:44,265 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
