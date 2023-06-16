@@ -19,6 +19,6 @@ public class LoginDTO {
     @Size(max = 100, message = "Field (email) cannot be longer than 100 characters!")
     private String email;
     @NotBlank(message = "Field (password) is required!")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\\s]{8,64}$", message = "Field password must be have 8 to 64 characters, 1 digit and 1 special character are required")
+//    @Pattern(regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\\s]{8,64}$", message = "Field password must be have 8 to 64 characters, 1 digit and 1 special character are required")
     private String password;
 }

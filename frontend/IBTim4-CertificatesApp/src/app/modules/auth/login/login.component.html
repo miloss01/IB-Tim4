@@ -26,6 +26,7 @@
         <input matInput type="text" name="code" [(ngModel)]="code">
     </mat-form-field>
     <button  mat-raised-button class="oneLine" (click)="verifyCode()" *ngIf="codeSent" >Log in</button>
+    <button  mat-raised-button class="oneLine" (click)="withGoogle()">Log in with google</button>
    <button  mat-raised-button class="oneLine" (click)="changePassword()" >Get code and change password</button>
 
    <a routerLink="/registration" routerLinkActive="active">DON'T HAVE AN ACCOUNT? REGISTER NOW.</a>

@@ -2,7 +2,6 @@ package com.IBTim4.CertificatesApp.appUser.controller;
 
 import com.IBTim4.CertificatesApp.appUser.AppUser;
 import com.IBTim4.CertificatesApp.appUser.PasswordRecord;
-import com.IBTim4.CertificatesApp.appUser.Role;
 import com.IBTim4.CertificatesApp.appUser.dto.LoginDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.RegistrationRequestDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.TokenResponseDTO;
@@ -10,6 +9,7 @@ import com.IBTim4.CertificatesApp.appUser.dto.UserExpandedDTO;
 import com.IBTim4.CertificatesApp.appUser.dto.*;
 import com.IBTim4.CertificatesApp.appUser.service.interfaces.IAppUserService;
 import com.IBTim4.CertificatesApp.appUser.service.interfaces.IPasswordRecordService;
+import com.IBTim4.CertificatesApp.auth.SavedJwt;
 import com.IBTim4.CertificatesApp.auth.JwtTokenUtil;
 import com.IBTim4.CertificatesApp.exceptions.CustomExceptionWithMessage;
 import com.IBTim4.CertificatesApp.helper.TwilloConstants;
@@ -31,7 +31,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +55,9 @@ public class AppUserController {
     IAppUserService appUserService;
     @Autowired
     IPasswordRecordService passwordRecordService;
+
+    @Autowired
+    SavedJwt savedJwt;
 
     Logger logger = LoggerFactory.getLogger(AppUserController.class);
 
@@ -332,6 +337,19 @@ public class AppUserController {
 
         return new ResponseEntity(HttpStatus.OK);
 
+    }
+
+    @GetMapping("/google/oauth")
+    public void redirectToGoogleLogin(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/oauth2/authorization/google");
+    }
+
+    @PostMapping("/google/login")
+    public ResponseEntity<TokenResponseDTO> loginWithGoogle() {
+        String jwt = savedJwt.getJwt();
+        savedJwt.setJwt(null);
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(jwt, "", false);
+        return new ResponseEntity<>(tokenResponseDTO, HttpStatus.OK);
     }
 
 }

@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/infrastructure/material/material.module'
 import { RegistrationComponent } from './registration/registration.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { RefreshPasswordComponent } from './refresh-password/refresh-password.component';
+import { OauthComponent } from './oauth/oauth.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { RefreshPasswordComponent } from './refresh-password/refresh-password.co
     LoginComponent,
     RegistrationComponent,
     ChangePasswordDialogComponent,
-    RefreshPasswordComponent
+    RefreshPasswordComponent,
+    OauthComponent
   ],
   imports: [
     CommonModule,

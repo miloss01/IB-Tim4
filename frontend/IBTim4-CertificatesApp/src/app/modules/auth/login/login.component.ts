@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginAuthService } from '../service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent {
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*\s]{8,15}$/)])
+    password: new FormControl('')
   })
 
   errorMessage: string = ""
@@ -32,6 +33,10 @@ export class LoginComponent {
 
 
   ngOnInit(): void {
+  }
+
+  withGoogle(): void {
+    window.location.href = `${environment.apiHost}user/google/oauth`;
   }
 
   loginUser (): void {

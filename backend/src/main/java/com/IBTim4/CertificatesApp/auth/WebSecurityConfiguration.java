@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class WebSecurityConfiguration {
     @Autowired
     JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    OauthHandler oauthHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,9 +38,14 @@ public class WebSecurityConfiguration {
 //                .antMatchers(HttpMethod.POST, "/api/certificate/request").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/certificate/request/accept").permitAll()
                 .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/user/login").permitAll()
                 .antMatchers("/api/user/changePassword").permitAll()
                 .antMatchers("/api/user/*OTP*/**").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .oauth2Client()
+                .and()
+                .oauth2Login().successHandler(oauthHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

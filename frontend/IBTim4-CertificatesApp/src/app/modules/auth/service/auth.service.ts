@@ -123,4 +123,8 @@ export class LoginAuthService {
     return this.http.post<string>(environment.apiHost + "user/refreshPassword", password);
   }
 
+  withGoogle(): Observable<any> {
+    return this.http.post<string>(environment.apiHost + "user/google/login", {});
+  }
+
 }

@@ -12,9 +12,11 @@ import { TokenGuard } from './infrastructure/guard/token.guard';
 import { ValidateCertificateComponent } from './modules/certif/validate-certificate/validate-certificate.component';
 import { RefreshPasswordComponent } from './modules/auth/refresh-password/refresh-password.component';
 import { RefreshPasswordGuard } from './infrastructure/guard/refresh-password.guard';
+import { OauthComponent } from './modules/auth/oauth/oauth.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'oauth-login', component: OauthComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'certifs-overview', component: CertifOverviewComponent, canActivate: [TokenGuard]},
   {path: 'create-req', component: CreateRequestComponent, canActivate: [TokenGuard]},
