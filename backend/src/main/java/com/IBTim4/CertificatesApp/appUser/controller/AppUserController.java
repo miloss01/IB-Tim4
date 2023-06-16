@@ -71,13 +71,16 @@ public class AppUserController {
         if (appUser.isPresent()) {
             throw new CustomExceptionWithMessage("User with that email already exists!", HttpStatus.BAD_REQUEST);
         }
-        userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+
+        String password = new BCryptPasswordEncoder().encode(userDTO.getPassword());
+
+        userDTO.setPassword(password);
         AppUser saved = appUserService.saveAppUser(new AppUser(userDTO));
 
         logger.info("User successfully registered.");
 
         PasswordRecord passwordRecord = new PasswordRecord();
-        passwordRecord.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        passwordRecord.setPassword(password);
         passwordRecord.setUser(saved);
         passwordRecord.setTimestamp(LocalDateTime.now());
         PasswordRecord savedPasswordRecord = passwordRecordService.save(passwordRecord);
@@ -285,12 +288,16 @@ public class AppUserController {
                 if (new BCryptPasswordEncoder().matches(twilloDTO.getPassword(), passwordRecord.getPassword()))
                     throw new CustomExceptionWithMessage("New password cannot be the same as any of the last three!", HttpStatus.BAD_REQUEST);
 
-            appUserService.changePassword(appUser.get(), twilloDTO.getPassword());
+            String newPassword = new BCryptPasswordEncoder().encode(twilloDTO.getPassword());
+            AppUser user = appUser.get();
+
+            user.setPassword(newPassword);
+            appUserService.saveAppUser(user);
 
             logger.info("Password is successfully changed for user with ID: " + appUser.get().getId());
 
             PasswordRecord passwordRecord = new PasswordRecord();
-            passwordRecord.setPassword(new BCryptPasswordEncoder().encode(twilloDTO.getPassword()));
+            passwordRecord.setPassword(newPassword);
             passwordRecord.setUser(appUser.get());
             passwordRecord.setTimestamp(LocalDateTime.now());
             PasswordRecord savedPasswordRecord = passwordRecordService.save(passwordRecord);
