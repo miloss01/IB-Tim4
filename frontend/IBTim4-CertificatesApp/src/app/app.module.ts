@@ -12,6 +12,8 @@ import { LayoutModule } from './modules/layout/layout.module';
 import { RequestsModule } from './modules/requests/requests.module';
 import { Interceptor } from './infrastructure/interceptor/interceptor.interceptor';
 import { TokenExpirationInterceptor } from './infrastructure/interceptor/token-expiration.interceptor';
+import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { TokenExpirationInterceptor } from './infrastructure/interceptor/token-e
     HttpClientModule,
     LayoutModule,
     LoginAuthModule,
-    RequestsModule
+    RequestsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
   providers: [
     {
@@ -36,11 +40,17 @@ import { TokenExpirationInterceptor } from './infrastructure/interceptor/token-e
       useClass: Interceptor,
       multi: true
     },
-      {
-        provide: HTTP_INTERCEPTORS,
-        useClass: TokenExpirationInterceptor,
-        multi: true
-      }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenExpirationInterceptor,
+      multi: true
+    },
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    }
   ],
   bootstrap: [AppComponent]
 })

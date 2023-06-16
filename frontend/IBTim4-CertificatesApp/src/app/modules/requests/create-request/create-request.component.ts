@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, NgForm, NgModel } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -27,6 +27,9 @@ export class CreateRequestComponent implements OnInit {
   selectedTypeToggleVal: string = 'END';
   selectedShortTermToggleVal: string = 'NONE';
   selectedDateVal: any;
+
+  siteKey: string =  environment.recaptcha.siteKey;
+  token: string = '';
 
   constructor(
     private certService: CertService,
@@ -75,12 +78,19 @@ export class CreateRequestComponent implements OnInit {
     this.selectedShortTermToggleVal = val;
   }
 
-  public onRequestClick() {
+  public onRequestClick(form: NgForm) {
+    if (form.invalid) {
+      for (const control of Object.keys(form.controls)) {
+        form.controls[control].markAsTouched();
+      }
+      return;
+    }
     let req = {
       certificateType: this.selectedTypeToggleVal,
       issuerSN: this.selectedSN,
       requesterEmail: this.authService.getEmail(),
-      expirationTime: ''
+      expirationTime: '',
+      recaptchaToken: this.token
     }
     if (this.selectedShortTermToggleVal != 'NONE') {
       let t = new Date() 
@@ -98,7 +108,8 @@ export class CreateRequestComponent implements OnInit {
         if (err.status == 400) alert(err.error.message)
         else (alert('Error'))
 
-    })
+    })    
   }
+
 
 }

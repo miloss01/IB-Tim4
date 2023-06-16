@@ -127,4 +127,9 @@ export class LoginAuthService {
     return this.http.post<string>(environment.apiHost + "user/google/login", {});
   }
 
+  validateCaptcha(token:string): Observable<any> {
+    return this.http.get<string>(environment.apiHost + "captcha/validate/?token=" + token);
+  }
+
+
 }

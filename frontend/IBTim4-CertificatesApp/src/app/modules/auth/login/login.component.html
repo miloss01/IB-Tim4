@@ -13,6 +13,12 @@
             <mat-label>Password</mat-label>
             <input matInput type="password" name="password" formControlName="password" />
         </mat-form-field>
+        <re-captcha id="recaptcha" name="recaptcha" #recaptcha="ngModel" [(ngModel)]="token" 
+        required [class.is-invalid]="recaptcha.invalid && (recaptcha.dirty || recaptcha.touched)"
+        [ngModelOptions]="{standalone: true}"></re-captcha>
+        <div *ngIf="recaptcha.invalid && (recaptcha.dirty || recaptcha.touched)" class="invalid-feedback">
+            <div *ngIf="recaptcha.errors?.['required']">This field is required.</div>
+        </div>
         <p>{{errorMessage}}</p>
         <mat-select [(value)]="matSelectValue">
             <mat-option value="email">Email verification</mat-option>

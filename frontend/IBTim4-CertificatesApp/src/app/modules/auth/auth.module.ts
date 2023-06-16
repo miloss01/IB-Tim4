@@ -8,6 +8,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { RefreshPasswordComponent } from './refresh-password/refresh-password.component';
 import { OauthComponent } from './oauth/oauth.component';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 
 @NgModule({
@@ -24,6 +25,8 @@ import { OauthComponent } from './oauth/oauth.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
   exports: [
     LoginComponent,
