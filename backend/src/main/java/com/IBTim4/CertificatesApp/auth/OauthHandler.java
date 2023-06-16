@@ -40,7 +40,7 @@ public class OauthHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        logger.info("Started OAuth login process");
+        logger.info("Started OAuth login");
 
         if (authentication instanceof OAuth2AuthenticationToken) {
             OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
@@ -82,11 +82,11 @@ public class OauthHandler extends SimpleUrlAuthenticationSuccessHandler {
 
             savedJwt.setJwt(jwt);
 
-            logger.info("Successfully generated a jwt token with OAuth credentials");
+            logger.info("Login is successful");
 
             response.sendRedirect("https://localhost:4200/oauth-login");
         } else {
-            logger.error("Unable to login with OAuth");
+            logger.error("Error occurred while logging");
             OAuth2Error oauth2Error = new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST);
             throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
         }

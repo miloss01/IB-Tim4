@@ -61,3 +61,6 @@
 2023-06-16 12:37:09,732 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-3] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWtpY2FtaWtpLmJhdEBnbWFpbC5jb20iLCJyb2xlIjoiQVVUSEVOVElDQVRFRF9VU0VSIiwicGhvbmUiOiIrMzgxNjkyNTMyMjAxIiwiaWQiOjUsImV4cCI6MTY4NjkxMTk5MSwiaWF0IjoxNjg2OTExODExfQ.qNmlfxzuXHFyKJZ_K73BKymVn4dQkr-ZXDnKhHUPNBDxcsi4y56pM5kJKW6dz6DJYQmklPDFVjja2Eol2yCk9g"
 2023-06-16 12:37:09,744 INFO com.IBTim4.CertificatesApp.certificate.controller.CertificateController [https-jsse-nio-8081-exec-3] Creating request for user with ID: 5
 2023-06-16 12:37:09,747 ERROR com.IBTim4.CertificatesApp.exceptions.ExceptionHandlerAdvice [https-jsse-nio-8081-exec-3] CustomExceptionWithMessage occurred with status 400 BAD_REQUEST: Certificate with that serial number does not exist!
+2023-06-16 12:46:08,926 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 12:46:08,936 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-06-16 12:46:08,956 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
