@@ -1,0 +1,37 @@
+2023-06-16 16:18:14,211 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-06-16 16:18:14,235 INFO org.springframework.boot.StartupInfoLogger [main] Starting CertificatesAppApplication using Java 17.0.5 on MilosStojanovic with PID 1308 (D:\Faks\3. Godina\Informaciona bezbednost\IB-Tim4\backend\target\classes started by MMDE Laptop in D:\Faks\3. Godina\Informaciona bezbednost\IB-Tim4\backend)
+2023-06-16 16:18:14,236 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.7.9, Spring v5.3.25
+2023-06-16 16:18:14,238 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-06-16 16:18:16,526 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-16 16:18:16,674 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 128 ms. Found 5 JPA repository interfaces.
+2023-06-16 16:18:18,046 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (https)
+2023-06-16 16:18:18,083 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["https-jsse-nio-8081"]
+2023-06-16 16:18:18,085 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2023-06-16 16:18:18,086 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-06-16 16:18:18,550 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-06-16 16:18:18,551 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 4217 ms
+2023-06-16 16:18:18,632 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2023-06-16 16:18:19,050 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2023-06-16 16:18:19,083 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [main] H2 console available at '/h2-console'. Database available at 'jdbc:postgresql://localhost:5432/postgres?'
+2023-06-16 16:18:19,462 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-16 16:18:19,641 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-06-16 16:18:20,139 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-06-16 16:18:20,484 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-06-16 16:18:22,080 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-16 16:18:22,098 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 16:18:22,747 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'jwtRequestFilter' configured for use
+2023-06-16 16:18:23,967 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-16 16:18:24,436 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@33197c2f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@24e79a4d, org.springframework.security.web.context.SecurityContextPersistenceFilter@c3ca482, org.springframework.security.web.header.HeaderWriterFilter@74d776fb, org.springframework.web.filter.CorsFilter@5542418c, org.springframework.security.web.authentication.logout.LogoutFilter@1755aee6, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@4027edeb, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@59db8216, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@7bb86ac, com.IBTim4.CertificatesApp.auth.JwtRequestFilter@2114eb1a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@277474fc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5ab3f611, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@705eb026, org.springframework.security.oauth2.client.web.OAuth2AuthorizationCodeGrantFilter@7d4135c9, org.springframework.security.web.session.SessionManagementFilter@122ea8dc, org.springframework.security.web.access.ExceptionTranslationFilter@377cbdae, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1f1e15de]
+2023-06-16 16:18:25,064 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["https-jsse-nio-8081"]
+2023-06-16 16:18:25,516 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (https) with context path ''
+2023-06-16 16:18:25,549 INFO org.springframework.boot.StartupInfoLogger [main] Started CertificatesAppApplication in 12.357 seconds (JVM running for 14.172)
+2023-06-16 16:18:46,078 INFO org.apache.juli.logging.DirectJDKLog [https-jsse-nio-8081-exec-8] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-16 16:18:46,079 INFO org.springframework.web.servlet.FrameworkServlet [https-jsse-nio-8081-exec-8] Initializing Servlet 'dispatcherServlet'
+2023-06-16 16:18:46,081 INFO org.springframework.web.servlet.FrameworkServlet [https-jsse-nio-8081-exec-8] Completed initialization in 2 ms
+2023-06-16 16:18:46,154 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Getting GET request on: https://localhost:8081/api/captcha/validate/
+2023-06-16 16:18:46,155 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Authorization header: null
+2023-06-16 16:18:46,156 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] JWT Token does not exist.
+2023-06-16 16:18:46,724 ERROR com.IBTim4.CertificatesApp.exceptions.ExceptionHandlerAdvice [https-jsse-nio-8081-exec-8] CustomExceptionWithMessage occurred with status 400 BAD_REQUEST: reCaptcha was not successfully validated
+2023-06-16 16:20:03,426 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 16:20:03,430 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-06-16 16:20:03,459 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

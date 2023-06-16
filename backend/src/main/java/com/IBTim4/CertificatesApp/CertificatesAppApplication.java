@@ -18,6 +18,7 @@ public class CertificatesAppApplication {
 		Constants.aliasPass = System.getenv("KEYSTORE_PASS");
 		Constants.recaptchaSecretKey = System.getenv("RECAPTCHA_SECRET_KEY");
 		System.out.println(Constants.keyStorePass);
+		System.out.println(Constants.recaptchaSecretKey);
 
 		File f = new File(Constants.keyStoreFile);
 		if(!f.exists()) {
