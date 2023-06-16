@@ -1,0 +1,204 @@
+2023-06-16 10:40:13,453 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-06-16 10:40:13,528 INFO org.springframework.boot.StartupInfoLogger [main] Starting CertificatesAppApplication using Java 17.0.6 on DESKTOP-ASGOQUH with PID 8892 (D:\3. godina SIIT\letnji semestar\informaciona bezbednost\projekat\IB-Tim4\backend\target\classes started by Selena in D:\3. godina SIIT\letnji semestar\informaciona bezbednost\projekat\IB-Tim4\backend)
+2023-06-16 10:40:13,532 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.7.9, Spring v5.3.25
+2023-06-16 10:40:13,537 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-06-16 10:40:18,730 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-16 10:40:19,153 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 372 ms. Found 5 JPA repository interfaces.
+2023-06-16 10:40:21,734 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (https)
+2023-06-16 10:40:21,784 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["https-jsse-nio-8081"]
+2023-06-16 10:40:21,787 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2023-06-16 10:40:21,788 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-06-16 10:40:22,585 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-06-16 10:40:22,586 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 8813 ms
+2023-06-16 10:40:22,765 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2023-06-16 10:40:23,556 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2023-06-16 10:40:23,592 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [main] H2 console available at '/h2-console'. Database available at 'jdbc:postgresql://localhost:5432/postgres?'
+2023-06-16 10:40:24,096 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-16 10:40:24,347 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-06-16 10:40:24,980 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-06-16 10:40:25,400 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-06-16 10:40:27,796 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-16 10:40:27,839 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 10:40:28,980 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'jwtRequestFilter' configured for use
+2023-06-16 10:40:30,307 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-16 10:40:31,100 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@122ea8dc, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6cb417fc, org.springframework.security.web.context.SecurityContextPersistenceFilter@15c3849f, org.springframework.security.web.header.HeaderWriterFilter@20e41f13, org.springframework.web.filter.CorsFilter@239bc43f, org.springframework.security.web.authentication.logout.LogoutFilter@c02a1be, com.IBTim4.CertificatesApp.auth.JwtRequestFilter@44e4cf8a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@688efeb2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@85f5f55, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@c3ca482, org.springframework.security.web.session.SessionManagementFilter@6c767288, org.springframework.security.web.access.ExceptionTranslationFilter@71f437d7, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5036a286]
+2023-06-16 10:40:31,908 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["https-jsse-nio-8081"]
+2023-06-16 10:40:32,360 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (https) with context path ''
+2023-06-16 10:40:32,386 INFO org.springframework.boot.StartupInfoLogger [main] Started CertificatesAppApplication in 21.078 seconds (JVM running for 43.943)
+2023-06-16 10:42:09,929 INFO org.apache.juli.logging.DirectJDKLog [https-jsse-nio-8081-exec-9] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-16 10:42:09,930 INFO org.springframework.web.servlet.FrameworkServlet [https-jsse-nio-8081-exec-9] Initializing Servlet 'dispatcherServlet'
+2023-06-16 10:42:09,934 INFO org.springframework.web.servlet.FrameworkServlet [https-jsse-nio-8081-exec-9] Completed initialization in 3 ms
+2023-06-16 10:42:10,046 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-10] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:42:10,047 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-10] Authorization header: null
+2023-06-16 10:42:10,048 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-10] JWT Token does not exist.
+2023-06-16 10:42:10,679 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-10] Login started.
+2023-06-16 10:42:11,283 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-10] Trying to log in user with ID: 9
+2023-06-16 10:42:11,448 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-10] Login successful.
+2023-06-16 10:42:11,449 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-10] Password rotation is not required.
+2023-06-16 10:42:11,542 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Getting GET request on: https://localhost:8081/api/user/generateEmailOTP/selena.milutin@gmail.com
+2023-06-16 10:42:11,544 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Authorization header: null
+2023-06-16 10:42:11,546 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] JWT Token does not exist.
+2023-06-16 10:42:11,583 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Generating email OTP started.
+2023-06-16 10:42:14,404 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] OTP has been successfully generated, and awaits your verification 2023-06-16T10:42:14.404689400
+2023-06-16 10:42:14,405 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] OTP successfully generated and sent.
+2023-06-16 10:42:42,865 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Getting POST request on: https://localhost:8081/api/user/verifyOTP/
+2023-06-16 10:42:42,866 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Authorization header: null
+2023-06-16 10:42:42,867 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] JWT Token does not exist.
+2023-06-16 10:42:42,885 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-2] Verifying OTP started.
+2023-06-16 10:42:43,584 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-2] Verification is successful.
+2023-06-16 10:42:48,252 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-5] Getting GET request on: https://localhost:8081/api/certificate/request
+2023-06-16 10:42:48,255 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-5] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWxlbmEubWlsdXRpbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJwaG9uZSI6IiszODE2MDM1MzEzMTciLCJpZCI6OSwiZXhwIjoxNjg2OTA1MTExLCJpYXQiOjE2ODY5MDQ5MzF9.-7KTUloGU4Cg9oX9oS8alr2m3l9TRtpEzVN8viAxSJMCWZLXmRCmxcEp3auIdId67McMPPx3yBfnS0dmQ9u9Og"
+2023-06-16 10:42:48,371 INFO com.IBTim4.CertificatesApp.certificate.controller.CertificateController [https-jsse-nio-8081-exec-5] Getting all requests.
+2023-06-16 10:46:46,013 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-5] Getting GET request on: https://localhost:8081/api/user/generateEmailOTP/selena.milutin@gmail.com
+2023-06-16 10:46:46,014 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-5] Authorization header: null
+2023-06-16 10:46:46,015 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-5] JWT Token does not exist.
+2023-06-16 10:46:46,021 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-5] Generating email OTP started.
+2023-06-16 10:46:48,310 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-5] OTP has been successfully generated, and awaits your verification 2023-06-16T10:46:48.310205400
+2023-06-16 10:46:48,311 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-5] OTP successfully generated and sent.
+2023-06-16 10:47:46,453 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Getting POST request on: https://localhost:8081/api/user/changePassword
+2023-06-16 10:47:46,453 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Authorization header: null
+2023-06-16 10:47:46,454 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] JWT Token does not exist.
+2023-06-16 10:47:46,468 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] Changing password started.
+2023-06-16 10:47:46,951 ERROR com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] Error occurred while changing password.
+com.twilio.exception.ApiException: The requested resource /Services/VA02011ea6c6ac80ed38fd150af774225d/VerificationCheck was not found
+	at com.twilio.rest.verify.v2.service.VerificationCheckCreator.create(VerificationCheckCreator.java:96)
+	at com.twilio.rest.verify.v2.service.VerificationCheckCreator.create(VerificationCheckCreator.java:43)
+	at com.twilio.base.Creator.create(Creator.java:40)
+	at com.IBTim4.CertificatesApp.appUser.controller.AppUserController.changePassword(AppUserController.java:265)
+	at com.IBTim4.CertificatesApp.appUser.controller.AppUserController$$FastClassBySpringCGLIB$$48ad192d.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:793)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.validation.beanvalidation.MethodValidationInterceptor.invoke(MethodValidationInterceptor.java:123)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
+	at com.IBTim4.CertificatesApp.appUser.controller.AppUserController$$EnhancerBySpringCGLIB$$1eda12bb.changePassword(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1071)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:964)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:696)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:779)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:111)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:337)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:122)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:109)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at com.IBTim4.CertificatesApp.auth.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2023-06-16 10:59:00,981 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:59:00,982 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Authorization header: null
+2023-06-16 10:59:00,982 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] JWT Token does not exist.
+2023-06-16 10:59:00,993 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-7] Login started.
+2023-06-16 10:59:01,128 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-7] Trying to log in user with ID: 9
+2023-06-16 10:59:01,135 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-7] Login successful.
+2023-06-16 10:59:01,136 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-7] Password rotation is not required.
+2023-06-16 10:59:01,169 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Getting GET request on: https://localhost:8081/api/user/generateEmailOTP/selena.milutin@gmail.com
+2023-06-16 10:59:01,170 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Authorization header: null
+2023-06-16 10:59:01,171 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] JWT Token does not exist.
+2023-06-16 10:59:01,177 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] Generating email OTP started.
+2023-06-16 10:59:03,021 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] OTP has been successfully generated, and awaits your verification 2023-06-16T10:59:03.021824800
+2023-06-16 10:59:03,022 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] OTP successfully generated and sent.
+2023-06-16 11:00:17,372 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Getting POST request on: https://localhost:8081/api/user/verifyOTP/
+2023-06-16 11:00:17,373 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] Authorization header: null
+2023-06-16 11:00:17,373 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-8] JWT Token does not exist.
+2023-06-16 11:00:17,379 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] Verifying OTP started.
+2023-06-16 11:00:18,019 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-8] Verification is successful.
+2023-06-16 11:01:08,069 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-9] Getting GET request on: https://localhost:8081/api/user/generateEmailOTP/selena.milutin@gmail.com
+2023-06-16 11:01:08,070 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-9] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWxlbmEubWlsdXRpbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJwaG9uZSI6IiszODE2MDM1MzEzMTciLCJpZCI6OSwiZXhwIjoxNjg2OTA2MTIxLCJpYXQiOjE2ODY5MDU5NDF9.rtVzIVYu0nrHsY_5jN9yAWH2jESiLUdc8hBVpPts1tPPf65DCDYC9pNtVurgsqA5Idj6qzgEAMvXiDOcPxAxUA"
+2023-06-16 11:01:08,088 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-9] Generating email OTP started.
+2023-06-16 11:01:08,990 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-9] OTP has been successfully generated, and awaits your verification 2023-06-16T11:01:08.990085400
+2023-06-16 11:01:08,992 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-9] OTP successfully generated and sent.
+2023-06-16 11:02:00,935 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-6] Getting POST request on: https://localhost:8081/api/user/changePassword
+2023-06-16 11:02:00,937 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-6] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWxlbmEubWlsdXRpbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJwaG9uZSI6IiszODE2MDM1MzEzMTciLCJpZCI6OSwiZXhwIjoxNjg2OTA2MTIxLCJpYXQiOjE2ODY5MDU5NDF9.rtVzIVYu0nrHsY_5jN9yAWH2jESiLUdc8hBVpPts1tPPf65DCDYC9pNtVurgsqA5Idj6qzgEAMvXiDOcPxAxUA"
+2023-06-16 11:02:00,999 ERROR com.IBTim4.CertificatesApp.exceptions.ExceptionHandlerAdvice [https-jsse-nio-8081-exec-6] MethodArgumentNotValidException occurred: Field phone must be formatted like +381691234567
+
+2023-06-16 11:04:19,268 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 11:04:19,279 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-06-16 11:04:19,311 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

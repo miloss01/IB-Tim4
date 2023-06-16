@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class PasswordChangeDTO {
-    @Pattern(regexp = "^(\\+)(3816)([0-9]){6,9}$", message = "Field phone must be formatted like +381691234567")
+    //@Pattern(regexp = "^(\\+)(3816)([0-9]){6,9}$", message = "Field phone must be formatted like +381691234567")
     private String phone;
     @Pattern(regexp = "^([0-9]){6}$", message = "Field code must be formatted like 123456")
     private String code;

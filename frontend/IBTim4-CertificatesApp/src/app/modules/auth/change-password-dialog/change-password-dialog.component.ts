@@ -39,7 +39,7 @@ export class ChangePasswordDialogComponent implements OnInit{
       return
     }
     let sender = this.data.sender
-    this.authService.changePassword({email: sender, password: this.newPassword, phone: "+38160531317", code: this.code}).subscribe((res: any) => {     
+    this.authService.changePassword({email: sender, password: this.newPassword, phone: sender, code: this.code}).subscribe((res: any) => {     
     this.snackBar.open('Successful password change :)', 'Close')
     },
     (err: any) => {
