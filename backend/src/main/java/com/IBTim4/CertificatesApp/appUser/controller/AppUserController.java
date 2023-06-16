@@ -119,6 +119,8 @@ public class AppUserController {
 
         ArrayList<PasswordRecord> passwordRecords = passwordRecordService.findAllPasswordRecordsByUser(user);
         LocalDateTime lastChanged = passwordRecords.get(0).getTimestamp();
+        System.out.println("lastChanged");
+        System.out.println(lastChanged);
         LocalDateTime now = LocalDateTime.now();
 
         if (now.isAfter(lastChanged.plusDays(7L)))

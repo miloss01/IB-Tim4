@@ -49,3 +49,15 @@
 2023-06-16 12:35:01,601 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWtpY2FtaWtpLmJhdEBnbWFpbC5jb20iLCJyb2xlIjoiQVVUSEVOVElDQVRFRF9VU0VSIiwicGhvbmUiOiIrMzgxNjkyNTMyMjAxIiwiaWQiOjUsImV4cCI6MTY4NjkxMTc2MiwiaWF0IjoxNjg2OTExNTgyfQ.rFq2lMP-atxda_Z3RYOv1crPUSRQ-JltBtaCA2pFMVepVpjnvsy4ZCbmlHXyPdRamBnVyLr7c2EmER50hUF9TQ"
 2023-06-16 12:35:01,671 INFO com.IBTim4.CertificatesApp.certificate.controller.CertificateController [https-jsse-nio-8081-exec-2] Creating request for user with ID: 5
 2023-06-16 12:35:01,706 ERROR com.IBTim4.CertificatesApp.exceptions.ExceptionHandlerAdvice [https-jsse-nio-8081-exec-2] CustomExceptionWithMessage occurred with status 400 BAD_REQUEST: Issuer will expire before the new certificate expires!
+2023-06-16 12:36:46,819 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Getting GET request on: https://localhost:8081/api/user/google/oauth
+2023-06-16 12:36:46,819 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Authorization header: null
+2023-06-16 12:36:46,820 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] JWT Token does not exist.
+2023-06-16 12:36:51,300 INFO com.IBTim4.CertificatesApp.auth.OauthHandler [https-jsse-nio-8081-exec-6] Started OAuth login process
+2023-06-16 12:36:51,304 INFO com.IBTim4.CertificatesApp.auth.OauthHandler [https-jsse-nio-8081-exec-6] Successfully generated a jwt token with OAuth credentials
+2023-06-16 12:36:53,133 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Getting POST request on: https://localhost:8081/api/user/google/login
+2023-06-16 12:36:53,134 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Authorization header: null
+2023-06-16 12:36:53,134 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] JWT Token does not exist.
+2023-06-16 12:37:09,732 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-3] Getting POST request on: https://localhost:8081/api/certificate/request
+2023-06-16 12:37:09,732 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-3] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWtpY2FtaWtpLmJhdEBnbWFpbC5jb20iLCJyb2xlIjoiQVVUSEVOVElDQVRFRF9VU0VSIiwicGhvbmUiOiIrMzgxNjkyNTMyMjAxIiwiaWQiOjUsImV4cCI6MTY4NjkxMTk5MSwiaWF0IjoxNjg2OTExODExfQ.qNmlfxzuXHFyKJZ_K73BKymVn4dQkr-ZXDnKhHUPNBDxcsi4y56pM5kJKW6dz6DJYQmklPDFVjja2Eol2yCk9g"
+2023-06-16 12:37:09,744 INFO com.IBTim4.CertificatesApp.certificate.controller.CertificateController [https-jsse-nio-8081-exec-3] Creating request for user with ID: 5
+2023-06-16 12:37:09,747 ERROR com.IBTim4.CertificatesApp.exceptions.ExceptionHandlerAdvice [https-jsse-nio-8081-exec-3] CustomExceptionWithMessage occurred with status 400 BAD_REQUEST: Certificate with that serial number does not exist!

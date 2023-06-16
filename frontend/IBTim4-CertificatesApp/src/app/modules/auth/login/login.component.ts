@@ -61,8 +61,8 @@ export class LoginComponent {
       this.usersEmail = this.authService.getEmail()
       this.usersPhone = this.authService.getPhone()
 
-      // this.authService.logout()
-      // this.sendCode()
+      //this.authService.logout()
+      //this.sendCode()
     },
     (err: any) => {
       console.log(err)
