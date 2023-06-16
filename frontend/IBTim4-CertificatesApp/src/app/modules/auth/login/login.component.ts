@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginAuthService } from '../service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent {
 
   loginForm = new FormGroup({
     username: new FormControl(),
-    password: new FormControl()
+    password: new FormControl(),
+    recaptcha: new FormControl()
   })
 
   errorMessage: string = ""
@@ -30,36 +32,50 @@ export class LoginComponent {
   usersPhone: string = ""
   userres:any = ''
 
+  siteKey: string =  environment.recaptcha.siteKey;
+  token: string = '';
 
   ngOnInit(): void {
   }
 
   loginUser (): void {
-    this.authService.login({
-      email: this.loginForm.value.username,
-      password: this.loginForm.value.password
-    }).subscribe((res: any) => {
-      this.errorMessage = "Please verify your code"
-      this.codeSent = true      
-      console.log(res)
-      this.userres = res
-      localStorage.setItem('user', JSON.stringify(res.accessToken))
-      this.authService.setUser()
-      console.log(this.authService.getRole())
-      this.usersEmail = this.authService.getEmail()
-      this.usersPhone = this.authService.getPhone()
-      console.log("AAAAAAAAAAAAA")
-      console.log(this.usersEmail)
-      this.authService.logout()
-      console.log(this.usersEmail)
+    if (this.loginForm.invalid) {
+      this.loginForm.controls.username.markAllAsTouched();
+      return;
+    }
+    this.authService.validateCaptcha(this.token).subscribe((res: any) => {
 
-      this.sendCode()
-    },
-    (err: any) => {
-      console.log(err)
-      this.errorMessage = err.error.message
-    })
+      this.authService.login({
+        email: this.loginForm.value.username,
+        password: this.loginForm.value.password
+      }).subscribe((res: any) => {
+        this.errorMessage = "Please verify your code"
+        this.codeSent = true      
+        console.log(res)
+        this.userres = res
+        localStorage.setItem('user', JSON.stringify(res.accessToken))
+        this.authService.setUser()
+        console.log(this.authService.getRole())
+        this.usersEmail = this.authService.getEmail()
+        this.usersPhone = this.authService.getPhone()
+        console.log("AAAAAAAAAAAAA")
+        console.log(this.usersEmail)
+        this.authService.logout()
+        console.log(this.usersEmail)
+
+        this.sendCode()
+      },
+      (err: any) => {
+        console.log(err)
+        this.errorMessage = err.error.message
+      })
+
+    },(err: any) => {
+      if (err.status == 400)  alert("Captcha error. Invalid captcha.")
+    });
+      
   }
+
   sendCode() {
     if (this.matSelectValue === 'phone'){
       this.authService.sendPhoneCode(this.usersPhone).subscribe((res: any) => {     

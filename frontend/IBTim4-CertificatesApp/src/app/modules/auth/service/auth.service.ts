@@ -120,5 +120,9 @@ export class LoginAuthService {
   }
 
 
+  validateCaptcha(token:string): Observable<any> {
+    return this.http.get<string>(environment.apiHost + "captcha/validate/?token=" + token);
+  }
+
 
 }

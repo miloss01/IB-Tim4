@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginAuthService } from '../service/auth.service';
 import { UserExpandedDTO } from 'src/app/models/models';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-registration',
@@ -34,38 +35,55 @@ export class RegistrationComponent implements OnInit{
     email: ''
   }
 
+  siteKey: string =  environment.recaptcha.siteKey;
+  token: string = '';
+
   ngOnInit(): void {
   }
 
   registerAccount(): void {
-  if (!this.registerAccountForm.valid){
-  alert("Please fill in the corect data first")
-  return
-  }
-  if (this.registerAccountForm.value.password != this.registerAccountForm.value.confirmPassword) {
-  alert("Lozinke nisu iste")
-  return
-  }
-  this.registerAccountForm.disable()
-  let sender = this.registerAccountForm.value.email
-    if (this.matSelectValue === 'phone') sender = this.registerAccountForm.value.phone
-    this.authService.verifyCode({phone: sender, code: this.registerAccountForm.value.code}).subscribe((res: any) => {     
-      console.log(res)
-      this.writeToBase()
-    },
-    (err: any) => {
-      console.log(err)
-      alert("Fail")
-    })
-    this.user = {
-      name: this.registerAccountForm.value.name,
-      lastName: this.registerAccountForm.value.surname,
-      email: this.registerAccountForm.value.email, 
-      phone: this.registerAccountForm.value.phone,
-      password: this.registerAccountForm.value.password
+    if (!this.registerAccountForm.valid){
+    alert("Please fill in the corect data first")
+    return
     }
+    if (this.registerAccountForm.value.password != this.registerAccountForm.value.confirmPassword) {
+    alert("Lozinke nisu iste")
+    return
+    }
+
+    if (this.registerAccountForm.invalid) {
+      this.registerAccountForm.controls['name'].markAllAsTouched();
+      return;
+    }
+
+    this.authService.validateCaptcha(this.token).subscribe((res: any) => {
+
+      this.registerAccountForm.disable()
+      let sender = this.registerAccountForm.value.email
+      if (this.matSelectValue === 'phone') sender = this.registerAccountForm.value.phone
+      this.authService.verifyCode({phone: sender, code: this.registerAccountForm.value.code}).subscribe((res: any) => {     
+        console.log(res)
+        this.writeToBase()
+      },
+      (err: any) => {
+        console.log(err)
+        alert("Fail")
+      })
+      this.user = {
+        name: this.registerAccountForm.value.name,
+        lastName: this.registerAccountForm.value.surname,
+        email: this.registerAccountForm.value.email, 
+        phone: this.registerAccountForm.value.phone,
+        password: this.registerAccountForm.value.password
+      }
+
+    },(err: any) => {
+      if (err.status == 400)  alert("Captcha error. Invalid captcha.")
+    });
+    
  
   }
+
   writeToBase() {
     this.authService.register(this.user).subscribe((res: any) => {     
       console.log(res)
@@ -77,6 +95,7 @@ export class RegistrationComponent implements OnInit{
       this.errorMessage = "fail"
     })
   }
+
   sendCode() {
     if (!this.registerAccountForm.valid){
       alert("Please fill in the corect data first")
