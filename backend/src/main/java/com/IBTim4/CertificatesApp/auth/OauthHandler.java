@@ -60,12 +60,14 @@ public class OauthHandler extends SimpleUrlAuthenticationSuccessHandler {
 
                 } else {
 
+                    String password = new BCryptPasswordEncoder().encode("sifraza1!");
+
                     user = new AppUser();
                     user.setName(defaultOAuth2User.getAttribute("given_name"));
                     user.setLastName(defaultOAuth2User.getAttribute("family_name"));
                     user.setPhone("+381692532201");
                     user.setEmail(defaultOAuth2User.getAttribute("email"));
-                    user.setPassword(new BCryptPasswordEncoder().encode("sifraza1!"));
+                    user.setPassword(password);
                     user.setRole(Role.AUTHENTICATED_USER);
 
                     user = appUserRepository.save(user);
