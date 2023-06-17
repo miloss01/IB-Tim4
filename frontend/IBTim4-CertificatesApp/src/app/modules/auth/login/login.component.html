@@ -1,0 +1,40 @@
+<div class="center">
+    <div class="center">
+        <h3>Log in</h3>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()" class="oneElementPerRow">
+        <label>Username</label>
+        <mat-form-field class="oneLine">
+            <mat-label>Username</mat-label>
+            <input matInput type="text" name="username" formControlName="username" />
+        </mat-form-field>
+        <label>Password</label>
+        <mat-form-field class="oneLine">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="password" formControlName="password" />
+        </mat-form-field>
+        <re-captcha id="recaptcha" name="recaptcha" #recaptcha="ngModel" [(ngModel)]="token" 
+        required [class.is-invalid]="recaptcha.invalid && (recaptcha.dirty || recaptcha.touched)"
+        [ngModelOptions]="{standalone: true}"></re-captcha>
+        <div *ngIf="recaptcha.invalid && (recaptcha.dirty || recaptcha.touched)" class="invalid-feedback">
+            <div *ngIf="recaptcha.errors?.['required']">This field is required.</div>
+        </div>
+        <p>{{errorMessage}}</p>
+        <mat-select [(value)]="matSelectValue">
+            <mat-option value="email">Email verification</mat-option>
+            <mat-option value="phone">Phone verification</mat-option>
+        </mat-select>
+        
+        <button type="submit" mat-raised-button *ngIf="!codeSent">Send code</button>
+    </form>
+    <mat-form-field class="oneLine" appearance="outline" *ngIf="codeSent">
+        <mat-label>Verification Code</mat-label>
+        <input matInput type="text" name="code" [(ngModel)]="code">
+    </mat-form-field>
+    <button  mat-raised-button class="oneLine" (click)="verifyCode()" *ngIf="codeSent" >Log in</button>
+    <button  mat-raised-button class="oneLine" (click)="withGoogle()">Log in with google</button>
+   <button  mat-raised-button class="oneLine" (click)="changePassword()" >Get code and change password</button>
+
+   <a routerLink="/registration" routerLinkActive="active">DON'T HAVE AN ACCOUNT? REGISTER NOW.</a>
+   <br><br>
+</div>

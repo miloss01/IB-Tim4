@@ -1,0 +1,75 @@
+2023-06-16 10:30:40,143 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-06-16 10:30:40,158 INFO org.springframework.boot.StartupInfoLogger [main] Starting CertificatesAppApplication using Java 17.0.5 on MilosStojanovic with PID 7792 (D:\Faks\3. Godina\Informaciona bezbednost\IB-Tim4\backend\target\classes started by MMDE Laptop in D:\Faks\3. Godina\Informaciona bezbednost\IB-Tim4\backend)
+2023-06-16 10:30:40,159 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.7.9, Spring v5.3.25
+2023-06-16 10:30:40,161 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-06-16 10:30:42,459 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-16 10:30:42,630 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 148 ms. Found 5 JPA repository interfaces.
+2023-06-16 10:30:44,896 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (https)
+2023-06-16 10:30:44,926 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["https-jsse-nio-8081"]
+2023-06-16 10:30:44,927 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2023-06-16 10:30:44,928 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-06-16 10:30:45,957 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-06-16 10:30:45,959 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 5611 ms
+2023-06-16 10:30:46,068 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2023-06-16 10:30:46,606 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2023-06-16 10:30:46,638 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [main] H2 console available at '/h2-console'. Database available at 'jdbc:postgresql://localhost:5432/postgres?'
+2023-06-16 10:30:47,001 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-16 10:30:47,186 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-06-16 10:30:47,735 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-06-16 10:30:48,104 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-06-16 10:30:49,827 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-16 10:30:49,842 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 10:30:50,705 DEBUG org.springframework.web.filter.GenericFilterBean [main] Filter 'jwtRequestFilter' configured for use
+2023-06-16 10:30:52,206 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-16 10:30:53,012 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5b407336, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@160cf225, org.springframework.security.web.context.SecurityContextPersistenceFilter@55821edf, org.springframework.security.web.header.HeaderWriterFilter@57f83c82, org.springframework.web.filter.CorsFilter@6a262980, org.springframework.security.web.authentication.logout.LogoutFilter@6956eb58, com.IBTim4.CertificatesApp.auth.JwtRequestFilter@5e3d84a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@658098a2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@50628080, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@10230657, org.springframework.security.web.session.SessionManagementFilter@297454f7, org.springframework.security.web.access.ExceptionTranslationFilter@2696b687, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@703a2bc9]
+2023-06-16 10:30:54,620 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["https-jsse-nio-8081"]
+2023-06-16 10:30:55,020 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (https) with context path ''
+2023-06-16 10:30:55,046 INFO org.springframework.boot.StartupInfoLogger [main] Started CertificatesAppApplication in 15.969 seconds (JVM running for 17.789)
+2023-06-16 10:31:06,998 INFO org.apache.juli.logging.DirectJDKLog [https-jsse-nio-8081-exec-7] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-16 10:31:06,998 INFO org.springframework.web.servlet.FrameworkServlet [https-jsse-nio-8081-exec-7] Initializing Servlet 'dispatcherServlet'
+2023-06-16 10:31:07,001 INFO org.springframework.web.servlet.FrameworkServlet [https-jsse-nio-8081-exec-7] Completed initialization in 2 ms
+2023-06-16 10:31:07,077 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:31:07,078 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] Authorization header: null
+2023-06-16 10:31:07,079 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-7] JWT Token does not exist.
+2023-06-16 10:31:07,364 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-7] Login started.
+2023-06-16 10:31:37,013 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-10] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:31:37,014 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-10] Authorization header: null
+2023-06-16 10:31:37,015 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-10] JWT Token does not exist.
+2023-06-16 10:31:37,019 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-10] Login started.
+2023-06-16 10:32:14,558 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:32:14,559 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Authorization header: null
+2023-06-16 10:32:14,559 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] JWT Token does not exist.
+2023-06-16 10:32:14,563 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Login started.
+2023-06-16 10:33:08,384 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:33:08,386 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Authorization header: null
+2023-06-16 10:33:08,387 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] JWT Token does not exist.
+2023-06-16 10:33:08,394 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Login started.
+2023-06-16 10:33:08,527 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Trying to log in user with ID: 2
+2023-06-16 10:33:08,827 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Login successful.
+2023-06-16 10:33:08,827 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Password rotation is required.
+2023-06-16 10:34:14,429 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Getting POST request on: https://localhost:8081/api/user/refreshPassword
+2023-06-16 10:34:14,430 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Authorization header: Bearer "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aWthQGVtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsInBob25lIjoiMTIzMzIyMzMiLCJpZCI6MiwiZXhwIjoxNjg2OTA0NTY4LCJpYXQiOjE2ODY5MDQzODh9.uzgx_OcW7JGrI7cAPXUPYbIxpI7Z_eERcZT7BUI-Eqc_x8cJBNhSb2N4bZm9r-rJ3E76u99EZM_ypy0RiDi2FA"
+2023-06-16 10:34:14,520 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-2] Password rotation started for user with ID: 2
+2023-06-16 10:34:15,180 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-2] Password successfully rotated.
+2023-06-16 10:34:28,861 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:34:28,861 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Authorization header: null
+2023-06-16 10:34:28,862 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] JWT Token does not exist.
+2023-06-16 10:34:28,866 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-2] Login started.
+2023-06-16 10:35:11,161 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:35:11,162 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] Authorization header: null
+2023-06-16 10:35:11,163 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-2] JWT Token does not exist.
+2023-06-16 10:35:11,166 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-2] Login started.
+2023-06-16 10:35:58,677 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:35:58,678 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Authorization header: null
+2023-06-16 10:35:58,679 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] JWT Token does not exist.
+2023-06-16 10:35:58,683 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Login started.
+2023-06-16 10:37:00,756 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Getting POST request on: https://localhost:8081/api/user/login
+2023-06-16 10:37:00,756 INFO com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] Authorization header: null
+2023-06-16 10:37:00,757 WARN com.IBTim4.CertificatesApp.auth.JwtRequestFilter [https-jsse-nio-8081-exec-1] JWT Token does not exist.
+2023-06-16 10:37:00,760 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Login started.
+2023-06-16 10:37:00,861 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Trying to log in user with ID: 2
+2023-06-16 10:37:00,865 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Login successful.
+2023-06-16 10:37:00,866 INFO com.IBTim4.CertificatesApp.appUser.controller.AppUserController [https-jsse-nio-8081-exec-1] Password rotation is not required.
+2023-06-16 11:02:39,956 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 11:02:39,988 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-06-16 11:02:40,013 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

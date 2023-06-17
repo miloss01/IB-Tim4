@@ -25,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -58,6 +59,12 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "IBTim4-CertificatesApp:build:production",
+            "ssl": true,
+            "sslKey": "./trusted-certificate/localhost.key",
+            "sslCert": "./trusted-certificate/localhost.crt"
+          },
           "configurations": {
             "production": {
               "browserTarget": "IBTim4-CertificatesApp:build:production"
